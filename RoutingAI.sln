@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutingAI.Controller", "RoutingAI.Controller\RoutingAI.Controller.csproj", "{3C813AF7-D3D8-4242-8A0F-9566A9417B95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutingAI.Slave", "RoutingAI.Slave\RoutingAI.Slave.csproj", "{8C615E42-E17E-4DAC-9B8C-2B723AC79F90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutingAI", "RoutingAI\RoutingAI.csproj", "{4AD41D40-734F-4745-9A6A-B2F331388EAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C813AF7-D3D8-4242-8A0F-9566A9417B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C813AF7-D3D8-4242-8A0F-9566A9417B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C813AF7-D3D8-4242-8A0F-9566A9417B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C813AF7-D3D8-4242-8A0F-9566A9417B95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C615E42-E17E-4DAC-9B8C-2B723AC79F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C615E42-E17E-4DAC-9B8C-2B723AC79F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C615E42-E17E-4DAC-9B8C-2B723AC79F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C615E42-E17E-4DAC-9B8C-2B723AC79F90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AD41D40-734F-4745-9A6A-B2F331388EAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AD41D40-734F-4745-9A6A-B2F331388EAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AD41D40-734F-4745-9A6A-B2F331388EAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AD41D40-734F-4745-9A6A-B2F331388EAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
