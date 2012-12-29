@@ -11,7 +11,7 @@ namespace RoutingAI.DataContracts
     /// The span of dates a job can be completed in.
     /// Ex. From 1-1-2012 to 1-4-2012
     /// </summary>
-    [DataContract(Name = "date_window", Namespace = "http://foundops.com/services/routing_ai")]
+    [DataContract(Name = "date_window", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class DateWindow
     {
         /// <summary>

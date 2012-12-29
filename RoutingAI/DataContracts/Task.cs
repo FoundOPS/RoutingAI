@@ -16,7 +16,7 @@ namespace RoutingAI.DataContracts
     /// only barebone structure is kept. Data such as user id should be kept in the 
     /// database server.
     /// </remarks>
-    [DataContract(Name = "task", Namespace = "http://foundops.com/services/routing_ai")]
+    [DataContract(Name = "task", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class Task : IEquatable<Task>, ICloneable
     {
         #region Serialized Properties

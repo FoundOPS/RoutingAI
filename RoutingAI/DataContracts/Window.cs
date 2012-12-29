@@ -10,7 +10,7 @@ namespace RoutingAI.DataContracts
     /// <summary>
     /// A limiting date/time window
     /// </summary>
-    [DataContract(Name = "window", Namespace = "http://foundops.com/services/routing_ai")]
+    [DataContract(Name = "window", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class Window : ICloneable
     {
         /// <summary>

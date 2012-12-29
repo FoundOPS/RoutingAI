@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 
 namespace RoutingAI.DataContracts
 {
-    [DataContract(Name = "resource", Namespace = "http://foundops.com/services/routing_ai")]
+    [DataContract(Name = "resource", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class Resource
     {
         /// <summary>

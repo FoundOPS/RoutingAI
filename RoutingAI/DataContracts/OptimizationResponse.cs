@@ -15,7 +15,7 @@ namespace RoutingAI.DataContracts
         Completed
     }
 
-    [DataContract(Name = "optimization_response", Namespace = "http://foundops.com/services/routing_ai")]
+    [DataContract(Name = "optimization_response", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class OptimizationResponse
     {
         /// <summary>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RoutingAI.DataContracts
 {
-    [DataContract(Name = "optimization_request", Namespace = "http://foundops.com/services/routing_ai")]
+    [DataContract(Name = "optimization_request", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class OptimizationRequest
     {
         /// <summary>

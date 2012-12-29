@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@ namespace libWyvernzora
     /// </summary>
     /// <typeparam name="TFirst">Type of the first object in pair</typeparam>
     /// <typeparam name="TSecond">Type of the second object in pair</typeparam>
+    [DataContract(Name = "pair", Namespace = "http://wyvernzora.net/lib/1.0")]
     public class Pair<TFirst, TSecond> : ICloneable, IEquatable<Pair<TFirst, TSecond>>
     {
         /// <summary>
@@ -23,13 +25,16 @@ namespace libWyvernzora
             this.First = f;
             this.Second = s;
         }
+
         /// <summary>
         /// First object in the pair
         /// </summary>
+        [DataMember(Name = "first")]
         public TFirst First { get; set; }
         /// <summary>
         /// Second object in the pair
         /// </summary>
+        [DataMember(Name = "second")]
         public TSecond Second { get; set; }
 
         /// <summary>
@@ -49,5 +54,6 @@ namespace libWyvernzora
         {
             return this.First.Equals(other.First) && this.Second.Equals(other.Second);
         }
+
     }
 }
