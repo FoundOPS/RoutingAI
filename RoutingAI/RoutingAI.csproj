@@ -32,6 +32,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,7 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\OSRM\OsrmContract.cs" />
+    <Compile Include="DataContracts\DateWindow.cs" />
+    <Compile Include="DataContracts\OptimizationRequest.cs" />
+    <Compile Include="DataContracts\OptimizationResponse.cs" />
+    <Compile Include="DataContracts\Resource.cs" />
+    <Compile Include="DataContracts\Solution.cs" />
+    <Compile Include="DataContracts\TimeWindow.cs" />
+    <Compile Include="DataContracts\Window.cs" />
+    <Compile Include="libWyvernzora\Pair.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DataContracts\Task.cs" />
+    <Compile Include="ServiceContracts\IRoutingAiSlaveService.cs" />
+    <Compile Include="Utilities\GeoTools.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
