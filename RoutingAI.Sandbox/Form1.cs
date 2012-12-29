@@ -36,8 +36,8 @@ namespace RoutingAI.Sandbox
             Color.Yellow,
             Color.Green,
             Color.Purple,
-            Color.Gold,
-            Color.Azure,
+            Color.DarkGoldenrod,
+            Color.DarkOliveGreen,
             Color.Cyan,
             Color.Magenta,
             Color.Lime,
@@ -59,10 +59,6 @@ namespace RoutingAI.Sandbox
             return new Point(x, y);
         }
 
-
-
-        #endregion
-
         private void button1_Click(object sender, EventArgs e)
         {
             processor = null;
@@ -74,6 +70,7 @@ namespace RoutingAI.Sandbox
             {
                 coordinates[i] = new Coordinate(r.Next(-10000, 10000) / 100.0f, r.Next(-10000, 10000) / 100.0f);
             }
+
 
             panel1.Invalidate();
         }
@@ -92,6 +89,7 @@ namespace RoutingAI.Sandbox
             g.Clear(Color.White);
 
             Pen border = new Pen(new SolidBrush(Color.Black), 1);
+            Pen cborder = new Pen(new SolidBrush(Color.Black), 2);
 
             foreach (Coordinate c in coordinates)
             {
@@ -100,6 +98,21 @@ namespace RoutingAI.Sandbox
                     g.FillEllipse(new SolidBrush(colors[processor.GetClusterIndex(c)]), p.X - radius, p.Y - radius, radius * 2, radius * 2);
                 g.DrawEllipse(border, p.X - radius, p.Y - radius, radius * 2, radius * 2);
             }
+
+            if (processor != null)
+            {
+                foreach (Coordinate c in processor.Centroids)
+                {
+                    Point p = C2P(c);
+                    int r = 8;
+                    g.FillRectangle(new SolidBrush(Color.OrangeRed), p.X - r, p.Y - r, 2 * r, 2 * r);
+                    g.DrawRectangle(cborder, p.X - r, p.Y - r, r * 2, r * 2);
+                }
+            }
         }
-    }
+  
+
+
+        #endregion
+  }
 }
