@@ -23,6 +23,9 @@ namespace RoutingAI.DataContracts
         [DataMember(Name = "osrm_server")]
         public IPEndPoint[] OSRMServers { get; set; }
 
+        [DataMember(Name = "librarian_server")]
+        public IPEndPoint LibrarianServer { get; set; }
+
         [DataMember(Name = "rand_seed")]
         public Int32 RandomSeed { get; set; }
 
