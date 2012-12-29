@@ -18,7 +18,7 @@ namespace RoutingAI.Algorithms.DFEKM
         ArraySegment<Coordinate> _processorData;
         Dictionary<Coordinate, BitArray> _boundaryIndex = new Dictionary<Coordinate, BitArray>();
 
-        IDistanceAlgorithm _distanceAlg = new StraightDistanceAlgorithm();
+        IDistanceAlgorithm _distanceAlg = new GeoStraightDistanceAlgorithm();
 
     }
 }

@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using libWyvernzora;
+using RoutingAI.Algorithms.KMedoids;
+using RoutingAI.API.OSRM;
+
 namespace RoutingAI.Sandbox
 {
     public partial class Form1 : Form
@@ -15,6 +19,87 @@ namespace RoutingAI.Sandbox
         public Form1()
         {
             InitializeComponent();
+        }
+
+        #region Clustering Demo
+
+        const Int32 radius = 4;
+        Coordinate[] coordinates = new Coordinate[0];
+        KMedoidsProcessor processor = null;
+        Color[] colors = new Color[]
+        {
+            Color.Black,
+            Color.White,
+            Color.Red,
+            Color.Green,
+            Color.Blue,
+            Color.Yellow,
+            Color.Green,
+            Color.Purple,
+            Color.Gold,
+            Color.Azure,
+            Color.Cyan,
+            Color.Magenta,
+            Color.Lime,
+            Color.HotPink,
+            Color.Coral,
+            Color.Aqua,
+            Color.Turquoise,
+            Color.Tomato,
+            Color.SaddleBrown,
+            Color.Silver
+        };
+
+        private Point C2P(Coordinate c)
+        {
+            // convert x
+            Int32 x = (Int32)(((c.lon + 100) / 200) * panel1.Width);
+            Int32 y = (Int32)(((c.lat + 100) / 200) * panel1.Height);
+
+            return new Point(x, y);
+        }
+
+
+
+        #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            processor = null;
+
+            Int32 count = (int)numericUpDown1.Value;
+            coordinates = new Coordinate[count];
+            Random r = new Random();
+            for (int i = 0; i < coordinates.Length; i++)
+            {
+                coordinates[i] = new Coordinate(r.Next(-10000, 10000) / 100.0f, r.Next(-10000, 10000) / 100.0f);
+            }
+
+            panel1.Invalidate();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Random r = new Random();
+
+            processor = new KMedoidsProcessor((int)numericUpDown2.Value, coordinates, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
+            panel1.Invalidate();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.Clear(Color.White);
+
+            Pen border = new Pen(new SolidBrush(Color.Black), 1);
+
+            foreach (Coordinate c in coordinates)
+            {
+                Point p = C2P(c);
+                if (processor != null)
+                    g.FillEllipse(new SolidBrush(colors[processor.GetClusterIndex(c)]), p.X - radius, p.Y - radius, radius * 2, radius * 2);
+                g.DrawEllipse(border, p.X - radius, p.Y - radius, radius * 2, radius * 2);
+            }
         }
     }
 }

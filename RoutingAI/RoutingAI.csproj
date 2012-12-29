@@ -46,6 +46,7 @@
     <Compile Include="Algorithms\IDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\KMedoids\KMedoidsProcessor.cs" />
     <Compile Include="Algorithms\RoutingAlgorithmBase.cs" />
+    <Compile Include="Algorithms\GeoStraightDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\StraightDistanceAlgorithm.cs" />
     <Compile Include="API\NetworkUtilities.cs" />
     <Compile Include="API\OSRM\OsrmContract.cs" />

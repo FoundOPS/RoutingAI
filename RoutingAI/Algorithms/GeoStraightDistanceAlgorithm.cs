@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace RoutingAI.Algorithms
 {
-    public class StraightDistanceAlgorithm : IDistanceAlgorithm
+    public class GeoStraightDistanceAlgorithm : IDistanceAlgorithm
     {
         public int GetDistance(API.OSRM.Coordinate start, API.OSRM.Coordinate end)
         {
-            return (Int32)Math.Sqrt(Math.Pow(start.lon - end.lon, 2) + Math.Pow(start.lat - end.lat, 2));
+            return Utilities.GeoTools.StraightDistance(start.latRad, start.lonRad, end.latRad, end.lonRad);
         }
     }
 }

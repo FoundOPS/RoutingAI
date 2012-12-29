@@ -21,7 +21,7 @@ namespace RoutingAI.Algorithms.KMedoids
         private List<Coordinate>[] _meanTasks;
         private Int32 _totalDistance = Int32.MaxValue;
 
-        private IDistanceAlgorithm _distanceAlg = new StraightDistanceAlgorithm();
+        private IDistanceAlgorithm _distanceAlg = new GeoStraightDistanceAlgorithm();
 
         #endregion
 
@@ -52,16 +52,18 @@ namespace RoutingAI.Algorithms.KMedoids
         /// </summary>
         /// <param name="clusterCount">Number of clusters to produce</param>
         /// <param name="problemData">Array of coordinates to cluster</param>
-        public KMedoidsProcessor(Int32 clusterCount, Coordinate[] problemData)
+        public KMedoidsProcessor(Int32 clusterCount, Coordinate[] problemData, IDistanceAlgorithm alg)
         {
             // Check if there are enough tasks to fill clusters
             if (problemData.Length < clusterCount)
                 clusterCount = problemData.Length;
 
             // Initialize stuff here
+            this._distanceAlg = alg;
             this._centroids = new Coordinate[clusterCount];
             this._meanTasks = new List<Coordinate>[clusterCount];
             this._problemData = problemData;
+            this._clusterAssignment = new Dictionary<Coordinate, int>();
 
             for (int i = 0; i < clusterCount; i++)
                 _meanTasks[i] = new List<Coordinate>();
@@ -86,6 +88,16 @@ namespace RoutingAI.Algorithms.KMedoids
                 Iterate();
             } while (_totalDistance < oldDistance);
         }
+        /// <summary>
+        /// Returns index of the cluster a coordinate is assigned to
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public Int32 GetClusterIndex(Coordinate c)
+        {
+            return _clusterAssignment[c];
+        }
+
         /// <summary>
         /// Runs one iteration of K-Medoids Algorithm
         /// </summary>
