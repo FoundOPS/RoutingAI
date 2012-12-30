@@ -1,33 +1,28 @@
-﻿using libWyvernzora;
-using RoutingAI.Algorithms.DFEKM;
+﻿using RoutingAI.DataContracts;
 using RoutingAI.ServiceContracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace RoutingAI.Librarian
 {
     public class LibrarianService : ILibrarianService
     {
-        Dictionary<Guid, CaTable> _tableStore = new Dictionary<Guid, CaTable>();
 
-        #region 
-
-        public void InitializeKMeans(Guid id, Pair<int, int>[] initCA)
+        public void InitializeKMeans(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public void InsertCATableRow(Guid id, Pair<int, int>[] row)
+        public void UpdateCATableEntry(Guid id, int iteration, int index, libWyvernzora.Pair<Task, int> data)
         {
             throw new NotImplementedException();
         }
 
-        public List<Pair<int, int>[]> GetCATable(Guid id)
+        public List<libWyvernzora.Pair<int, int>[]> GetCATable(Guid id)
         {
             throw new NotImplementedException();
         }
-
-
-        #endregion
     }
 }

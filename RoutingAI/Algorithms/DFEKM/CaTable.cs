@@ -23,7 +23,7 @@ namespace RoutingAI.Algorithms.DFEKM
         private Int32 _k;
 
         [DataMember]
-        private List<Pair<Coordinate, Double>[]> _store;
+        private List<Pair<Task, Double>[]> _store;
 
         #endregion
 
@@ -57,12 +57,11 @@ namespace RoutingAI.Algorithms.DFEKM
         /// </summary>
         /// <param name="id">Unique identifier of the K-Means problem instance</param>
         /// <param name="initialCenters">K-Means centroids based on random sampling of data</param>
-        public CaTable(Guid id, Pair<Coordinate, Double>[] initialCenters)
+        public CaTable(Guid id, Int32 k)
         {
             this._id = id;
-            this._store = new List<Pair<Coordinate, Double>[]>();
-            _store.Add(initialCenters);
-            this._k = initialCenters.Length;
+            this._store = new List<Pair<Task, Double>[]>();
+            this._k = k;
         }
 
         #region Methods
@@ -72,7 +71,7 @@ namespace RoutingAI.Algorithms.DFEKM
         /// </summary>
         /// <param name="i">)-based iteration index</param>
         /// <returns>array of Pairs of centroid coordinate and its confidence radius</returns>
-        public Pair<Coordinate, Double>[] GetIteration(Int32 i)
+        public Pair<Task, Double>[] GetIteration(Int32 i)
         {
             if (i < 0 || i >= IterationCount)
                 throw new ArgumentOutOfRangeException();
@@ -85,7 +84,7 @@ namespace RoutingAI.Algorithms.DFEKM
         /// <param name="i">0-based iteration index</param>
         /// <param name="k">0-based centroid index</param>
         /// <returns>Pair of centroid coordinate and its confidence radius</returns>
-        public Pair<Coordinate, Double> GetCentroidTuple(Int32 i, Int32 k)
+        public Pair<Task, Double> GetCentroidTuple(Int32 i, Int32 k)
         {
             if (i < 0 || i >= IterationCount || k < 0 || k >= _k)
                 throw new ArgumentOutOfRangeException();
@@ -96,12 +95,34 @@ namespace RoutingAI.Algorithms.DFEKM
         /// Adds centroids prodiced by an iteration to the table
         /// </summary>
         /// <param name="iter">Centroids produced by an iteration</param>
-        public void AddIteration(Pair<Coordinate, Double>[] iter)
+        public void AddIteration(Pair<Task, Double>[] iter)
         {
             if (iter.Length != _k)
                 throw new ArgumentException();
 
             _store.Add(iter);
+        }
+        /// <summary>
+        /// Adds an empty iteration to the table
+        /// </summary>
+        public void AddIteration()
+        {
+            _store.Add(new Pair<Task, double>[_k]);
+        }
+        /// <summary>
+        /// Updates the specified centroid data
+        /// </summary>
+        /// <param name="iteration">0-based iteration index</param>
+        /// <param name="index">0-based centroid index</param>
+        /// <param name="data">New centroid data</param>
+        public void AddCentroid(Int32 iteration, Int32 index, Pair<Task, Double> data)
+        {
+            if (iteration < 0 || iteration >= IterationCount + 1 || index < 0 || index >= _k)
+                throw new ArgumentOutOfRangeException();
+
+            if (iteration - 1 == IterationCount)
+                AddIteration();
+            _store[iteration][index] = data;
         }
 
         #endregion
