@@ -47,6 +47,7 @@
     <Compile Include="Algorithms\Interfaces\IDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\KMedoids\KMedoidsProcessor.cs" />
     <Compile Include="Algorithms\PlanetColonizer\Interfaces\Individual.cs" />
+    <Compile Include="Algorithms\PlanetColonizer\Interfaces\Population.cs" />
     <Compile Include="Algorithms\RoutingAlgorithmBase.cs" />
     <Compile Include="Algorithms\GeoStraightDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\StraightDistanceAlgorithm.cs" />
