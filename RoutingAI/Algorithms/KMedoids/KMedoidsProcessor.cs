@@ -10,35 +10,35 @@ namespace RoutingAI.Algorithms.KMedoids
     /// <summary>
     /// A non-parallel implementation of K-Medoids Clustering Algorithm
     /// </summary>
-    public class KMedoidsProcessor
+    public class KMedoidsProcessor<T>
     {
         #region Fields
 
         private readonly Random _rand = new Random();
-        private Coordinate[] _problemData;
-        private Coordinate[] _centroids;
-        private Dictionary<Coordinate, Int32> _clusterAssignment;
-        private List<Coordinate>[] _meanTasks;
+        private T[] _problemData;
+        private T[] _centroids;
+        private Dictionary<T, Int32> _clusterAssignment;
+        private List<T>[] _meanTasks;
         private Int32 _totalDistance = Int32.MaxValue;
 
-        private IDistanceAlgorithm _distanceAlg = new GeoStraightDistanceAlgorithm();
+        private IDistanceAlgorithm<T> _distanceAlg;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Returns array of centroid coordinates
+        /// Returns array of centroid Ts
         /// </summary>
-        public Coordinate[] Centroids
+        public T[] Centroids
         { get { return _centroids; } }
         /// <summary>
-        /// Returns clustered coordinates
+        /// Returns clustered Ts
         /// </summary>
-        public List<Coordinate>[] Clusters
+        public List<T>[] Clusters
         { get { return _meanTasks; } }
         /// <summary>
-        /// Returns total distance of all coordinates to their centroids
+        /// Returns total distance of all Ts to their centroids
         /// </summary>
         public Int32 TotalDistance
         { get { return _totalDistance; } }
@@ -51,8 +51,8 @@ namespace RoutingAI.Algorithms.KMedoids
         /// Constructor
         /// </summary>
         /// <param name="clusterCount">Number of clusters to produce</param>
-        /// <param name="problemData">Array of coordinates to cluster</param>
-        public KMedoidsProcessor(Int32 clusterCount, Coordinate[] problemData, IDistanceAlgorithm alg)
+        /// <param name="problemData">Array of Ts to cluster</param>
+        public KMedoidsProcessor(Int32 clusterCount, T[] problemData, IDistanceAlgorithm<T> alg)
         {
             // Check if there are enough tasks to fill clusters
             if (problemData.Length < clusterCount)
@@ -60,18 +60,18 @@ namespace RoutingAI.Algorithms.KMedoids
 
             // Initialize stuff here
             this._distanceAlg = alg;
-            this._centroids = new Coordinate[clusterCount];
-            this._meanTasks = new List<Coordinate>[clusterCount];
+            this._centroids = new T[clusterCount];
+            this._meanTasks = new List<T>[clusterCount];
             this._problemData = problemData;
-            this._clusterAssignment = new Dictionary<Coordinate, int>();
+            this._clusterAssignment = new Dictionary<T, int>();
 
             for (int i = 0; i < clusterCount; i++)
-                _meanTasks[i] = new List<Coordinate>();
+                _meanTasks[i] = new List<T>();
 
             // Pick random centroids from problem data
             for (int i = 0; i < _centroids.Length; i++)
             {
-                Coordinate c = _problemData[_rand.Next(_problemData.Length)];
+                T c = _problemData[_rand.Next(_problemData.Length)];
                 if (!_centroids.Contains(c))
                     _centroids[i] = c;
                 else
@@ -89,11 +89,11 @@ namespace RoutingAI.Algorithms.KMedoids
             } while (_totalDistance < oldDistance);
         }
         /// <summary>
-        /// Returns index of the cluster a coordinate is assigned to
+        /// Returns index of the cluster a T is assigned to
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        public Int32 GetClusterIndex(Coordinate c)
+        public Int32 GetClusterIndex(T c)
         {
             return _clusterAssignment[c];
         }
@@ -110,10 +110,10 @@ namespace RoutingAI.Algorithms.KMedoids
 
                 for (int i = 0; i < _meanTasks.Length; i++)
                 {
-                    List<Coordinate> ct = _meanTasks[i];
+                    List<T> ct = _meanTasks[i];
 
                     int minTotalDist = 0;
-                    Coordinate centroid = FindCentroid(ct, out minTotalDist);
+                    T centroid = FindCentroid(ct, out minTotalDist);
 
                     _totalDistance += minTotalDist;
 
@@ -125,7 +125,7 @@ namespace RoutingAI.Algorithms.KMedoids
             for (int i = 0; i < _meanTasks.Length; i++)
                 _meanTasks[i].Clear();
 
-            foreach (Coordinate c in _problemData)
+            foreach (T c in _problemData)
             {
                 int centroidIndex = FindNearestCentroid(c);
                 _clusterAssignment[c] = centroidIndex;
@@ -133,11 +133,11 @@ namespace RoutingAI.Algorithms.KMedoids
             }
         }
         /// <summary>
-        /// Finds nearest centroid coordinate
+        /// Finds nearest centroid T
         /// </summary>
-        /// <param name="c">Coordinate to process</param>
+        /// <param name="c">T to process</param>
         /// <returns>Index of centroid</returns>
-        private Int32 FindNearestCentroid(Coordinate c)
+        private Int32 FindNearestCentroid(T c)
         {
             Int32 minDistance = Int32.MaxValue;
             Int32 minIndex = -1;
@@ -155,20 +155,20 @@ namespace RoutingAI.Algorithms.KMedoids
             return minIndex;
         }
         /// <summary>
-        /// Finds centroid coordinate from a set of coordinates
+        /// Finds centroid T from a set of Ts
         /// </summary>
-        /// <param name="coords">Collection of coordinates to consider</param>
-        /// <param name="distance">Distance of all coordinates to their centroid</param>
+        /// <param name="coords">Collection of Ts to consider</param>
+        /// <param name="distance">Distance of all Ts to their centroid</param>
         /// <returns></returns>
-        private Coordinate FindCentroid(IEnumerable<Coordinate> coords, out Int32 distance)
+        private T FindCentroid(IEnumerable<T> coords, out Int32 distance)
         {
             int minDistance = Int32.MaxValue;
-            Coordinate minC = null;
+            T minC = default(T);
 
-            foreach (Coordinate from in coords)
+            foreach (T from in coords)
             {
                 distance = 0;
-                foreach (Coordinate to in coords)
+                foreach (T to in coords)
                     distance += _distanceAlg.GetDistance(from, to);
 
                 if (distance < minDistance)

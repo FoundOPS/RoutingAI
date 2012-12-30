@@ -25,7 +25,7 @@ namespace RoutingAI.Sandbox
 
         const Int32 radius = 4;
         Coordinate[] coordinates = new Coordinate[0];
-        KMedoidsProcessor processor = null;
+        KMedoidsProcessor<Coordinate> processor = null;
         Color[] colors = new Color[]
         {
             Color.Black,
@@ -79,7 +79,7 @@ namespace RoutingAI.Sandbox
         {
             Random r = new Random();
 
-            processor = new KMedoidsProcessor((int)numericUpDown2.Value, coordinates, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
+            processor = new KMedoidsProcessor<Coordinate>((int)numericUpDown2.Value, coordinates, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
             panel1.Invalidate();
         }
 

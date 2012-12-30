@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RoutingAI.Algorithms
 {
-    public interface IDistanceAlgorithm
+    public interface IDistanceAlgorithm<T>
     {
-        Int32 GetDistance(Coordinate start, Coordinate end);
+        Int32 GetDistance(T start, T end);
     }
 }
