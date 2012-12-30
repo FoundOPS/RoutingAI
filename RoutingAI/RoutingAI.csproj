@@ -43,13 +43,17 @@
   <ItemGroup>
     <Compile Include="Algorithms\DFEKM\CaTable.cs" />
     <Compile Include="Algorithms\DFEKM\DfekmProcessor.cs" />
-    <Compile Include="Algorithms\IDistanceAlgorithm.cs" />
+    <Compile Include="Algorithms\Interfaces\ICostFunction.cs" />
+    <Compile Include="Algorithms\Interfaces\IDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\KMedoids\KMedoidsProcessor.cs" />
+    <Compile Include="Algorithms\PlanetColonizer\Interfaces\Individual.cs" />
     <Compile Include="Algorithms\RoutingAlgorithmBase.cs" />
     <Compile Include="Algorithms\GeoStraightDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\StraightDistanceAlgorithm.cs" />
     <Compile Include="API\NetworkUtilities.cs" />
+    <Compile Include="API\OSRM\OsrmApi.cs" />
     <Compile Include="API\OSRM\OsrmContract.cs" />
+    <Compile Include="DataContracts\Cost.cs" />
     <Compile Include="DataContracts\DateWindow.cs" />
     <Compile Include="DataContracts\OptimizationRequest.cs" />
     <Compile Include="DataContracts\OptimizationResponse.cs" />
