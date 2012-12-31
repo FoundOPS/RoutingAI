@@ -8,3 +8,4 @@ RoutingAI.Librarian/bin/
 RoutingAI.Librarian/obj/
 RoutingAI.Sandbox/bin/
 RoutingAI.Sandbox/obj/
+*.suo
