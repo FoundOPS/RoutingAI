@@ -46,8 +46,11 @@
     <Compile Include="Algorithms\Interfaces\ICostFunction.cs" />
     <Compile Include="Algorithms\Interfaces\IDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\KMedoids\KMedoidsProcessor.cs" />
+    <Compile Include="Algorithms\KMedoids\KMedoidsSampledProcessor.cs" />
     <Compile Include="Algorithms\PlanetColonizer\Interfaces\Individual.cs" />
-    <Compile Include="Algorithms\RoutingAlgorithmBase.cs" />
+    <Compile Include="Algorithms\PlanetColonizer\Interfaces\Population.cs" />
+    <Compile Include="Algorithms\PlanetColonizer\PlanetColonizerRoutingAlgorithm.cs" />
+    <Compile Include="Algorithms\PlanetColonizer\TaskDistribution.cs" />
     <Compile Include="Algorithms\GeoStraightDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\StraightDistanceAlgorithm.cs" />
     <Compile Include="API\NetworkUtilities.cs" />
@@ -73,6 +76,7 @@
     <Compile Include="DataContracts\Task.cs" />
     <Compile Include="ServiceContracts\ILibrarianService.cs" />
     <Compile Include="ServiceContracts\IRoutingAiSlaveService.cs" />
+    <Compile Include="Utilities\ArraySampler.cs" />
     <Compile Include="Utilities\GeoTools.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

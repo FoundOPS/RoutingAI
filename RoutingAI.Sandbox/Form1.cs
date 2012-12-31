@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using libWyvernzora;
 using RoutingAI.Algorithms.KMedoids;
 using RoutingAI.API.OSRM;
+using System.Diagnostics;
+using System.IO;
+using RoutingAI.Utilities;
 
 namespace RoutingAI.Sandbox
 {
@@ -71,7 +74,6 @@ namespace RoutingAI.Sandbox
                 coordinates[i] = new Coordinate(r.Next(-10000, 10000) / 100.0f, r.Next(-10000, 10000) / 100.0f);
             }
 
-
             panel1.Invalidate();
         }
 
@@ -79,7 +81,12 @@ namespace RoutingAI.Sandbox
         {
             Random r = new Random();
 
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             processor = new KMedoidsProcessor<Coordinate>((int)numericUpDown2.Value, coordinates, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
+            processor.Run();
+            sw.Stop();
+            MessageBox.Show(sw.ElapsedMilliseconds.ToString());
             panel1.Invalidate();
         }
 
@@ -87,15 +94,22 @@ namespace RoutingAI.Sandbox
         {
             Graphics g = e.Graphics;
             g.Clear(Color.White);
+            Random rand = new Random();
 
             Pen border = new Pen(new SolidBrush(Color.Black), 1);
             Pen cborder = new Pen(new SolidBrush(Color.Black), 2);
 
             foreach (Coordinate c in coordinates)
             {
+                //if (coordinates.Length > 10000)
+                //{ if (rand.Next(100) > 5) continue; }
                 Point p = C2P(c);
                 if (processor != null)
-                    g.FillEllipse(new SolidBrush(colors[processor.GetClusterIndex(c)]), p.X - radius, p.Y - radius, radius * 2, radius * 2);
+                {
+                    Int32 assignment = processor.GetClusterIndex(c);
+                    if (assignment > 0)
+                        g.FillEllipse(new SolidBrush(colors[assignment % colors.Length]), p.X - radius, p.Y - radius, radius * 2, radius * 2);
+                }
                 g.DrawEllipse(border, p.X - radius, p.Y - radius, radius * 2, radius * 2);
             }
 
@@ -111,8 +125,71 @@ namespace RoutingAI.Sandbox
             }
         }
   
-
-
         #endregion
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Int32 nodeIncr = (int)numericUpDown3.Value;
+            Int32 maxNodex = (int)numericUpDown4.Value;
+            Int32 timeout = (int)numericUpDown5.Value;
+
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.DoWork += (Object o, DoWorkEventArgs a) =>
+            {
+                StreamWriter result = new StreamWriter(String.Format("StressTest-{0}.csv", DateTime.Now.Ticks));
+                RoutingAI.Algorithms.IDistanceAlgorithm<Coordinate> distancealg = new RoutingAI.Algorithms.StraightDistanceAlgorithm();
+                Random r = new Random();
+                Coordinate[] data;
+
+                Int32 currentNodes = 100;
+                while (currentNodes < maxNodex)
+                {
+                    data = new Coordinate[currentNodes];
+                    for (int i = 0; i < data.Length; i++)
+                        data[i] = new Coordinate(r.Next(-10000, 10000) / 100.0f, r.Next(-10000, 10000) / 100.0f);
+
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
+                    KMedoidsProcessor<Coordinate> proc = new KMedoidsProcessor<Coordinate>((int)Math.Sqrt(currentNodes), data, distancealg);
+                    sw.Stop();
+                    result.WriteLine("{0},{1}", currentNodes, sw.ElapsedMilliseconds);
+                    result.Flush();
+
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        //coordinates = data;
+                        //processor = proc;
+                        //panel1.Invalidate();
+                        lblCurrentResult.Text = String.Format("{0},{1}", currentNodes, sw.ElapsedMilliseconds);
+                    }));
+
+                    currentNodes += nodeIncr;
+                }
+
+            };
+            bw.RunWorkerAsync();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Random r = new Random();
+
+            // grab random sample
+            Int32 sampleSize = (Int32)Math.Sqrt(coordinates.Length);
+            if (sampleSize < numericUpDown2.Value) sampleSize = (int)numericUpDown2.Value;
+
+            //Coordinate[] sample = coordinates.OrderBy((Coordinate c) => { return r.Next(); }).Take(sampleSize).ToArray();
+            //Coordinate[] sample = coordinates.GetRandomSample(sampleSize);
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            //processor = new KMedoidsProcessor<Coordinate>((int)numericUpDown2.Value, sample, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
+            processor = new KMedoidsSampledProcessor<Coordinate>((int)numericUpDown2.Value, coordinates, sampleSize, 50, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
+            processor.Run();
+            sw.Stop();
+            MessageBox.Show(sw.ElapsedMilliseconds.ToString());
+            panel1.Invalidate();
+
+        }
   }
 }
