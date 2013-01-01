@@ -31,6 +31,9 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lblTime = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.lblCurrentResult = new System.Windows.Forms.Label();
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
@@ -48,21 +51,23 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lblProgress = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lblPhase = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lblTime = new System.Windows.Forms.Label();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -119,6 +124,51 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
+            // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Location = new System.Drawing.Point(82, 71);
+            this.numericUpDown6.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(100, 20);
+            this.numericUpDown6.TabIndex = 19;
+            this.numericUpDown6.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 73);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(50, 13);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Sampling";
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Location = new System.Drawing.Point(6, 527);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(96, 13);
+            this.lblTime.TabIndex = 17;
+            this.lblTime.Text = "Time Elapsed: 0ms";
             // 
             // button4
             // 
@@ -261,7 +311,6 @@
             this.button3.TabIndex = 7;
             this.button3.Text = "Stress Test";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -283,7 +332,6 @@
             this.button1.TabIndex = 5;
             this.button1.Text = "Generate";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // numericUpDown2
             // 
@@ -353,6 +401,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.panel1);
+            this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(710, 546);
@@ -360,17 +409,57 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Visualization";
             // 
+            // panel2
+            // 
+            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.panel2.Controls.Add(this.lblProgress);
+            this.panel2.Controls.Add(this.progressBar1);
+            this.panel2.Controls.Add(this.lblPhase);
+            this.panel2.Location = new System.Drawing.Point(121, 223);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(468, 100);
+            this.panel2.TabIndex = 1;
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblProgress.Location = new System.Drawing.Point(0, 83);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(468, 17);
+            this.lblProgress.TabIndex = 2;
+            this.lblProgress.Text = "label9";
+            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(3, 67);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(462, 12);
+            this.progressBar1.TabIndex = 1;
+            // 
+            // lblPhase
+            // 
+            this.lblPhase.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblPhase.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblPhase.Location = new System.Drawing.Point(0, 0);
+            this.lblPhase.Name = "lblPhase";
+            this.lblPhase.Size = new System.Drawing.Size(468, 72);
+            this.lblPhase.TabIndex = 0;
+            this.lblPhase.Text = "Rendering";
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(6, 19);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(698, 521);
             this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // tabPage2
             // 
@@ -381,51 +470,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "K-Medoid Runtime Test";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // lblTime
-            // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(6, 527);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(96, 13);
-            this.lblTime.TabIndex = 17;
-            this.lblTime.Text = "Time Elapsed: 0ms";
-            // 
-            // numericUpDown6
-            // 
-            this.numericUpDown6.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.numericUpDown6.Location = new System.Drawing.Point(82, 71);
-            this.numericUpDown6.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown6.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(100, 20);
-            this.numericUpDown6.TabIndex = 19;
-            this.numericUpDown6.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 73);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(50, 13);
-            this.label7.TabIndex = 18;
-            this.label7.Text = "Sampling";
             // 
             // Form1
             // 
@@ -439,13 +483,14 @@
             this.tabPage1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -477,6 +522,10 @@
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.NumericUpDown numericUpDown6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label lblProgress;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label lblPhase;
     }
 }
 

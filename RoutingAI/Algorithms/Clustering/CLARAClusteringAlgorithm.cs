@@ -9,7 +9,7 @@ namespace RoutingAI.Algorithms.Clustering
 {
     public class CLARAClusteringAlgorithm<T> : PAMClusteringAlgorithm<T>
     {
-        const Int32 WORKER_PER_PROCESSOR = 16;
+        const Int32 WORKER_PER_PROCESSOR = 2;
 
         // Multithreading
         Thread[] _workers;
