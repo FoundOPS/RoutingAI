@@ -7,7 +7,7 @@ using System.Text;
 using RoutingAI.ServiceContracts;
 using System.ServiceModel;
 using RoutingAI.DataContracts;
-using RoutingAI.Algorithms.KMedoids;
+using RoutingAI.Algorithms.Clustering;
 
 namespace RoutingAI.Algorithms.DFEKM
 {
@@ -61,8 +61,8 @@ namespace RoutingAI.Algorithms.DFEKM
                 Task[] sample = _problemData.OrderBy((Task t) => { return rand.Next(); }).Take(sampleSize).ToArray();
                 
                 // Run k-medoid on the sample
-                KMedoidsProcessor<Task> kmedproc = new KMedoidsProcessor<Task>(clusterCount, sample, alg);
                 
+ 
                 // Create the first row of CA Table
 
             }
