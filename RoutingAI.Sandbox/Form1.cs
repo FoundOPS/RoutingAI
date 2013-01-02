@@ -85,7 +85,7 @@ namespace RoutingAI.Sandbox
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 IClusteringAlgorithm<Coordinate> processor = 
-                    new PAMClusteringAlgorithm<Coordinate>(data, clusterCount, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
+                    new EPAMClusteringAlgorithm<Coordinate>(data, clusterCount, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
                 processor.Run();
                 sw.Stop();
 
@@ -146,26 +146,6 @@ namespace RoutingAI.Sandbox
 
         private void button4_Click(object sender, EventArgs e)
         {
-            /*
-            Random r = new Random();
-
-            // grab random sample
-            Int32 sampleSize = (Int32)Math.Sqrt(coordinates.Length);
-            if (sampleSize < numericUpDown2.Value) sampleSize = (int)numericUpDown2.Value;
-
-            //Coordinate[] sample = coordinates.OrderBy((Coordinate c) => { return r.Next(); }).Take(sampleSize).ToArray();
-            //Coordinate[] sample = coordinates.GetRandomSample(sampleSize);
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            //processor = new KMedoidsProcessor<Coordinate>((int)numericUpDown2.Value, sample, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
-            //processor = new KMedoidsSampledProcessor<Coordinate>((int)numericUpDown2.Value, coordinates, sampleSize, 100, new RoutingAI.Algorithms.StraightDistanceAlgorithm(), 2);
-            processor = new CLARAClusteringAlgorithm<Coordinate>(coordinates, (int)numericUpDown2.Value, (int)numericUpDown6.Value, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
-            processor.Run();
-            sw.Stop();
-            lblTime.Text = String.Format("Time Elapsed: {0}ms", sw.ElapsedMilliseconds);
-            panel1.Invalidate();
-            */
             Int32 nodeCount = (int)numericUpDown1.Value;
             Int32 clusterCount = (int)numericUpDown2.Value;
             Int32 samplingRUns = (int)numericUpDown6.Value;

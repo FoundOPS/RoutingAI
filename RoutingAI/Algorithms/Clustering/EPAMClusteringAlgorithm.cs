@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RoutingAI.Utilities;
+
 namespace RoutingAI.Algorithms.Clustering
 {
-    public class PAMClusteringAlgorithm<T> : IClusteringAlgorithm<T>
+    public class EPAMClusteringAlgorithm<T> : IClusteringAlgorithm<T>
     {
         // Random Number Generator & Distance Algorithm
         protected readonly Random _rand = new Random();
@@ -19,7 +20,6 @@ namespace RoutingAI.Algorithms.Clustering
         protected T[] _centroids;
         protected List<T>[] _clusters;
         protected Int32 _totalDistance;
-        protected Double _dissimilarity;
         protected Dictionary<T, Int32> _clusterAssignment;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace RoutingAI.Algorithms.Clustering
         /// <param name="clusterCount">Number of clusters to produce</param>
         /// <param name="alg">Distance calculation algorithm</param>
         /// <param name="maxIterations">Maximum number of iterations allowed</param>
-        public PAMClusteringAlgorithm(T[] data, Int32 clusterCount, IDistanceAlgorithm<T> alg, Int32 maxIterations)
+        public EPAMClusteringAlgorithm(T[] data, Int32 clusterCount, IDistanceAlgorithm<T> alg, Int32 maxIterations)
         {
             this._data = data;
             this._centroids = new T[clusterCount];
@@ -49,7 +49,7 @@ namespace RoutingAI.Algorithms.Clustering
         /// <param name="data">Data to be clustered</param>
         /// <param name="clusterCount">Number of clusters to produce</param>
         /// <param name="alg">Distance calculation algorithm</param>
-        public PAMClusteringAlgorithm(T[] data, Int32 clusterCount, IDistanceAlgorithm<T> alg)
+        public EPAMClusteringAlgorithm(T[] data, Int32 clusterCount, IDistanceAlgorithm<T> alg)
             : this(data, clusterCount, alg, Int32.MaxValue) { }
 
         #region IClusteringAlgorithm Members
@@ -81,8 +81,11 @@ namespace RoutingAI.Algorithms.Clustering
         /// </summary>
         public virtual void Run()
         {
-            _totalDistance = AssignRandomCentroids(_data, _centroids, _clusters, _clusterAssignment);
-            _totalDistance = RunPAM(_data, _centroids, _clusters, _clusterAssignment, ref _dissimilarity);
+            Int32[] accelBuffer = new Int32[_data.Length];
+            for (int i = 0; i < accelBuffer.Length; i++) accelBuffer[i] = Int32.MaxValue;
+
+                _totalDistance = AssignRandomCentroids(_data, _centroids, _clusters, _clusterAssignment, accelBuffer);
+            _totalDistance = RunEPAM(_data, _centroids, _clusters, _clusterAssignment, accelBuffer);
         }
         /// <summary>
         /// Returns index of cluster an item is assigned to
@@ -111,7 +114,7 @@ namespace RoutingAI.Algorithms.Clustering
         /// <param name="clusters">Cluster data table for storing results</param>
         /// <param name="assignment">Cluster assignment map for storing results</param>
         /// <returns>Total distance for resulting clustering solution</returns>
-        protected Int32 RunPAM(T[] items, T[] centroids, List<T>[] clusters, Dictionary<T, Int32> assignment, ref Double dissimilarity)
+        protected Int32 RunEPAM(T[] items, T[] centroids, List<T>[] clusters, Dictionary<T, Int32> assignment, Int32[] accelBuffer)
         {
             Int32 oldDistance = Int32.MaxValue;
             Int32 totalDistance = 0;
@@ -121,7 +124,7 @@ namespace RoutingAI.Algorithms.Clustering
                 oldDistance = totalDistance;
 
                 SelectCentroids(centroids, clusters);
-                totalDistance = AssignItemsToCentroids(items, centroids, clusters, assignment, ref dissimilarity);
+                totalDistance = AssignItemsToCentroids(items, centroids, clusters, assignment, accelBuffer);
 
                 iterations++;
             } while (totalDistance < oldDistance && iterations < _maxIterations);
@@ -198,14 +201,14 @@ namespace RoutingAI.Algorithms.Clustering
         /// <param name="clusters">Cluster data, this method overwrites it</param>
         /// <param name="assignment">Cluster assignment data, this method overwrites it</param>
         /// <returns>Sum of distances for this cluster assignment</returns>
-        protected Int32 AssignRandomCentroids(T[] items, T[] centroids, List<T>[] clusters, Dictionary<T, Int32> assignment)
+        protected Int32 AssignRandomCentroids(T[] items, T[] centroids, List<T>[] clusters, Dictionary<T, Int32> assignment, Int32[] accelBuffer)
         {
             // Pick random centroids
             T[] tmp = items.GetRandomSample(centroids.Length);
             Array.Copy(tmp, centroids, centroids.Length);
 
             // Assign Items
-            return AssignItemsToCentroids(items, centroids, clusters, assignment, ref _dissimilarity);
+            return AssignItemsToCentroids(items, centroids, clusters, assignment, accelBuffer);
         }
         /// <summary>
         /// Assigns every item to the closest centroid
@@ -214,39 +217,39 @@ namespace RoutingAI.Algorithms.Clustering
         /// <param name="centroids">Array of centroid items</param>
         /// <param name="clusters">Cluster data, this method overwrites it</param>
         /// <param name="assignment">Cluster assignment data, this method overwrites it</param>
+        /// <param name="accelBuffer">Cluster assignment buffer used for acceleration</param>
         /// <returns>Sum of distances for this cluster assignment</returns>
-        protected Int32 AssignItemsToCentroids(T[] items, T[] centroids, List<T>[] clusters, Dictionary<T, Int32> assignment, ref Double dissimilarity)
+        protected Int32 AssignItemsToCentroids(T[] items, T[] centroids, List<T>[] clusters, Dictionary<T, Int32> assignment, Int32[] accelBuffer)
         {
             // Clear current cluster data
             for (int i = 0; i < clusters.Length; i++) clusters[i].Clear();
 
-            Int32[] clusterDistance = new Int32[clusters.Length];
             Int32 totalDistance = 0;
-            dissimilarity = 0;
-            foreach (T item in items)
+            for (int i = 0; i < items.Length; i++)
             {
-                Int32 distance;
-                Int32 centroidIndex = FindNearest(centroids, item, out distance);
+                T item = items[i];
 
-                totalDistance += distance;
-                if (assignment != null) assignment[item] = centroidIndex;
-                clusters[centroidIndex].Add(item);
-                clusterDistance[centroidIndex] += distance;
+                if (assignment.ContainsKey(item) && _dist.GetDistance(item, centroids[assignment[item]]) <= accelBuffer[i])
+                {
+                    totalDistance += accelBuffer[i];
+                    clusters[assignment[item]].Add(item);
+                }
+                else
+                {
+                    Int32 distance;
+                    Int32 centroidIndex = FindNearest(centroids, item, out distance);
+                    accelBuffer[i] = distance;
 
-                dissimilarity += Math.Pow(distance, 2);
+                    totalDistance += distance;
+                    if (assignment != null) assignment[item] = centroidIndex;
+                    clusters[centroidIndex].Add(item);
+                }
+
             }
-
-            // Dissimilarity is standard deviation of all cluster lengths
-           /* Int32 avgDist = totalDistance / clusters.Length;
-            Double tmp = 0;
-            foreach (Int32 d in clusterDistance)
-                tmp += Math.Pow(d - avgDist, 2);
-            dissimilarity = Math.Sqrt(tmp / clusters.Length); */
 
             return totalDistance;
         }
 
         #endregion
-
     }
 }

@@ -64,7 +64,7 @@ namespace RoutingAI.Algorithms.Clustering
                 t.Join();
 
             // Fix up centroid assignments
-            _totalDistance = AssignItemsToCentroids(_data, _centroids, _clusters, _clusterAssignment);
+            _totalDistance = AssignItemsToCentroids(_data, _centroids, _clusters, _clusterAssignment, ref _dissimilarity);
         }
 
         #region Multithreading and Utilities
@@ -83,23 +83,26 @@ namespace RoutingAI.Algorithms.Clustering
                     clusters[k] = new List<T>();
 
                 // Run sampling
+                Double dissimilarity = Double.MaxValue;
                 AssignRandomCentroids(sample, centroids, clusters, null);
-                Int32 distance = RunPAM(sample, centroids, clusters, null);
+                Int32 distance = RunPAM(sample, centroids, clusters, null, ref dissimilarity);
 
                 // Report results
-                SubmitSamplingResults(distance, centroids);
+                SubmitSamplingResults(distance, dissimilarity, centroids);
             }
         }
 
-        private void SubmitSamplingResults(Int32 distance, T[] centroids)
+        private void SubmitSamplingResults(Int32 distance, Double dissimilarity, T[] centroids)
         {
             lock (this)
             {
-                if (distance < _bestDistance)
+                if (distance <= _bestDistance)
                 {
                     _bestDistance = distance;
+                    _dissimilarity = dissimilarity;
                     Array.Copy(centroids, _centroids, centroids.Length);
                 }
+              
             }
         }
 

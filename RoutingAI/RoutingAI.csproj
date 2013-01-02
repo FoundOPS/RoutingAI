@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Clustering\EPAMClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\CLARAClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\IClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\PAMClusteringAlgorithm.cs" />
