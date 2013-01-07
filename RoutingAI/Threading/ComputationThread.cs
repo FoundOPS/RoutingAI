@@ -119,6 +119,7 @@ namespace RoutingAI.Threading
             _thread.Join(); // wait for action to stop before returning
             _info.AcceptsCommands = true;
             _info.State = ComputationThreadState.Ready;
+            _idleSince = DateTime.Now.Ticks;
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "Computation Thread action aborted, now in ready state again: {{{0}}}", _id);
         }
 
@@ -152,6 +153,7 @@ namespace RoutingAI.Threading
                 _info.AcceptsCommands = true;
                 _info.State = ComputationThreadState.Ready;
                 _info.AdditionalInfo = "Last action aborted";
+                _idleSince = DateTime.Now.Ticks;
 
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "RunComputation: Abort success: {{{0}}}", _id);
             }
@@ -161,6 +163,7 @@ namespace RoutingAI.Threading
                 _info.State = ComputationThreadState.Exception;
                 _info.AdditionalInfo = String.Format("{{ThreadID = {0}; ExceptionType = {1}; Message = {2}; StackTrace = {3}}}",
                     _id, ex.GetType().FullName, ex.Message, ex.StackTrace);
+                _idleSince = DateTime.Now.Ticks;
 
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Critical | MessageFlags.Unexpected, 
                     "RunComputation: Unexpected Exception: {{ThreadID = {0}; ExceptionType = {1}; Message = {2}; StackTrace = {3}}}", 

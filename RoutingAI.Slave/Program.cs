@@ -18,6 +18,22 @@ namespace RoutingAI.Slave
             Console.BufferWidth = 120;
             Console.ForegroundColor = ConsoleColor.White;
 
+            #region Initialize Logger
+
+            Logger console = new ConsoleLogger();
+            Logger logfile = new PlainTextLogger("debug.log", false);
+
+            // Make console logger reject all trivial and verbose messages
+            //console.RejectFlags = MessageFlags.Trivial | MessageFlags.Verbose;
+
+            GlobalLogger.AttachLogger(console);
+            GlobalLogger.AttachLogger(logfile);
+
+            console.Run();
+            logfile.Run();
+
+            #endregion
+
             #region Process Command Line Arguments
 
             CommandLineArguments args = new CommandLineArguments(); // handy utility for parsing command line input
@@ -42,6 +58,14 @@ namespace RoutingAI.Slave
                                 Console.BufferWidth = bw;
                             }
                             break;
+                        case "idletimeout":
+                            {
+                                if (arg.Arguments.Length < 1) break;
+                                Int32 timeout;
+                                if (!Int32.TryParse(arg.Arguments[0], out timeout)) break;
+                                RoutingAI.Threading.ComputationThreadDispatcher.Instance.IdleThreadTimeout = timeout;
+                            }
+                            break;
                     }
                 }
                 else
@@ -53,23 +77,8 @@ namespace RoutingAI.Slave
 
             #endregion
           
-            #region Initialize Logger
-
-            Logger console = new ConsoleLogger();
-            Logger logfile = new PlainTextLogger("debug.log", false);
-
-            // Make console logger reject all trivial and verbose messages
-            //console.RejectFlags = MessageFlags.Trivial | MessageFlags.Verbose;
-
-            GlobalLogger.AttachLogger(console);
-            GlobalLogger.AttachLogger(logfile);
-
-            console.Run();
-            logfile.Run();
-
-            #endregion
-
             #region Initialize Server
+
             try
             {
                 GlobalLogger.SendLogMessage("RoutingAI.Slave", MessageFlags.Routine, "Starting WCF Service...");

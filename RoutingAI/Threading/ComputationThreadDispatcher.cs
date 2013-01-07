@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using libWyvernzora.Logging;
 using RoutingAI.DataContracts;
+using System.Threading;
 
 namespace RoutingAI.Threading
 {
-    public class ComputationThreadDispatcher
+    public class ComputationThreadDispatcher : IDisposable
     {
         // Constants
         public const String TAG = "Dispatcher";
         public const Int32 THREADS_PER_PROCESSOR = 2;
+        public const Int64 IDLE_THREAD_TIMEOUT = 60 * 1000; // 1 minute
 
 
         // Singleton Pattern
@@ -32,6 +34,8 @@ namespace RoutingAI.Threading
 
         // Fields
         private Int32 _capacity;
+        private Int64 _idleTimeout;
+        private Thread _maintain;
         private Dictionary<Guid, ComputationThread> _threads;
 
 
@@ -47,6 +51,16 @@ namespace RoutingAI.Threading
         /// </summary>
         public Int32 ThreadCount
         { get { return _threads.Count; } }
+
+        /// <summary>
+        /// Gets or sets number of milliseconds before an idle thread is considered
+        /// timed-out and removed from dispatcher
+        /// </summary>
+        public Int64 IdleThreadTimeout
+        {
+            get { return _idleTimeout / 10000; }
+            set { _idleTimeout = value * 10000; }
+        }
 
 
         // Constructor
@@ -68,6 +82,10 @@ namespace RoutingAI.Threading
         {
             _capacity = capacity;
             _threads = new Dictionary<Guid, ComputationThread>(capacity);
+
+            IdleThreadTimeout = IDLE_THREAD_TIMEOUT;
+            _maintain = new Thread(new ThreadStart(MaintainThreadsAsync));
+            _maintain.Start();
         }
 
 
@@ -76,7 +94,7 @@ namespace RoutingAI.Threading
         public Guid NewThread()
         {
             ComputationThread thread = new ComputationThread();
-            _threads.Add(thread.ID, thread);
+            lock (this) _threads.Add(thread.ID, thread);
 
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "NewThread: {{{0}}}", thread.ID);
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "Dispatcher capacity: {0} alive/{1} total", _threads.Count, _capacity);
@@ -126,7 +144,7 @@ namespace RoutingAI.Threading
             {
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "DisposeThread: {{{0}}}", threadId);
                 _threads[threadId].AbortCurrentAction();
-                _threads.Remove(threadId);
+                lock (this) _threads.Remove(threadId);
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "DisposeThread: Success: {{{0}}}", threadId);
                 return new CallResponse() { Success = true, Details = String.Empty };
             }
@@ -157,5 +175,51 @@ namespace RoutingAI.Threading
             _threads[threadId].RunComputation(task, args);
             return new CallResponse() { Success = true, Details = String.Empty };
         }
+
+
+        // Private Async Methods
+        private void MaintainThreadsAsync()
+        {
+            try
+            {
+                while (true)
+                {
+                    Int64 now = DateTime.Now.Ticks;
+                    Guid[] keys = _threads.Keys.ToArray();
+                    foreach (Guid key in keys)
+                    {
+                        lock (this)
+                        {
+                            if (_threads[key].ThreadInfo.State != ComputationThreadState.Working &&
+                                now - _threads[key].IdleSince > _idleTimeout)
+                            {
+                                GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "MaintainThreadsAsync: Thread idle for too long, removing it: {{{0}}}", key);
+                                _threads.Remove(key);
+                            }
+                        }
+                    }
+
+                    Thread.Sleep(1000);
+                }
+            }
+            catch (ThreadAbortException)
+            { /* Do Nothing */ }
+        }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            _maintain.Abort();
+        }
+
+        ~ComputationThreadDispatcher()
+        {
+            _maintain.Abort();
+        }
+
+        #endregion
+
+
     }
 }

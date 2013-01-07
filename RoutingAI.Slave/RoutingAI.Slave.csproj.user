@@ -11,6 +11,6 @@
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>/bw:120 /ConsoleReject:Trivial,Verbose,Routine</StartArguments>
+    <StartArguments>/bw:120 /IdleTimeout:10000</StartArguments>
   </PropertyGroup>
 </Project>
