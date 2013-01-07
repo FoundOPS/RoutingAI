@@ -13,7 +13,7 @@ namespace RoutingAI.Slave
 {
     class RoutingAiSlave : IRoutingAiSlaveService
     {
-        const String GREETING_STRING = "Hello World（￣ー￣）";
+        const String GREETING_STRING = "Hello World　(=^ェ^=)";
 
         ComputationThreadDispatcher _dispatcher = ComputationThreadDispatcher.Instance;
 

@@ -28,5 +28,8 @@ You can call `GetComputationThreadInfo()` at any time to get a `ComputationThrea
 
 - `Object Result { get; }` property: when computation finishes, it contains result of computation; otherwise it is null
 
+## Thread Maintenance ##
+
+Thread dispatcher runs a special thread that checks 
 
 

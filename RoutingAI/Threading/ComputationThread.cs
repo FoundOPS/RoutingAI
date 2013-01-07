@@ -108,19 +108,19 @@ namespace RoutingAI.Threading
         /// </summary>
         public void AbortCurrentAction()
         {
-            if (_thread == null)
+            if (_thread == null || _info.State != ComputationThreadState.Working)
             {
-                GlobalLogger.SendLogMessage(TAG, MessageFlags.Warning | MessageFlags.Expected, "Attempt to stop action of an idle thread: {{{0}}}", _id);
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine | MessageFlags.Expected, "AbortCurrentAction: Already Idle: {{{0}}}", _id);
                 return;
             }
 
-            GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "Stopping current action of thread: {{{0}}}", _id);
+            GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "AbortCurrentAction: Stopping: {{{0}}}", _id);
             _thread.Abort();
             _thread.Join(); // wait for action to stop before returning
             _info.AcceptsCommands = true;
             _info.State = ComputationThreadState.Ready;
             _idleSince = DateTime.Now.Ticks;
-            GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "Computation Thread action aborted, now in ready state again: {{{0}}}", _id);
+            GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "AbortCurrentAction: Success: {{{0}}}", _id);
         }
 
 
