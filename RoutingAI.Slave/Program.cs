@@ -59,7 +59,7 @@ namespace RoutingAI.Slave
             Logger logfile = new PlainTextLogger("debug.log", false);
 
             // Make console logger reject all trivial and verbose messages
-            console.RejectFlags = MessageFlags.Trivial & MessageFlags.Verbose;
+            //console.RejectFlags = MessageFlags.Trivial | MessageFlags.Verbose;
 
             GlobalLogger.AttachLogger(console);
             GlobalLogger.AttachLogger(logfile);

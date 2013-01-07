@@ -99,7 +99,7 @@ namespace RoutingAI.Slave
             }
             else
             {
-                GlobalLogger.SendLogMessage("Dispatcher", MessageFlags.Verbose & MessageFlags.Trivial, "GetThreadInfo called on thread {0}", threadId);
+                GlobalLogger.SendLogMessage("Dispatcher", MessageFlags.Verbose, "GetThreadInfo called on thread {0}", threadId);
                 return _threads[threadId].ThreadInfo;
             }
         }

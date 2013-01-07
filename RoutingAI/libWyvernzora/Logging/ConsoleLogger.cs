@@ -52,7 +52,7 @@ namespace libWyvernzora.Logging
                     Console.ForegroundColor = ConsoleColor.White;
                 else if (e.Flags.HasFlag(MessageFlags.Trivial))
                     Console.ForegroundColor = ConsoleColor.Gray;
-                else if (e.Flags.HasFlag(MessageFlags.Trivial))
+                else if (e.Flags.HasFlag(MessageFlags.Verbose))
                     Console.ForegroundColor = ConsoleColor.DarkGray;
 
 
