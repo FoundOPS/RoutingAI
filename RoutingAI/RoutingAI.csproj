@@ -58,6 +58,9 @@
     <Compile Include="API\NetworkUtilities.cs" />
     <Compile Include="API\OSRM\OsrmApi.cs" />
     <Compile Include="API\OSRM\OsrmContract.cs" />
+    <Compile Include="DataContracts\CallResponse.cs" />
+    <Compile Include="DataContracts\ClusteringSolution.cs" />
+    <Compile Include="DataContracts\ComputationThreadState.cs" />
     <Compile Include="DataContracts\Cost.cs" />
     <Compile Include="DataContracts\DateWindow.cs" />
     <Compile Include="DataContracts\OptimizationRequest.cs" />
@@ -67,6 +70,7 @@
     <Compile Include="DataContracts\Solution.cs" />
     <Compile Include="DataContracts\TimeWindow.cs" />
     <Compile Include="DataContracts\Window.cs" />
+    <Compile Include="libWyvernzora\ConsoleUtil\CommandLineArgs.cs" />
     <Compile Include="libWyvernzora\Logging\ConsoleLogger.cs" />
     <Compile Include="libWyvernzora\Logging\GlobalLogger.cs" />
     <Compile Include="libWyvernzora\Logging\Logger.cs" />

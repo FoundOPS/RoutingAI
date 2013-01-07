@@ -14,6 +14,7 @@ namespace RoutingAI.DataContracts
     {
         #region Controller --> Slave Configuration Data
 
+        // Index of the slave/total number of slaves
         [DataMember(Name = "slave_index")]
         public Pair<Int32, Int32> SlaveIndex { get; set; }
 
@@ -28,13 +29,6 @@ namespace RoutingAI.DataContracts
 
         [DataMember(Name = "rand_seed")]
         public Int32 RandomSeed { get; set; }
-
-        #endregion
-
-        #region Optimization Request Data
-
-        [DataMember(Name = "request_data")]
-        public OptimizationRequest OptimizationRequest { get; set; }
 
         #endregion
     }

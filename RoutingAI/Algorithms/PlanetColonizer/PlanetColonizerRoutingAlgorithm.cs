@@ -35,7 +35,7 @@ namespace RoutingAI.Algorithms.PlanetColonizer
         /// </summary>
         public SlaveConfig Configuration
         { get { return configuration; } }
-        /// <summary>
+ /*       /// <summary>
         /// Gets resources available to the routing algorithm
         /// </summary>
         public Resource[] Resources
@@ -49,7 +49,7 @@ namespace RoutingAI.Algorithms.PlanetColonizer
         /// Gets or sets cost function use by this algorithm
         /// </summary>
         public ICostFunction CostFunction { get; set; }
-
+    */
         /// <summary>
         /// Gets a boolean indicating whether the algorithm is
         /// done running
@@ -76,7 +76,7 @@ namespace RoutingAI.Algorithms.PlanetColonizer
         public PlanetColonizerRoutingAlgorithm(SlaveConfig config, ICostFunction costfunc)
         {
             this.configuration = config;
-            this.CostFunction = costfunc;
+            //this.CostFunction = costfunc;
         }
 
         public void StartAlgorithm()

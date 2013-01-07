@@ -29,6 +29,33 @@ namespace libWyvernzora.Logging
             foreach (LoggerEventArgs e in messages)
             {
                 String message = e.Message;
+
+                // Change color if necessary
+                ConsoleColor foreColor = Console.ForegroundColor;
+                ConsoleColor backColor = Console.BackgroundColor;
+
+                if (e.Flags.HasFlag(MessageFlags.Fatal))
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                }
+                else if (e.Flags.HasFlag(MessageFlags.Critical))
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.White;
+                }
+                else if (e.Flags.HasFlag(MessageFlags.Error))
+                    Console.ForegroundColor = ConsoleColor.Red;
+                else if (e.Flags.HasFlag(MessageFlags.Warning))
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                else if (e.Flags.HasFlag(MessageFlags.Routine))
+                    Console.ForegroundColor = ConsoleColor.White;
+                else if (e.Flags.HasFlag(MessageFlags.Trivial))
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                else if (e.Flags.HasFlag(MessageFlags.Trivial))
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+
+
                 // If message fits in one line then print it as it is
                 if (message.Length < _splitPoint)
                     WriteMessageLine(e.TimeStamp, e.Tag, e.Message);
@@ -51,6 +78,10 @@ namespace libWyvernzora.Logging
                             WriteMessageLine(null, null, msgLine);
                     }
                 }
+
+                // Restore colors
+                Console.BackgroundColor = backColor;
+                Console.ForegroundColor = foreColor;
             }
         }
 

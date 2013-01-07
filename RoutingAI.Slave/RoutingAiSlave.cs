@@ -6,46 +6,92 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using libWyvernzora.Logging;
+using RoutingAI.DataContracts;
 
 namespace RoutingAI.Slave
 {
     class RoutingAiSlave : IRoutingAiSlaveService
     {
+        const String GREETING_STRING = "Hello World（￣ー￣）";
+
+        SlaveThreadDispatcher _dispatcher = SlaveThreadDispatcher.Instance;
+
         #region Server
 
+        /// <summary>
+        /// Returns version string
+        /// </summary>
+        /// <returns></returns>
         public string Ping()
         {
-            return "Hi FoundOPS!";
+            return "RoutingAI.Slave.Poing(): v0.2";
         }
 
-        public libWyvernzora.Pair<int, int> GetServerCapacityInfo()
+        /// <summary>
+        /// Returns a current thread count/total capacity pair
+        /// </summary>
+        /// <returns></returns>
+        public Pair<int, int> GetServerCapacityInfo()
         {
-            return new Pair<Int32, Int32>(0, 0);
+            return _dispatcher.ServerLoadInfo;
         }
 
         #endregion
 
         #region Computation Threads
 
-        public Guid ConfigureComputationThread(DataContracts.SlaveConfig conf)
-        {
-            GlobalLogger.SendLogMessage("RoutingAiSlave", MessageFlags.Trivial, "Configuration Received:");
-            GlobalLogger.SendLogMessage("RoutingAiSlave", MessageFlags.Trivial,  "Id = {0}", conf.OptimizationRequest.Id);
-            GlobalLogger.SendLogMessage("RoutingAiSlave", MessageFlags.Trivial,  "ClientId = {0}", conf.OptimizationRequest.ClientId);
-            GlobalLogger.SendLogMessage("RoutingAiSlave", MessageFlags.Trivial,  "RedisServers = {0}", String.Join<System.Net.IPEndPoint>(", ", conf.RedisServers));
-            GlobalLogger.SendLogMessage("RoutingAiSlave", MessageFlags.Trivial, "OsrmServers = {0}", String.Join<System.Net.IPEndPoint>(", ", conf.OSRMServers));
-            GlobalLogger.SendLogMessage("RoutingAiSlave", MessageFlags.Trivial,  "RandomSeed = {0}", conf.RandomSeed);
-            GlobalLogger.SendLogMessage("RoutingAiSlave", MessageFlags.Trivial,  "TaskCount = {0}", conf.OptimizationRequest.Tasks.Length);
-            GlobalLogger.SendLogMessage("RoutingAiSlave", MessageFlags.Trivial, "WorkerCount = {0}", conf.OptimizationRequest.Workers.Length);
+        /// <summary>
+        /// Sets up a new computation thread and puts it into ready state
+        /// </summary>
+        /// <param name="conf">Thread configuration</param>
+        /// <returns></returns>
+        public Guid ConfigureComputationThread(SlaveConfig conf)
+        { return _dispatcher.CreateNewThread(conf); }
 
-            return Guid.NewGuid();
+        /// <summary>
+        /// Gets info of the specified thread.
+        /// If the thread does not exist, state of the returned info will be "dead"
+        /// </summary>
+        /// <param name="threadId">Unique id of the thread to find</param>
+        /// <returns>Info of the specified thread</returns>
+        public DataContracts.ComputationThreadInfo GetComputationThreadInfo(Guid threadId)
+        { return _dispatcher.GetThreadInfo(threadId); }
+
+        /// <summary>
+        /// Stops computation in progress
+        /// </summary>
+        /// <param name="threadId"></param>
+        public CallResponse AbortComputation(Guid threadId)
+        {
+            try
+            {
+                return _dispatcher.AbortThreadComputation(threadId);
+            }
+            catch (Exception ex)
+            {
+                GlobalLogger.SendLogMessage("Critical", MessageFlags.Critical | MessageFlags.Unexpected, 
+                    "Unexpected exception in AbortComputation(): ID = {0}; Type = {1}; Message = {2}; Stack = {3}", 
+                    threadId, ex.GetType().FullName, ex.Message, ex.StackTrace);
+                return new CallResponse() { Success = false, Details = String.Format("Unexpected Error of type {0}, see RoutingAI.Slave instance logs for more details", ex.GetType().FullName) };
+            }
         }
 
-        public void StartComputationThread(Guid tid)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Aborts all computation and removed the thread from dispatcher
+        /// </summary>
+        /// <param name="threadId"></param>
+        public CallResponse KillComputationThread(Guid threadId)
+        { return _dispatcher.KillThread(threadId); }
 
         #endregion
+
+
+
+        public CallResponse StartComputingClusteringSolution(Guid threadId, DataContracts.OptimizationRequest data)
+        { return _dispatcher.ComputeClusteringSolution(threadId, data); }
+
+
+
+
     }
 }

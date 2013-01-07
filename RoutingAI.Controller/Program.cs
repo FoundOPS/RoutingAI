@@ -30,13 +30,50 @@ namespace RoutingAI.Controller
             };
             SlaveConfig config = new SlaveConfig()
             {
-                OptimizationRequest = req,
                 OSRMServers = new IPEndPoint[] { new IPEndPoint(IPAddress.Parse("192.168.2.31"), 5000) },
                 RandomSeed = 11235813,
                 RedisServers = new IPEndPoint[] { new IPEndPoint(IPAddress.Parse("192.168.2.13"), 6379) }
             };
             Guid id = proxy.ConfigureComputationThread(config);
             Console.WriteLine(id);
+
+            Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
+
+            ComputationThreadInfo info = proxy.GetComputationThreadInfo(id);
+            Console.WriteLine("ThreadInfo {{ID = {{{2}}}, State = {0}, AcceptsCommands = {1}, Info = {3}}}", info.State, info.AcceptsCommands, info.ThreadId, info.AdditionalInfo);
+
+            Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
+
+            proxy.KillComputationThread(new Guid());
+
+            Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
+
+            CallResponse response = proxy.StartComputingClusteringSolution(id, req);
+            Console.WriteLine("CallResponse {{ Success = {0}, Details = {1}}}", response.Success, response.Details);
+            info = proxy.GetComputationThreadInfo(id);
+            Console.WriteLine("ThreadInfo {{ID = {{{2}}}, State = {0}, AcceptsCommands = {1}, Info = {3}}}", info.State, info.AcceptsCommands, info.ThreadId, info.AdditionalInfo);
+
+            Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
+
+            Boolean flag = true;
+
+            while (flag)
+            {
+                info = proxy.GetComputationThreadInfo(id);
+                Console.WriteLine("ThreadInfo {{ID = {{{2}}}, State = {0}, AcceptsCommands = {1}, Info = {3}}}", info.State, info.AcceptsCommands, info.ThreadId, info.AdditionalInfo);
+
+                Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
+
+                response = proxy.KillComputationThread(id);
+
+                if (info.AcceptsCommands || !response.Success) flag = false;
+
+                if (!response.Success)
+                {
+                    Console.WriteLine("Failed to kill the thread: {0}", response.Details);
+                }
+            }
+
 
             Console.WriteLine("Press <ENTER> to terminate...");
             Console.ReadLine();
