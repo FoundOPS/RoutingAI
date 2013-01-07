@@ -34,7 +34,7 @@ namespace RoutingAI.Controller
                 RandomSeed = 11235813,
                 RedisServers = new IPEndPoint[] { new IPEndPoint(IPAddress.Parse("192.168.2.13"), 6379) }
             };
-            Guid id = proxy.ConfigureComputationThread(config);
+            Guid id = proxy.CreateComputationThread();
             Console.WriteLine(id);
 
             Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
@@ -44,11 +44,11 @@ namespace RoutingAI.Controller
 
             Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
 
-            proxy.KillComputationThread(new Guid());
+            proxy.DisposeComputationThread(new Guid());
 
             Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
 
-            CallResponse response = proxy.StartComputingClusteringSolution(id, req);
+            CallResponse response = proxy.StartComputingClusteringSolution(id, config, req);
             Console.WriteLine("CallResponse {{ Success = {0}, Details = {1}}}", response.Success, response.Details);
             info = proxy.GetComputationThreadInfo(id);
             Console.WriteLine("ThreadInfo {{ID = {{{2}}}, State = {0}, AcceptsCommands = {1}, Info = {3}}}", info.State, info.AcceptsCommands, info.ThreadId, info.AdditionalInfo);
@@ -64,7 +64,7 @@ namespace RoutingAI.Controller
 
                 Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
 
-                response = proxy.KillComputationThread(id);
+                response = proxy.DisposeComputationThread(id);
 
                 if (info.AcceptsCommands || !response.Success) flag = false;
 

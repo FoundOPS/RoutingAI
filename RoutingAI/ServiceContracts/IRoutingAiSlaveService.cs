@@ -31,7 +31,7 @@ namespace RoutingAI.ServiceContracts
 
         // Starts a computation thread and puts it into ready state
         [OperationContract]
-        Guid ConfigureComputationThread(SlaveConfig conf);
+        Guid CreateComputationThread();
 
         // Gets current status of a  computation thread
         [OperationContract]
@@ -43,7 +43,7 @@ namespace RoutingAI.ServiceContracts
 
         // Stops all computation, removes the thread and releases all resources
         [OperationContract]
-        CallResponse KillComputationThread(Guid threadId); 
+        CallResponse DisposeComputationThread(Guid threadId); 
 
         #endregion
 
@@ -51,7 +51,7 @@ namespace RoutingAI.ServiceContracts
 
         // Starts calculating clustering solution
         [OperationContract]
-        CallResponse StartComputingClusteringSolution(Guid threadId, OptimizationRequest data);
+        CallResponse StartComputingClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data);
         
         #endregion
 

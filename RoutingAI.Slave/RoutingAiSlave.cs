@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using libWyvernzora.Logging;
 using RoutingAI.DataContracts;
+using RoutingAI.Threading;
 
 namespace RoutingAI.Slave
 {
@@ -14,7 +15,7 @@ namespace RoutingAI.Slave
     {
         const String GREETING_STRING = "Hello World（￣ー￣）";
 
-        SlaveThreadDispatcher _dispatcher = SlaveThreadDispatcher.Instance;
+        ComputationThreadDispatcher _dispatcher = ComputationThreadDispatcher.Instance;
 
         #region Server
 
@@ -24,7 +25,7 @@ namespace RoutingAI.Slave
         /// <returns></returns>
         public string Ping()
         {
-            return "RoutingAI.Slave.Poing(): v0.2";
+            return GREETING_STRING;
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace RoutingAI.Slave
         /// <returns></returns>
         public Pair<int, int> GetServerCapacityInfo()
         {
-            return _dispatcher.ServerLoadInfo;
+            return new Pair<Int32, Int32>(_dispatcher.ThreadCount, _dispatcher.Capacity);
         }
 
         #endregion
@@ -45,8 +46,8 @@ namespace RoutingAI.Slave
         /// </summary>
         /// <param name="conf">Thread configuration</param>
         /// <returns></returns>
-        public Guid ConfigureComputationThread(SlaveConfig conf)
-        { return _dispatcher.CreateNewThread(conf); }
+        public Guid CreateComputationThread()
+        { return _dispatcher.NewThread(); }
 
         /// <summary>
         /// Gets info of the specified thread.
@@ -65,7 +66,7 @@ namespace RoutingAI.Slave
         {
             try
             {
-                return _dispatcher.AbortThreadComputation(threadId);
+                return _dispatcher.AbortThreadAction(threadId);
             }
             catch (Exception ex)
             {
@@ -80,15 +81,18 @@ namespace RoutingAI.Slave
         /// Aborts all computation and removed the thread from dispatcher
         /// </summary>
         /// <param name="threadId"></param>
-        public CallResponse KillComputationThread(Guid threadId)
-        { return _dispatcher.KillThread(threadId); }
+        public CallResponse DisposeComputationThread(Guid threadId)
+        { return _dispatcher.DisposeThread(threadId); }
 
         #endregion
 
 
 
-        public CallResponse StartComputingClusteringSolution(Guid threadId, DataContracts.OptimizationRequest data)
-        { return _dispatcher.ComputeClusteringSolution(threadId, data); }
+        public CallResponse StartComputingClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data)
+        {
+            DummyComputationTask dummyTask = new DummyComputationTask();
+            return _dispatcher.RunComputation(threadId, dummyTask, null);
+        }
 
 
 
