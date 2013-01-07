@@ -16,7 +16,14 @@ namespace RoutingAI.Slave
         static void Main()
         {
             Console.BufferWidth = 120;
+            Console.Title = "RoutingAI.Slave © 2012-2013, FoundOPS LLC.";
             Console.ForegroundColor = ConsoleColor.White;
+
+            Console.Clear();
+            Console.WriteLine("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+            Console.WriteLine("RoutingAI.Slave Server Software");
+            Console.WriteLine("Copyright (C) 2012-2013, FoundOPS LLC");
+            Console.WriteLine("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
 
             #region Initialize Logger
 

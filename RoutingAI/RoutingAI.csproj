@@ -82,6 +82,7 @@
     <Compile Include="DataContracts\Task.cs" />
     <Compile Include="ServiceContracts\ILibrarianService.cs" />
     <Compile Include="ServiceContracts\IRoutingAiSlaveService.cs" />
+    <Compile Include="ServiceContracts\IRoutingAiService.cs" />
     <Compile Include="Threading\ComputationTask.cs" />
     <Compile Include="Threading\ComputationThread.cs" />
     <Compile Include="Threading\ComputationThreadDispatcher.cs" />

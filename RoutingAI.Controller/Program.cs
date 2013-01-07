@@ -14,6 +14,11 @@ namespace RoutingAI.Controller
     {
         static void Main(string[] args)
         {
+
+        }
+
+        static void TestSlave()
+        {
             EndpointAddress endpoint = new EndpointAddress("http://localhost:8000/RoutingAi/Slave");
 
             IRoutingAiSlaveService proxy = ChannelFactory<IRoutingAiSlaveService>.CreateChannel(new BasicHttpBinding(), endpoint);
@@ -48,7 +53,7 @@ namespace RoutingAI.Controller
 
             Console.Write("Press <ENTER> to continue..."); Console.ReadLine();
 
-            CallResponse response = proxy.StartComputingClusteringSolution(id, config, req);
+            CallResponse response = proxy.ComputeClusteringSolution(id, config, req);
             Console.WriteLine("CallResponse {{ Success = {0}, Details = {1}}}", response.Success, response.Details);
             info = proxy.GetComputationThreadInfo(id);
             Console.WriteLine("ThreadInfo {{ID = {{{2}}}, State = {0}, AcceptsCommands = {1}, Info = {3}}}", info.State, info.AcceptsCommands, info.ThreadId, info.AdditionalInfo);
@@ -77,6 +82,7 @@ namespace RoutingAI.Controller
 
             Console.WriteLine("Press <ENTER> to terminate...");
             Console.ReadLine();
+
         }
     }
 }

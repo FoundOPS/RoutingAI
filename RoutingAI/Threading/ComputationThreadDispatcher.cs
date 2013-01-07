@@ -90,18 +90,29 @@ namespace RoutingAI.Threading
 
 
         // Methods
-        
+        /// <summary>
+        /// Creates a new computation thread and returns its unique id
+        /// </summary>
+        /// <returns>Unique id representing the created thread</returns>
         public Guid NewThread()
         {
+            if (ThreadCount + 1 > _capacity)
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Warning | MessageFlags.Expected, "NewThread: Dispatcher is overburdened! New thread will still be crated but check logs ASAP!");
+
             ComputationThread thread = new ComputationThread();
             lock (this) _threads.Add(thread.ID, thread);
 
-            GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "NewThread: {{{0}}}", thread.ID);
+            GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "NewThread: {{{0}}}", thread.ID);
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "Dispatcher capacity: {0} alive/{1} total", _threads.Count, _capacity);
 
             return thread.ID;
         }
 
+        /// <summary>
+        /// Gets info of the specified thread
+        /// </summary>
+        /// <param name="threadId">Unique id representing the thread</param>
+        /// <returns>Unique id representing the thread</returns>
         public ComputationThreadInfo GetThreadInfo(Guid threadId)
         {
             if (_threads.ContainsKey(threadId))
@@ -123,6 +134,12 @@ namespace RoutingAI.Threading
             }
         }
 
+        /// <summary>
+        /// Stops whatever the specified thread is doing and forces it back
+        /// to ready state
+        /// </summary>
+        /// <param name="threadId">Unique id representing the thread</param>
+        /// <returns>CallResponse indicating whether the action succeeded</returns>
         public CallResponse AbortThreadAction(Guid threadId)
         {
             if (_threads.ContainsKey(threadId))
@@ -138,6 +155,12 @@ namespace RoutingAI.Threading
             }
         }
 
+        /// <summary>
+        /// Stops whatever the specified thread is doing and removes the thread
+        /// from dispatcher, disposing all resources associated with it
+        /// </summary>
+        /// <param name="threadId">Unique id representing the thread</param>
+        /// <returns>CallResponse indicating whether the action succeeded</returns>
         public CallResponse DisposeThread(Guid threadId)
         {
             if (_threads.ContainsKey(threadId))
@@ -155,6 +178,13 @@ namespace RoutingAI.Threading
             }
         }
     
+        /// <summary>
+        /// Starts the computation on the specified thread
+        /// </summary>
+        /// <param name="threadId">Unique id representing the thread</param>
+        /// <param name="task">IComputationTask to run</param>
+        /// <param name="args">Arguments used by IComputationTask</param>
+        /// <returns>CallResponse indicating whether the action succeeded</returns>
         public CallResponse RunComputation(Guid threadId, IComputationTask task, params Object[] args)
         {
             // Check if thread exists
@@ -178,6 +208,10 @@ namespace RoutingAI.Threading
 
 
         // Private Async Methods
+        /// <summary>
+        /// Inner async method that maintains threads and removes threads that
+        /// have been idle for too long
+        /// </summary>
         private void MaintainThreadsAsync()
         {
             try

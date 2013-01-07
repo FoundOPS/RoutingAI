@@ -88,7 +88,7 @@ namespace RoutingAI.Slave
 
 
 
-        public CallResponse StartComputingClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data)
+        public CallResponse ComputeClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data)
         {
             DummyComputationTask dummyTask = new DummyComputationTask();
             return _dispatcher.RunComputation(threadId, dummyTask, null);

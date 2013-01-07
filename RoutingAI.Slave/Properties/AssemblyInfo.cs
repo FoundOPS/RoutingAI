@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RoutingAI.Slave")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Slave server software of RoutingAI")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RoutingAI.Slave")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCompany("FoundOPS LLC.")]
+[assembly: AssemblyProduct("RoutingAI")]
+[assembly: AssemblyCopyright("Copyright © 2012-2013, FoundOPS LLC.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

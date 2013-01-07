@@ -25,6 +25,7 @@ namespace RoutingAI.DataContracts
 
         public override string ToString()
         {
+            // TODO a better string representation
             return base.ToString();
         }
     }

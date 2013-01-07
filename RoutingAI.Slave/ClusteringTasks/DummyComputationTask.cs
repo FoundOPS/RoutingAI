@@ -7,6 +7,9 @@ using System.Threading;
 
 namespace RoutingAI.Slave
 {
+    /// <summary>
+    /// Task that does absolutely nothing
+    /// </summary>
     public class DummyComputationTask : IComputationTask
     {
         public void Compute(params object[] args)

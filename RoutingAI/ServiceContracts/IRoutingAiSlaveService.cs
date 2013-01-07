@@ -51,7 +51,7 @@ namespace RoutingAI.ServiceContracts
 
         // Starts calculating clustering solution
         [OperationContract]
-        CallResponse StartComputingClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data);
+        CallResponse ComputeClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data);
         
         #endregion
 
