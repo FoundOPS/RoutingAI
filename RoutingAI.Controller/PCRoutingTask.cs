@@ -36,7 +36,7 @@ namespace RoutingAI.Controller
             // Convert arguments and calculate info
             OptimizationRequest request = (OptimizationRequest)args[0];
             Int64 problemComplexity = request.Workers.Length * request.Tasks.Length;
-            Int32 serverCount = 2 * (Int32)Math.Ceiling(Math.Log10(problemComplexity));
+            Int32 serverCount = 2 * (Int32)Math.Ceiling(Math.Log10(problemComplexity)) + 1;
 
             // Allocate appropriate servers
             ServerResourceManager srvMgr = ServerResourceManager.Instance;

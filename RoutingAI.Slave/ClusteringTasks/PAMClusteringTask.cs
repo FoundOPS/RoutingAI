@@ -26,7 +26,7 @@ namespace RoutingAI.Slave
             OptimizationRequest data = (OptimizationRequest)args[1];
 
             // Dummy Pause
-            Thread.Sleep(60000); // 1 min
+            //Thread.Sleep(60000); // 1 min
 
 
             if (cfg.SlaveIndex.First == 0)
@@ -34,6 +34,7 @@ namespace RoutingAI.Slave
                 PAMClusteringAlgorithm<Task> clusteringAlg = new PAMClusteringAlgorithm<Task>(data.Tasks, data.Workers.Length, new GeoStraightDistanceAlgorithm());
                 clusteringAlg.Run();
 
+                _solution = new ClusteringSolution();
                 _solution.Clusters = new Task[clusteringAlg.Clusters.Length][];
                 for (int i = 0; i < _solution.Clusters.Length; i++ )
                     _solution.Clusters[i] = clusteringAlg.Clusters[i].ToArray();

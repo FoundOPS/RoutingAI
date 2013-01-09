@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using libWyvernzora;
@@ -14,6 +13,9 @@ using RoutingAI.API.OSRM;
 using System.Diagnostics;
 using System.IO;
 using RoutingAI.Utilities;
+using RoutingAI.ServiceContracts;
+using System.ServiceModel;
+using RoutingAI.DataContracts;
 
 namespace RoutingAI.Sandbox
 {
@@ -231,6 +233,26 @@ namespace RoutingAI.Sandbox
         private void RunClustering(IClusteringAlgorithm<Coordinate> alg)
         {
             
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            EndpointAddress endpoint = new EndpointAddress("http://localhost:8000/RoutingAi/Controller");
+            IRoutingAiService proxy = ChannelFactory<IRoutingAiService>.CreateChannel(new BasicHttpBinding(), endpoint);
+
+            OptimizationRequest or = new OptimizationRequest()
+            {
+                Id = Guid.NewGuid(),
+                ClientId = Guid.NewGuid(),
+                RegionCode = "dummy",
+                Workers = new Resource[] { new Resource() { Availability = null, CostPerHour = 0, CostPerHourOvertime = 0, CostPerMile = 0, Skills = new UInt32[0] } },
+                Tasks = new DataContracts.Task[] { new Task(0, new Decimal(40.345f), new Decimal(-86.903f)) },
+                Window = null
+            };
+
+            proxy.Post(or);
+
+
         }
     }
 }
