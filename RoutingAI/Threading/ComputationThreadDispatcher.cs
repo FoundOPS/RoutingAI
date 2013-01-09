@@ -109,6 +109,18 @@ namespace RoutingAI.Threading
         }
 
         /// <summary>
+        /// Creates a new computation thread and with specified unique id
+        /// </summary>
+        public void NewThread(Guid id)
+        {
+            if (_threads.ContainsKey(id))
+                throw new InvalidOperationException();
+
+            ComputationThread ct = new ComputationThread(id);
+            _threads.Add(id, ct);
+        }
+
+        /// <summary>
         /// Gets info of the specified thread
         /// </summary>
         /// <param name="threadId">Unique id representing the thread</param>
@@ -206,6 +218,25 @@ namespace RoutingAI.Threading
             return new CallResponse() { Success = true, Details = String.Empty };
         }
 
+        /// <summary>
+        /// Gets computation results if finished, null otherwise
+        /// </summary>
+        /// <param name="threadId">ID of the thread performing computation</param>
+        /// <returns></returns>
+        public object GetComputationResult(Guid threadId)
+        {
+            if (_threads.ContainsKey(threadId))
+            {
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "GetComputationResult: {{{0}}}", threadId);
+                return _threads[threadId].Task.GetResult();
+            }
+            else
+            {
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Warning | MessageFlags.Expected,
+                    "GetComputationResult: Thread does not exist: {{{0}}}", threadId);
+                return null;
+            }
+        }
 
         // Private Async Methods
         /// <summary>

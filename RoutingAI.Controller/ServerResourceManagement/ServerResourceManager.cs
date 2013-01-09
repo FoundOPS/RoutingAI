@@ -20,8 +20,6 @@ namespace RoutingAI.Controller
     /// Class that manages all servers used by RoutingAI.
     /// </summary>
     /// <remarks>
-    /// ServerResourceManager periodically pings all servers and marks them
-    /// inactive and excludes them from available servers.
     /// Since this class detects problems in the entire server infrastructure,
     /// its log entries are most likely marked with Routine, Critical or Fatal.
     /// </remarks>
@@ -115,7 +113,6 @@ namespace RoutingAI.Controller
         }
 
         private const String TAG = "SrvMgr";
-        private const Int32 MAINTAIN_INTERVAL = 5000;  // server info updating interval
 
         #region Singleton
 
@@ -154,6 +151,7 @@ namespace RoutingAI.Controller
         #endregion
 
         private static Int32 _pingTimeout = 5000;  // ping timeout
+        private readonly Random _rand = new Random();   // Random Number Generator
 
         // Servers sorted by ping values
         private List<SlaveServerInfo> _slaveServers;
@@ -162,8 +160,7 @@ namespace RoutingAI.Controller
         // Servers sorted by region
         private List<ServerInfo> _osrmServers;
         private List<ServerInfo> _redisServers;
-
-        
+            
 
         /// <summary>
         /// Constructor.
@@ -214,11 +211,12 @@ namespace RoutingAI.Controller
             }
 
             // Librarian servers not implemented
-
-
-            // Start Maintaining Server List
-            _maintain = new Thread(new ThreadStart(MaintainServerResources));
-            _maintain.Start();
+            GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "Adding Librarian Servers from Configuration File...");
+            foreach (XmlNode node in config.SelectNodes("RoutingAiConfig/LibrarianServers/Endpoint"))
+            {
+                IPEndPoint ep = ParseIPEndPoint(node.InnerText);
+                AddLibrarianServer(ep);
+            }
         }
 
         #region Add/Remove Servers
@@ -276,14 +274,58 @@ namespace RoutingAI.Controller
         }
 
         // Librarian servers are not implemented at the moment
+        /// <summary>
+        /// Adds a Librarian server to the manager.
+        /// Note: depending on network status, you may expect this method to block executing thread
+        /// for up to _pingDelay milliseconds.
+        /// </summary>
+        /// <param name="region">Region code of the server</param>
+        /// <param name="ep">IP EndPoint of the server</param>
         public void AddLibrarianServer(IPEndPoint ep)
         {
-            //throw new NotImplementedException();
+            try
+            {
+                ServerInfo info = new ServerInfo(ep);
+
+                lock (_librarianServers)
+                {
+                    GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "AddLibrarianServer: Mutex Lock Acquired: {0}", ep);
+
+                    _librarianServers.Add(info);
+
+                    GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "AddLibrarianServer: Success: {0}", ep);
+                    GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "AddLibrarianServer: Releasing Mutex Lock: {0}", ep);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Unexpected exception
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Critical | MessageFlags.Unexpected,
+                    "AddLibrarianServer: Unexpected Exception: {{Endpoint = {0}; ExceptionType = {1}; Message = {2}; Stack = {3}", ep, ex.GetType().FullName, ex.Message, ex.StackTrace);
+            }
         }
 
+        /// <summary>
+        /// Removes a Librarian server from the manager.
+        /// Note: removing a server means it will not be assigned to any job,
+        /// but doesn't mean that the slave is released by jobs it's already
+        /// assigned to.
+        /// </summary>
+        /// <param name="ep">Server Endpoint</param>
         public void RemoveLibrarianServer(IPEndPoint ep)
         {
-            //throw new NotImplementedException();
+            lock (_slaveServers)
+            {
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "RemoveLibrarianServer: Mutex Lock Acquired: {0}", ep);
+                Int32 n = _librarianServers.RemoveAll(new Predicate<ServerInfo>((ServerInfo p) => p.Endpoint.Equals(ep)));
+                if (n == 0) // no items removed.. it's not supposed to be like that
+                {
+                    GlobalLogger.SendLogMessage(TAG, MessageFlags.Error | MessageFlags.Expected, "RemoveLibrarianServer: EndPoint not found: {0}", ep);
+                    return;
+                }
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "RemoveLibrarianServer: Success: {0}", ep);
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "RemoveLibrarianServer: Releasing Mutex Lock: {0}", ep);
+            }
         }
 
         /// <summary>
@@ -404,57 +446,88 @@ namespace RoutingAI.Controller
 
         #region Maintain Server Resources
 
-        Thread _maintain;
-
-        private void MaintainServerResources()
+        private void CheckServerResponsiveness()
         {
-            try
+            // Update Slave Servers
+            lock (_slaveServers)
             {
-                while (true)
-                {
-                    // Update Slave Servers
-                    lock (_slaveServers)
-                    {
-                        foreach (SlaveServerInfo slave in _slaveServers)
-                            slave.Update();
-                    }
-
-                    // Update OSRM Servers
-                    lock (_osrmServers)
-                    {
-                        foreach (ServerInfo srv in _osrmServers)
-                            srv.Update();
-                    }
-
-                    // Update Redis Servers
-                    lock (_redisServers)
-                    {
-                        foreach (ServerInfo srv in _redisServers)
-                            srv.Update();
-                    }
-
-                    Thread.Sleep(MAINTAIN_INTERVAL);
-                }
+                foreach (SlaveServerInfo slave in _slaveServers)
+                    slave.Update();
             }
-            catch (ThreadAbortException ex)
+
+            // Update OSRM Servers
+            lock (_osrmServers)
             {
-                // do nothing
+                foreach (ServerInfo srv in _osrmServers)
+                    srv.Update();
+            }
+
+            // Update Redis Servers
+            lock (_redisServers)
+            {
+                foreach (ServerInfo srv in _redisServers)
+                    srv.Update();
             }
         }
 
         #endregion
 
-        #region 
+        #region Getting Servers
 
+        /// <summary>
+        /// Gets the specified number of endpoints representing slave servers.
+        /// Slave servers with more remaining capacity are selected first.
+        /// </summary>
+        /// <param name="count">Number of servers to get</param>
+        /// <returns>Array of IP endpoints</returns>
+        public IPEndPoint[] GetSlaveServers(Int32 count)
+        {
+            IEnumerable<IPEndPoint> servers = (from srv in _slaveServers
+                                              where srv.IsResponsive
+                                              orderby srv.RemainingCapacity
+                                              select srv.Endpoint);
+            IPEndPoint[] eps = servers.ToArray();
 
+            if (eps.Length > count)
+                return eps.Take(count).ToArray();
+            else
+                return eps;
+        }
+
+        /// <summary>
+        /// Gets a random Librarian server
+        /// </summary>
+        /// <returns>IP Endpoint representing the Librarian Server; null if no librarian found</returns>
+        public IPEndPoint GetLibrarianServer()
+        {
+            IPEndPoint[] eps = (from srv in _librarianServers
+                                where srv.IsResponsive
+                                select srv.Endpoint).ToArray();
+            Int32 index = _rand.Next(0, eps.Length);
+            return eps[index];
+        }
+
+        /// <summary>
+        /// Gets all responding OSRM servers for the specified region
+        /// </summary>
+        /// <param name="region">Region code</param>
+        /// <returns>Array of IP Endpoints representing servers</returns>
+        public IPEndPoint[] GetOsrmServers(String region)
+        {
+            return (from srv in _osrmServers where srv.IsResponsive && region.Equals(srv.Tag) select srv.Endpoint).ToArray();
+        }
+
+        /// <summary>
+        /// Gets all responding Redis servers for the specified region
+        /// </summary>
+        /// <param name="region">Region code</param>
+        /// <returns>Array of IP Endpoints representing servers</returns>
+        public IPEndPoint[] GetRedisServers(String region)
+        {
+            return (from srv in _redisServers where srv.IsResponsive && region.Equals(srv.Tag) select srv.Endpoint).ToArray();
+        }
 
         #endregion
-
-        // Destructor
-        ~ServerResourceManager()
-        {
-            _maintain.Abort();
-        }
 
         // Static utility methods
         private static IPEndPoint ParseIPEndPoint(string endPoint)

@@ -39,5 +39,11 @@ namespace RoutingAI.DataContracts
         /// </summary>
         [DataMember(Name = "workers")]
         public Resource[] Workers { get; set; }
+
+        /// <summary>
+        /// Region code specifying which routing servers/cache servers to use
+        /// </summary>
+        [DataMember(Name = "region")]
+        public String RegionCode { get; set; }
     }
 }

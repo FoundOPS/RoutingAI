@@ -57,8 +57,15 @@ namespace RoutingAI.Threading
         /// Constructor
         /// </summary>
         public ComputationThread()
+            : this(Guid.NewGuid())
+        { }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ComputationThread(Guid id)
         {
-            this._id = Guid.NewGuid();
+            this._id = id;
             this._info = new ComputationThreadInfo()
             {
                 AcceptsCommands = true,

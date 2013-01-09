@@ -12,7 +12,8 @@ namespace RoutingAI.DataContracts
         Queued,
         Preprocessing,
         Processing,
-        Completed
+        Completed,
+        Error
     }
 
     [DataContract(Name = "optimization_response", Namespace = "http://foundops.com/services/routing_ai/1.0")]

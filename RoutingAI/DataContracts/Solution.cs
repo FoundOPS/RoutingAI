@@ -17,13 +17,13 @@ namespace RoutingAI.DataContracts
         /// Tasks in order
         /// </summary>
         [DataMember(Name = "tasks")]
-        Task[] OrderedTasks { get; set; }
+        public Task[] OrderedTasks { get; set; }
 
         /// <summary>
         /// The assigned resources
         /// </summary>
         [DataMember(Name = "resources")]
-        Resource[] Resources { get; set; }
+        public Resource[] Resources { get; set; }
     }
 
     /// <summary>
