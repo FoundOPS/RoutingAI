@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\RoutingAI.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,8 +46,6 @@
     <Compile Include="Algorithms\Clustering\CLARAClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\IClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\PAMClusteringAlgorithm.cs" />
-    <Compile Include="Algorithms\DFEKM\CaTable.cs" />
-    <Compile Include="Algorithms\DFEKM\DfekmProcessor.cs" />
     <Compile Include="Algorithms\Interfaces\ICostFunction.cs" />
     <Compile Include="Algorithms\Interfaces\IDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\PlanetColonizer\Interfaces\Individual.cs" />

@@ -53,6 +53,20 @@ namespace RoutingAI.ServiceContracts
         [OperationContract]
         CallResponse ComputeClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data);
         
+        // Gets clustering results
+        [OperationContract]
+        ClusteringSolution GetClusteringSolution(Guid threadId);
+
+        #endregion
+
+        #region Optimization
+
+        [OperationContract]
+        CallResponse ComputeOptimizedSolution(Guid threadId, SlaveConfig config, OptimizationRequest data, ClusteringSolution clusters);
+
+        [OperationContract]
+        OptimizationResponse GetOptimizedSolution(Guid threadId);
+
         #endregion
 
     }

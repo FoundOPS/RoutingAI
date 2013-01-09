@@ -7,8 +7,15 @@ using RoutingAI.Utilities;
 
 namespace RoutingAI.Algorithms.Clustering
 {
+    /// <summary>
+    /// A concurrent implementation of CLARA clustering algorithm
+    /// </summary>
+    /// <typeparam name="T">Type of elements to cluster</typeparam>
     public class CLARAClusteringAlgorithm<T> : PAMClusteringAlgorithm<T>
     {
+        /// <summary>
+        /// Number of worker threads to spawn per processor core
+        /// </summary>
         const Int32 WORKER_PER_PROCESSOR = 2;
 
         // Multithreading

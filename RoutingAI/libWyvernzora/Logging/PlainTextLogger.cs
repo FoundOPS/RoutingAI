@@ -18,7 +18,7 @@ namespace libWyvernzora.Logging
             : base()
         {
             _writer = new StreamWriter(filePath, !overwrite);
-            _submissionBatch = 5;
+            _submissionBatch = 1;
         }
 
         protected override void SubmitMessageQueue(LoggerEventArgs[] messages)

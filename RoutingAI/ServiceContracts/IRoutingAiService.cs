@@ -18,7 +18,7 @@ namespace RoutingAI.ServiceContracts
         /// <param name="request">The request</param>
         /// <returns>Id of the created task</returns>
         [OperationContract]
-        Guid Post(OptimizationRequest request);
+        CallResponse Post(OptimizationRequest request);
 
         /// <summary>
         /// Gets solution/status of a task
@@ -33,6 +33,6 @@ namespace RoutingAI.ServiceContracts
         /// </summary>
         /// <param name="id"></param>
         [OperationContract]
-        void Delete(Guid id);
+        CallResponse Delete(Guid id);
     }
 }

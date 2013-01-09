@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace RoutingAI.API
 {
+    /// <summary>
+    /// Static class with utility methods that simplify network access
+    /// </summary>
     public static class NetworkUtilities
     {       
         /// <summary>

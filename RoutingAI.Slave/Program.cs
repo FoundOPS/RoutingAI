@@ -92,7 +92,7 @@ namespace RoutingAI.Slave
             try
             {
                 GlobalLogger.SendLogMessage("RoutingAI.Slave", MessageFlags.Routine, "Starting WCF Service...");
-                using (ServiceHost svcHost = new ServiceHost(typeof(RoutingAiSlave), new Uri("http://localhost:8000/RoutingAi")))
+                using (ServiceHost svcHost = new ServiceHost(typeof(RoutingAiSlave), new Uri("http://localhost:9000/RoutingAi")))
                 {
                     svcHost.AddServiceEndpoint(typeof(RoutingAI.ServiceContracts.IRoutingAiSlaveService),
                         new BasicHttpBinding(), "Slave");

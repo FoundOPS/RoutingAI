@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<RoutingAiConfig>
+  
+  <!--< OSRM Servers >-->
+  <OSRMServers>
+    <Endpoint region="us-in">127.0.0.1:5000</Endpoint>
+  </OSRMServers>
+  
+  <!--< Redis Servers >-->
+  <RedisServers>
+    <Endpoint region="us-in">127.0.0.1:6379</Endpoint>
+  </RedisServers>
+  
+  <!--< Slave Servers >-->
+  <SlaveServers>
+    <Endpoint>127.0.0.1:9000</Endpoint>
+  </SlaveServers>
+
+  <!--< Librarian Servers >-->
+  <LibrarianServers>
+    <Endpoint>127.0.0.1:9000</Endpoint>
+  </LibrarianServers>
+    
+</RoutingAiConfig>

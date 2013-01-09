@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace RoutingAI.API.OSRM
 {
+    /// <summary>
+    /// Static class with utility methods that access OSRM server APIs.
+    /// </summary>
     public static class OsrmApi
     {
         /// <summary>

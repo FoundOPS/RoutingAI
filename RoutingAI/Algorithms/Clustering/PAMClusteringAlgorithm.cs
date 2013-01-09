@@ -8,18 +8,48 @@ namespace RoutingAI.Algorithms.Clustering
     public class PAMClusteringAlgorithm<T> : IClusteringAlgorithm<T>
     {
         // Random Number Generator & Distance Algorithm
+        /// <summary>
+        /// Random number generator
+        /// </summary>
         protected readonly Random _rand = new Random();
+        /// <summary>
+        /// Distance Algorithm object for calculating similarity (distance)
+        /// between two objects
+        /// </summary>
         protected readonly IDistanceAlgorithm<T> _dist;
 
         // Problem-Specific Data & Parameters
+        /// <summary>
+        /// Array of all objects to be clustered
+        /// </summary>
         protected T[] _data;
+        /// <summary>
+        /// Maximum number of iterations allowed before the algorithm stops.
+        /// Algorithm may stop before reaching this many iterations if it reaches a local minimum.
+        /// </summary>
         protected Int32 _maxIterations;
 
         // Results
+        /// <summary>
+        /// Array of centroid elements
+        /// </summary>
         protected T[] _centroids;
+        /// <summary>
+        /// Array of lists, each of which is a cluster computed by this algorithm
+        /// </summary>
         protected List<T>[] _clusters;
+        /// <summary>
+        /// The sum of distances from each element to its assigned medoid
+        /// </summary>
         protected Int32 _totalDistance;
+        /// <summary>
+        /// A value used for representing dissimilarity between clusters.
+        /// Small dissimilarity means elements are more evenly distributed across clusters.
+        /// </summary>
         protected Double _dissimilarity;
+        /// <summary>
+        /// Dictionary that maps each element to the index of its assigned medoid
+        /// </summary>
         protected Dictionary<T, Int32> _clusterAssignment;
 
         /// <summary>
@@ -110,6 +140,7 @@ namespace RoutingAI.Algorithms.Clustering
         /// <param name="centroids">Array of centroid items for storing results</param>
         /// <param name="clusters">Cluster data table for storing results</param>
         /// <param name="assignment">Cluster assignment map for storing results</param>
+        /// <param name="dissimilarity">Dissimilarity of clusters</param>
         /// <returns>Total distance for resulting clustering solution</returns>
         protected Int32 RunPAM(T[] items, T[] centroids, List<T>[] clusters, Dictionary<T, Int32> assignment, ref Double dissimilarity)
         {
@@ -133,6 +164,7 @@ namespace RoutingAI.Algorithms.Clustering
         /// </summary>
         /// <param name="centroids">Array of items to search</param>
         /// <param name="current">Current origin item</param>
+        /// <param name="minDistance">Distance from the item to its nearest centroid</param>
         /// <returns>Index of the nearest node</returns>
         protected Int32 FindNearest(T[] centroids, T current, out Int32 minDistance)
         {
@@ -214,6 +246,7 @@ namespace RoutingAI.Algorithms.Clustering
         /// <param name="centroids">Array of centroid items</param>
         /// <param name="clusters">Cluster data, this method overwrites it</param>
         /// <param name="assignment">Cluster assignment data, this method overwrites it</param>
+        /// <param name="dissimilarity">Dissimilarity of clusters</param>
         /// <returns>Sum of distances for this cluster assignment</returns>
         protected Int32 AssignItemsToCentroids(T[] items, T[] centroids, List<T>[] clusters, Dictionary<T, Int32> assignment, ref Double dissimilarity)
         {

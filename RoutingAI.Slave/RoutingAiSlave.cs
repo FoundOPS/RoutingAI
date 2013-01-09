@@ -86,7 +86,7 @@ namespace RoutingAI.Slave
 
         #endregion
 
-
+        #region Clustering
 
         public CallResponse ComputeClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data)
         {
@@ -94,8 +94,26 @@ namespace RoutingAI.Slave
             return _dispatcher.RunComputation(threadId, dummyTask, null);
         }
 
+        public ClusteringSolution GetClusteringSolution(Guid threadId)
+        {
+            throw new NotImplementedException();
+        }
 
+        #endregion
 
+        #region Optimization
+
+        public CallResponse ComputeOptimizedSolution(Guid threadId, SlaveConfig config, OptimizationRequest data, ClusteringSolution clusters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OptimizationResponse GetOptimizedSolution(Guid threadId)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
     }
 }
