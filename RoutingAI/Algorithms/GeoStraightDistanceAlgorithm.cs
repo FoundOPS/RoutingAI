@@ -1,17 +1,17 @@
 ﻿using RoutingAI.API.OSRM;
+using RoutingAI.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RoutingAI.Algorithms
 {
-    public class GeoStraightDistanceAlgorithm : IDistanceAlgorithm<Coordinate>
+    public class GeoStraightDistanceAlgorithm : IDistanceAlgorithm<Task>
     {
-        public int GetDistance(API.OSRM.Coordinate start, API.OSRM.Coordinate end)
+        public int GetDistance(Task start, Task end)
         {
-            return Utilities.GeoTools.StraightDistance(start.latRad, start.lonRad, end.latRad, end.lonRad);
+            return Utilities.GeoTools.StraightDistance(start.Coordinates.latRad, start.Coordinates.lonRad, end.Coordinates.latRad, end.Coordinates.lonRad);
         }
     }
 }

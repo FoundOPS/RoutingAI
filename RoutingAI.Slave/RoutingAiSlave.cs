@@ -90,13 +90,13 @@ namespace RoutingAI.Slave
 
         public CallResponse ComputeClusteringSolution(Guid threadId, SlaveConfig config, OptimizationRequest data)
         {
-            DummyComputationTask dummyTask = new DummyComputationTask();
-            return _dispatcher.RunComputation(threadId, dummyTask, null);
+            PAMClusteringTask task = new PAMClusteringTask();
+            return _dispatcher.RunComputation(threadId, task, config, data);
         }
 
         public ClusteringSolution GetClusteringSolution(Guid threadId)
         {
-            throw new NotImplementedException();
+            return (ClusteringSolution)_dispatcher.GetComputationResult(threadId);
         }
 
         #endregion
