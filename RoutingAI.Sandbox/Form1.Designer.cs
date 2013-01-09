@@ -31,10 +31,11 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonKMeansCluster = new System.Windows.Forms.Button();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this.buttonCLARACluster = new System.Windows.Forms.Button();
             this.lblCurrentResult = new System.Windows.Forms.Label();
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
@@ -43,7 +44,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonEPAMCluster = new System.Windows.Forms.Button();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -55,7 +56,13 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lblPhase = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown11 = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
+            this.numericUpDown12 = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.buttonOptimizationRequest = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -68,6 +75,9 @@
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -99,10 +109,11 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.buttonKMeansCluster);
             this.groupBox2.Controls.Add(this.numericUpDown6);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.lblTime);
-            this.groupBox2.Controls.Add(this.button4);
+            this.groupBox2.Controls.Add(this.buttonCLARACluster);
             this.groupBox2.Controls.Add(this.lblCurrentResult);
             this.groupBox2.Controls.Add(this.numericUpDown5);
             this.groupBox2.Controls.Add(this.label6);
@@ -111,7 +122,7 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.numericUpDown3);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Controls.Add(this.buttonEPAMCluster);
             this.groupBox2.Controls.Add(this.numericUpDown2);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.numericUpDown1);
@@ -122,6 +133,17 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
+            // 
+            // buttonKMeansCluster
+            // 
+            this.buttonKMeansCluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonKMeansCluster.Location = new System.Drawing.Point(147, 495);
+            this.buttonKMeansCluster.Name = "buttonKMeansCluster";
+            this.buttonKMeansCluster.Size = new System.Drawing.Size(111, 35);
+            this.buttonKMeansCluster.TabIndex = 20;
+            this.buttonKMeansCluster.Text = "KMeans++ Cluster";
+            this.buttonKMeansCluster.UseVisualStyleBackColor = true;
+            this.buttonKMeansCluster.Click += new System.EventHandler(this.buttonKMeansCluster_Click);
             // 
             // numericUpDown6
             // 
@@ -169,16 +191,16 @@
             this.lblTime.TabIndex = 17;
             this.lblTime.Text = "Time Elapsed: 0ms";
             // 
-            // button4
+            // buttonCLARACluster
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(147, 484);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(111, 35);
-            this.button4.TabIndex = 16;
-            this.button4.Text = "Fast Cluster (?)";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.buttonCLARACluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCLARACluster.Location = new System.Drawing.Point(147, 454);
+            this.buttonCLARACluster.Name = "buttonCLARACluster";
+            this.buttonCLARACluster.Size = new System.Drawing.Size(111, 35);
+            this.buttonCLARACluster.TabIndex = 16;
+            this.buttonCLARACluster.Text = "CLARA (fast?) Cluster";
+            this.buttonCLARACluster.UseVisualStyleBackColor = true;
+            this.buttonCLARACluster.Click += new System.EventHandler(this.buttonCLARACluster_Click);
             // 
             // lblCurrentResult
             // 
@@ -301,16 +323,16 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "Node Increment";
             // 
-            // button2
+            // buttonEPAMCluster
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(147, 443);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(111, 35);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Cluster";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonEPAMCluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEPAMCluster.Location = new System.Drawing.Point(147, 413);
+            this.buttonEPAMCluster.Name = "buttonEPAMCluster";
+            this.buttonEPAMCluster.Size = new System.Drawing.Size(111, 35);
+            this.buttonEPAMCluster.TabIndex = 6;
+            this.buttonEPAMCluster.Text = "EPAM Cluster";
+            this.buttonEPAMCluster.UseVisualStyleBackColor = true;
+            this.buttonEPAMCluster.Click += new System.EventHandler(this.buttonEPAMCluster_Click);
             // 
             // numericUpDown2
             // 
@@ -442,7 +464,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.button1);
+            this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -451,16 +473,105 @@
             this.tabPage2.Text = "Mockup Controller";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // groupBox3
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(227, 213);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(555, 128);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "BIG BUTTON";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.buttonOptimizationRequest);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.numericUpDown11);
+            this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Controls.Add(this.numericUpDown12);
+            this.groupBox3.Controls.Add(this.label16);
+            this.groupBox3.Location = new System.Drawing.Point(722, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(264, 546);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Options";
+            // 
+            // numericUpDown11
+            // 
+            this.numericUpDown11.Location = new System.Drawing.Point(82, 45);
+            this.numericUpDown11.Maximum = new decimal(new int[] {
+            2000000,
+            0,
+            0,
+            0});
+            this.numericUpDown11.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDown11.Name = "numericUpDown11";
+            this.numericUpDown11.Size = new System.Drawing.Size(100, 20);
+            this.numericUpDown11.TabIndex = 4;
+            this.numericUpDown11.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 47);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(67, 13);
+            this.label15.TabIndex = 3;
+            this.label15.Text = "Route Count";
+            // 
+            // numericUpDown12
+            // 
+            this.numericUpDown12.Location = new System.Drawing.Point(82, 19);
+            this.numericUpDown12.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.numericUpDown12.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown12.Name = "numericUpDown12";
+            this.numericUpDown12.Size = new System.Drawing.Size(100, 20);
+            this.numericUpDown12.TabIndex = 2;
+            this.numericUpDown12.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 21);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(62, 13);
+            this.label16.TabIndex = 0;
+            this.label16.Text = "Task Count";
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 527);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(96, 13);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "Time Elapsed: 0ms";
+            // 
+            // buttonOptimizationRequest
+            // 
+            this.buttonOptimizationRequest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOptimizationRequest.Location = new System.Drawing.Point(147, 495);
+            this.buttonOptimizationRequest.Name = "buttonOptimizationRequest";
+            this.buttonOptimizationRequest.Size = new System.Drawing.Size(111, 35);
+            this.buttonOptimizationRequest.TabIndex = 20;
+            this.buttonOptimizationRequest.Text = "Optimization Request";
+            this.buttonOptimizationRequest.UseVisualStyleBackColor = true;
+            this.buttonOptimizationRequest.Click += new System.EventHandler(this.buttonOptimizationRequest_Click);
             // 
             // Form1
             // 
@@ -483,6 +594,10 @@
             this.groupBox1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -494,7 +609,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonEPAMCluster;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
@@ -508,7 +623,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblCurrentResult;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonCLARACluster;
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.NumericUpDown numericUpDown6;
         private System.Windows.Forms.Label label7;
@@ -516,7 +631,14 @@
         private System.Windows.Forms.Label lblProgress;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label lblPhase;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonKMeansCluster;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.NumericUpDown numericUpDown11;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown numericUpDown12;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button buttonOptimizationRequest;
+        private System.Windows.Forms.Label label9;
     }
 }
 
