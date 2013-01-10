@@ -1,10 +1,7 @@
 ﻿using RoutingAI.API.OSRM;
+using RoutingAI.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RoutingAI.DataContracts
 {
@@ -42,30 +39,40 @@ namespace RoutingAI.DataContracts
         /// <summary>
         /// Time required to complete the task in seconds
         /// </summary>
-        [DataMember(Name = "time_on_task")]
-        public UInt32 TimeOnTask { get; set; }
+        [DataMember(Name = "time")]
+        public UInt32 Time { get; set; }
 
         /// <summary>
-        /// The dollar value of completing a task
+        /// The monetary (currently dollar) value of completing a task
         /// </summary>
         [DataMember(Name = "value")]
         public UInt32 Value { get; set; }
 
         /// <summary>
-        /// TODO: FUTURE Priority (1)
-        /// The restrictive date/time window the task can be completed
+        /// Optional. Ensures jobs happen on a user defined recurrence.
+        /// If this is set, target range must be set.
         /// </summary>
-        [DataMember(Name = "window")]
-        public Window Window { get; set; }
+        [DataMember(Name = "target_date")]
+        public DateTime? TargetDate { get; set; }
 
         /// <summary>
-        /// TODO: FUTURE Priority (2)
-        /// Required skills to complete a job
-        /// If null there are no required skills
+        /// Affects how much a task should be penalized for being off of the target date.
         /// </summary>
-        [DataMember(Name = "req_skills")]
-        public UInt32[] RequiredSkills { get; set; }
+        [DataMember(Name = "target_range")]
+        public TimeSpan? TargetRange { get; set; }
 
+        /// <summary>
+        /// The restrictive date & time windows when the task can be completed
+        /// </summary>
+        [DataMember(Name = "windows")]
+        public Window[] Windows { get; set; }
+
+        /// <summary>
+        /// Required skill to complete a job
+        /// If null there is no required skill
+        /// </summary>
+        [DataMember(Name = "req_skill")]
+        public UInt32 RequiredSkill { get; set; }
 
         #endregion
 
@@ -88,6 +95,7 @@ namespace RoutingAI.DataContracts
         /// Only to be used from within the Task class
         /// </summary>
         private Task() { }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -130,16 +138,14 @@ namespace RoutingAI.DataContracts
             t.Id = this.Id;
             t.Latitude = this.Latitude;
             t.Longitude = this.Longitude;
-            t.TimeOnTask = this.TimeOnTask;
+            t.Time = this.Time;
             t.Value = this.Value;
-            t.Window = (Window)this.Window.Clone();
-            t.RequiredSkills = new UInt32[this.RequiredSkills.Length];
-            Array.Copy(this.RequiredSkills, t.RequiredSkills, t.RequiredSkills.Length);
+            t.Windows = this.Windows.Clone<Window>();
+            t.RequiredSkill = this.RequiredSkill;
 
             return t;
         }
 
         #endregion
-
     }
 }

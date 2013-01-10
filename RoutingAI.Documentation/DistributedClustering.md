@@ -4,6 +4,8 @@
 
 Current idea behind fast clustering is sacrificing precision for speed and scalability. Instead of running PAM Algorithm on the entire set of nodes, it is only run on a random sample (CLARA Algorithm). It is possible to distribute sampling since each slave server has a complete set of data to be processed. 
 
+Future thoughts: KMeans|| might end up being better, it's also distributable. Clustering on multiple dimensions (location and job times).
+
 **RoutingAI.Librarian**
 
 RoutingAI.Librarian can be considered a server for exchanging data between peers. There is need for such a server because RoutingAI.Slave instances are unaware of their peers, therefore communication between them is not possible by design.

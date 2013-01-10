@@ -1,29 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
 namespace RoutingAI.DataContracts
 {
     /// <summary>
-    /// An ordered set of tasks assigned to a worker
+    /// A task with an estimated arrival / departure
     /// </summary>
     [DataContract(Name = "task_sequence", Namespace = "http://foundops.com/services/routing_ai/1.0")]
-    public class TaskSequence
+    public class Destination
     {
         /// <summary>
-        /// Tasks in order
+        /// The task
         /// </summary>
         [DataMember(Name = "tasks")]
-        public Task[] OrderedTasks { get; set; }
+        public Task Task { get; set; }
 
         /// <summary>
-        /// The assigned resources
+        /// The estimated arrival
         /// </summary>
-        [DataMember(Name = "resources")]
-        public Resource[] Resources { get; set; }
+        [DataMember(Name = "est_arrival")]
+        public DateTime EstimatedArrival { get; set; }
+
+        /// <summary>
+        /// The estimated departure
+        /// </summary>
+        [DataMember(Name = "est_departure")]
+        public DateTime EstimatedDeparture { get; set; }
+    }
+
+    /// <summary>
+    /// An ordered set of tasks assigned to a resource
+    /// </summary>
+    [DataContract(Name = "task_sequence", Namespace = "http://foundops.com/services/routing_ai/1.0")]
+    public class Route
+    {
+        /// <summary>
+        /// The assigned resource
+        /// </summary>
+        [DataMember(Name = "resource")]
+        public Resource Resource { get; set; }
+
+        /// <summary>
+        /// Destinations ordered by arrival
+        /// </summary>
+        [DataMember(Name = "destinations")]
+        public Destination[] Destinations { get; set; }
     }
 
     /// <summary>
@@ -32,7 +53,10 @@ namespace RoutingAI.DataContracts
     [DataContract(Name = "solution", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class Solution
     {
-        [DataMember(Name = "task_sequences")]
-        public TaskSequence[] TaskSequences { get; set; }
+        /// <summary>
+        /// The set of routes
+        /// </summary>
+        [DataMember(Name = "routes")]
+        public Route[] Routes { get; set; }
     }
 }

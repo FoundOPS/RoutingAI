@@ -57,12 +57,45 @@
             this.lblPhase = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown11 = new System.Windows.Forms.NumericUpDown();
-            this.label15 = new System.Windows.Forms.Label();
-            this.numericUpDown12 = new System.Windows.Forms.NumericUpDown();
-            this.label16 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.trackBarTaskAvgPrice = new System.Windows.Forms.TrackBar();
+            this.numericUpDownTaskAvgPrice = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label12 = new System.Windows.Forms.Label();
+            this.trackBarTaskAvgTime = new System.Windows.Forms.TrackBar();
+            this.numericUpDownTaskAvgTime = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
+            this.labelTaskCount = new System.Windows.Forms.Label();
             this.buttonOptimizationRequest = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.labelTasksPerResourceDay = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.radioButtonYear = new System.Windows.Forms.RadioButton();
+            this.radioButtonWeek = new System.Windows.Forms.RadioButton();
+            this.radioButtonDay = new System.Windows.Forms.RadioButton();
+            this.trackBarTasksPerResourc = new System.Windows.Forms.TrackBar();
+            this.label24 = new System.Windows.Forms.Label();
+            this.trackBarResourceCount = new System.Windows.Forms.TrackBar();
+            this.label23 = new System.Windows.Forms.Label();
+            this.numericUpDownResourceCount = new System.Windows.Forms.NumericUpDown();
+            this.label21 = new System.Windows.Forms.Label();
+            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
+            this.label17 = new System.Windows.Forms.Label();
+            this.radioButtonMonth = new System.Windows.Forms.RadioButton();
+            this.label10 = new System.Windows.Forms.Label();
+            this.radioButtonTargetNone = new System.Windows.Forms.RadioButton();
+            this.radioButtonTargetSome = new System.Windows.Forms.RadioButton();
+            this.radioButtonTargetAll = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -76,8 +109,19 @@
             this.panel2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarTaskAvgPrice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTaskAvgPrice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarTaskAvgTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTaskAvgTime)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarTasksPerResourc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarResourceCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -90,7 +134,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1000, 584);
+            this.tabControl1.Size = new System.Drawing.Size(1047, 755);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -100,7 +144,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(992, 558);
+            this.tabPage1.Size = new System.Drawing.Size(1039, 729);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "K-Medoid Test";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -127,9 +171,9 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.numericUpDown1);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(722, 6);
+            this.groupBox2.Location = new System.Drawing.Point(734, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(264, 546);
+            this.groupBox2.Size = new System.Drawing.Size(264, 519);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
@@ -137,7 +181,7 @@
             // buttonKMeansCluster
             // 
             this.buttonKMeansCluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonKMeansCluster.Location = new System.Drawing.Point(147, 495);
+            this.buttonKMeansCluster.Location = new System.Drawing.Point(147, 468);
             this.buttonKMeansCluster.Name = "buttonKMeansCluster";
             this.buttonKMeansCluster.Size = new System.Drawing.Size(111, 35);
             this.buttonKMeansCluster.TabIndex = 20;
@@ -185,7 +229,7 @@
             // 
             this.lblTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(6, 527);
+            this.lblTime.Location = new System.Drawing.Point(6, 500);
             this.lblTime.Name = "lblTime";
             this.lblTime.Size = new System.Drawing.Size(96, 13);
             this.lblTime.TabIndex = 17;
@@ -194,7 +238,7 @@
             // buttonCLARACluster
             // 
             this.buttonCLARACluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCLARACluster.Location = new System.Drawing.Point(147, 454);
+            this.buttonCLARACluster.Location = new System.Drawing.Point(147, 427);
             this.buttonCLARACluster.Name = "buttonCLARACluster";
             this.buttonCLARACluster.Size = new System.Drawing.Size(111, 35);
             this.buttonCLARACluster.TabIndex = 16;
@@ -326,7 +370,7 @@
             // buttonEPAMCluster
             // 
             this.buttonEPAMCluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEPAMCluster.Location = new System.Drawing.Point(147, 413);
+            this.buttonEPAMCluster.Location = new System.Drawing.Point(147, 386);
             this.buttonEPAMCluster.Name = "buttonEPAMCluster";
             this.buttonEPAMCluster.Size = new System.Drawing.Size(111, 35);
             this.buttonEPAMCluster.TabIndex = 6;
@@ -405,7 +449,7 @@
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(710, 546);
+            this.groupBox1.Size = new System.Drawing.Size(722, 519);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Visualization";
@@ -419,7 +463,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(6, 19);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(698, 521);
+            this.panel1.Size = new System.Drawing.Size(710, 494);
             this.panel1.TabIndex = 0;
             // 
             // panel2
@@ -428,7 +472,7 @@
             this.panel2.Controls.Add(this.lblProgress);
             this.panel2.Controls.Add(this.progressBar1);
             this.panel2.Controls.Add(this.lblPhase);
-            this.panel2.Location = new System.Drawing.Point(121, 223);
+            this.panel2.Location = new System.Drawing.Point(127, 210);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(468, 100);
             this.panel2.TabIndex = 1;
@@ -468,7 +512,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(992, 558);
+            this.tabPage2.Size = new System.Drawing.Size(1039, 729);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Mockup Controller";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -477,95 +521,190 @@
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.buttonOptimizationRequest);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.numericUpDown11);
-            this.groupBox3.Controls.Add(this.label15);
-            this.groupBox3.Controls.Add(this.numericUpDown12);
-            this.groupBox3.Controls.Add(this.label16);
-            this.groupBox3.Location = new System.Drawing.Point(722, 6);
+            this.groupBox3.Controls.Add(this.groupBox4);
+            this.groupBox3.Controls.Add(this.buttonOptimizationRequest);
+            this.groupBox3.Controls.Add(this.groupBox5);
+            this.groupBox3.Location = new System.Drawing.Point(712, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(264, 546);
+            this.groupBox3.Size = new System.Drawing.Size(311, 677);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Options";
-            // 
-            // numericUpDown11
-            // 
-            this.numericUpDown11.Location = new System.Drawing.Point(82, 45);
-            this.numericUpDown11.Maximum = new decimal(new int[] {
-            2000000,
-            0,
-            0,
-            0});
-            this.numericUpDown11.Minimum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numericUpDown11.Name = "numericUpDown11";
-            this.numericUpDown11.Size = new System.Drawing.Size(100, 20);
-            this.numericUpDown11.TabIndex = 4;
-            this.numericUpDown11.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 47);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(67, 13);
-            this.label15.TabIndex = 3;
-            this.label15.Text = "Route Count";
-            // 
-            // numericUpDown12
-            // 
-            this.numericUpDown12.Location = new System.Drawing.Point(82, 19);
-            this.numericUpDown12.Maximum = new decimal(new int[] {
-            1000000000,
-            0,
-            0,
-            0});
-            this.numericUpDown12.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown12.Name = "numericUpDown12";
-            this.numericUpDown12.Size = new System.Drawing.Size(100, 20);
-            this.numericUpDown12.TabIndex = 2;
-            this.numericUpDown12.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 21);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(62, 13);
-            this.label16.TabIndex = 0;
-            this.label16.Text = "Task Count";
             // 
             // label9
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 527);
+            this.label9.Location = new System.Drawing.Point(15, 621);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(96, 13);
             this.label9.TabIndex = 17;
             this.label9.Text = "Time Elapsed: 0ms";
             // 
+            // groupBox4
+            // 
+            this.groupBox4.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox4.Controls.Add(this.radioButtonTargetAll);
+            this.groupBox4.Controls.Add(this.radioButtonTargetSome);
+            this.groupBox4.Controls.Add(this.radioButtonTargetNone);
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.label13);
+            this.groupBox4.Controls.Add(this.label14);
+            this.groupBox4.Controls.Add(this.trackBarTaskAvgPrice);
+            this.groupBox4.Controls.Add(this.numericUpDownTaskAvgPrice);
+            this.groupBox4.Controls.Add(this.label8);
+            this.groupBox4.Controls.Add(this.trackBar1);
+            this.groupBox4.Controls.Add(this.label12);
+            this.groupBox4.Controls.Add(this.trackBarTaskAvgTime);
+            this.groupBox4.Controls.Add(this.numericUpDownTaskAvgTime);
+            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.labelTaskCount);
+            this.groupBox4.Location = new System.Drawing.Point(10, 303);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(285, 278);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Tasks";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(93, 102);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(107, 13);
+            this.label13.TabIndex = 41;
+            this.label13.Text = "small        ->       large";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Enabled = false;
+            this.label14.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.label14.Location = new System.Drawing.Point(73, 261);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(140, 13);
+            this.label14.TabIndex = 40;
+            this.label14.Text = "Future: Time/Price Variance";
+            // 
+            // trackBarTaskAvgPrice
+            // 
+            this.trackBarTaskAvgPrice.Location = new System.Drawing.Point(94, 178);
+            this.trackBarTaskAvgPrice.Maximum = 100;
+            this.trackBarTaskAvgPrice.Minimum = 1;
+            this.trackBarTaskAvgPrice.Name = "trackBarTaskAvgPrice";
+            this.trackBarTaskAvgPrice.Size = new System.Drawing.Size(104, 45);
+            this.trackBarTaskAvgPrice.TabIndex = 38;
+            this.trackBarTaskAvgPrice.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBarTaskAvgPrice.Value = 20;
+            this.trackBarTaskAvgPrice.Scroll += new System.EventHandler(this.trackBarTaskAvgPrice_Scroll);
+            // 
+            // numericUpDownTaskAvgPrice
+            // 
+            this.numericUpDownTaskAvgPrice.Location = new System.Drawing.Point(204, 194);
+            this.numericUpDownTaskAvgPrice.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.numericUpDownTaskAvgPrice.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownTaskAvgPrice.Name = "numericUpDownTaskAvgPrice";
+            this.numericUpDownTaskAvgPrice.Size = new System.Drawing.Size(68, 20);
+            this.numericUpDownTaskAvgPrice.TabIndex = 39;
+            this.numericUpDownTaskAvgPrice.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(24, 196);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 13);
+            this.label8.TabIndex = 37;
+            this.label8.Text = "Avg Price";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(94, 54);
+            this.trackBar1.Minimum = 1;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(104, 45);
+            this.trackBar1.TabIndex = 36;
+            this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBar1.Value = 5;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(11, 68);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(77, 13);
+            this.label12.TabIndex = 34;
+            this.label12.Text = "Time Windows";
+            // 
+            // trackBarTaskAvgTime
+            // 
+            this.trackBarTaskAvgTime.Location = new System.Drawing.Point(94, 127);
+            this.trackBarTaskAvgTime.Maximum = 20;
+            this.trackBarTaskAvgTime.Minimum = 1;
+            this.trackBarTaskAvgTime.Name = "trackBarTaskAvgTime";
+            this.trackBarTaskAvgTime.Size = new System.Drawing.Size(104, 45);
+            this.trackBarTaskAvgTime.TabIndex = 29;
+            this.trackBarTaskAvgTime.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBarTaskAvgTime.Value = 2;
+            this.trackBarTaskAvgTime.Scroll += new System.EventHandler(this.trackBarTaskAvgTime_Scroll);
+            // 
+            // numericUpDownTaskAvgTime
+            // 
+            this.numericUpDownTaskAvgTime.Location = new System.Drawing.Point(206, 136);
+            this.numericUpDownTaskAvgTime.Maximum = new decimal(new int[] {
+            720,
+            0,
+            0,
+            0});
+            this.numericUpDownTaskAvgTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownTaskAvgTime.Name = "numericUpDownTaskAvgTime";
+            this.numericUpDownTaskAvgTime.Size = new System.Drawing.Size(68, 20);
+            this.numericUpDownTaskAvgTime.TabIndex = 30;
+            this.numericUpDownTaskAvgTime.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(8, 143);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(82, 13);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "Avg Time (mins)";
+            // 
+            // labelTaskCount
+            // 
+            this.labelTaskCount.AutoSize = true;
+            this.labelTaskCount.Location = new System.Drawing.Point(26, 33);
+            this.labelTaskCount.Name = "labelTaskCount";
+            this.labelTaskCount.Size = new System.Drawing.Size(38, 13);
+            this.labelTaskCount.TabIndex = 0;
+            this.labelTaskCount.Text = "Count:";
+            // 
             // buttonOptimizationRequest
             // 
             this.buttonOptimizationRequest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOptimizationRequest.Location = new System.Drawing.Point(147, 495);
+            this.buttonOptimizationRequest.Location = new System.Drawing.Point(189, 610);
             this.buttonOptimizationRequest.Name = "buttonOptimizationRequest";
             this.buttonOptimizationRequest.Size = new System.Drawing.Size(111, 35);
             this.buttonOptimizationRequest.TabIndex = 20;
@@ -573,11 +712,325 @@
             this.buttonOptimizationRequest.UseVisualStyleBackColor = true;
             this.buttonOptimizationRequest.Click += new System.EventHandler(this.buttonOptimizationRequest_Click);
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.groupBox6);
+            this.groupBox5.Controls.Add(this.numericUpDown8);
+            this.groupBox5.Controls.Add(this.label20);
+            this.groupBox5.Controls.Add(this.label15);
+            this.groupBox5.Controls.Add(this.numericUpDown7);
+            this.groupBox5.Controls.Add(this.label17);
+            this.groupBox5.Location = new System.Drawing.Point(10, 19);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(290, 272);
+            this.groupBox5.TabIndex = 21;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Resources";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.radioButtonMonth);
+            this.groupBox6.Controls.Add(this.label19);
+            this.groupBox6.Controls.Add(this.label18);
+            this.groupBox6.Controls.Add(this.labelTasksPerResourceDay);
+            this.groupBox6.Controls.Add(this.label22);
+            this.groupBox6.Controls.Add(this.radioButtonYear);
+            this.groupBox6.Controls.Add(this.radioButtonWeek);
+            this.groupBox6.Controls.Add(this.radioButtonDay);
+            this.groupBox6.Controls.Add(this.trackBarTasksPerResourc);
+            this.groupBox6.Controls.Add(this.label24);
+            this.groupBox6.Controls.Add(this.trackBarResourceCount);
+            this.groupBox6.Controls.Add(this.label23);
+            this.groupBox6.Controls.Add(this.numericUpDownResourceCount);
+            this.groupBox6.Controls.Add(this.label21);
+            this.groupBox6.Location = new System.Drawing.Point(8, 19);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(276, 164);
+            this.groupBox6.TabIndex = 45;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Main Details";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(180, 89);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(88, 13);
+            this.label19.TabIndex = 53;
+            this.label19.Text = "per resource/day";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(16, 89);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(48, 13);
+            this.label18.TabIndex = 52;
+            this.label18.Text = "(per day)";
+            // 
+            // labelTasksPerResourceDay
+            // 
+            this.labelTasksPerResourceDay.AutoSize = true;
+            this.labelTasksPerResourceDay.Location = new System.Drawing.Point(186, 76);
+            this.labelTasksPerResourceDay.Name = "labelTasksPerResourceDay";
+            this.labelTasksPerResourceDay.Size = new System.Drawing.Size(13, 13);
+            this.labelTasksPerResourceDay.TabIndex = 51;
+            this.labelTasksPerResourceDay.Text = "5";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(6, 137);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(62, 13);
+            this.label22.TabIndex = 50;
+            this.label22.Text = "Optimize for";
+            // 
+            // radioButtonYear
+            // 
+            this.radioButtonYear.AutoSize = true;
+            this.radioButtonYear.Location = new System.Drawing.Point(223, 135);
+            this.radioButtonYear.Name = "radioButtonYear";
+            this.radioButtonYear.Size = new System.Drawing.Size(47, 17);
+            this.radioButtonYear.TabIndex = 49;
+            this.radioButtonYear.TabStop = true;
+            this.radioButtonYear.Text = "Year";
+            this.radioButtonYear.UseVisualStyleBackColor = true;
+            this.radioButtonYear.CheckedChanged += new System.EventHandler(this.radioButtonYear_CheckedChanged);
+            // 
+            // radioButtonWeek
+            // 
+            this.radioButtonWeek.AutoSize = true;
+            this.radioButtonWeek.Checked = true;
+            this.radioButtonWeek.Location = new System.Drawing.Point(113, 135);
+            this.radioButtonWeek.Name = "radioButtonWeek";
+            this.radioButtonWeek.Size = new System.Drawing.Size(54, 17);
+            this.radioButtonWeek.TabIndex = 48;
+            this.radioButtonWeek.TabStop = true;
+            this.radioButtonWeek.Text = "Week";
+            this.radioButtonWeek.UseVisualStyleBackColor = true;
+            this.radioButtonWeek.CheckedChanged += new System.EventHandler(this.radioButtonWeek_CheckedChanged);
+            // 
+            // radioButtonDay
+            // 
+            this.radioButtonDay.AutoSize = true;
+            this.radioButtonDay.Location = new System.Drawing.Point(68, 135);
+            this.radioButtonDay.Name = "radioButtonDay";
+            this.radioButtonDay.Size = new System.Drawing.Size(44, 17);
+            this.radioButtonDay.TabIndex = 47;
+            this.radioButtonDay.TabStop = true;
+            this.radioButtonDay.Text = "Day";
+            this.radioButtonDay.UseVisualStyleBackColor = true;
+            this.radioButtonDay.CheckedChanged += new System.EventHandler(this.radioButtonDay_CheckedChanged);
+            // 
+            // trackBarTasksPerResourc
+            // 
+            this.trackBarTasksPerResourc.Location = new System.Drawing.Point(78, 67);
+            this.trackBarTasksPerResourc.Maximum = 100;
+            this.trackBarTasksPerResourc.Minimum = 1;
+            this.trackBarTasksPerResourc.Name = "trackBarTasksPerResourc";
+            this.trackBarTasksPerResourc.Size = new System.Drawing.Size(104, 45);
+            this.trackBarTasksPerResourc.TabIndex = 46;
+            this.trackBarTasksPerResourc.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBarTasksPerResourc.Value = 5;
+            this.trackBarTasksPerResourc.Scroll += new System.EventHandler(this.trackBarTasksPerResource_Scroll);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(11, 28);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(35, 13);
+            this.label24.TabIndex = 24;
+            this.label24.Text = "Count";
+            // 
+            // trackBarResourceCount
+            // 
+            this.trackBarResourceCount.Location = new System.Drawing.Point(79, 14);
+            this.trackBarResourceCount.Minimum = 1;
+            this.trackBarResourceCount.Name = "trackBarResourceCount";
+            this.trackBarResourceCount.Size = new System.Drawing.Size(104, 45);
+            this.trackBarResourceCount.TabIndex = 25;
+            this.trackBarResourceCount.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBarResourceCount.Value = 5;
+            this.trackBarResourceCount.Scroll += new System.EventHandler(this.trackBarResourceCount_Scroll);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(82, 115);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(100, 13);
+            this.label23.TabIndex = 44;
+            this.label23.Text = "1           ->         100";
+            // 
+            // numericUpDownResourceCount
+            // 
+            this.numericUpDownResourceCount.Location = new System.Drawing.Point(189, 26);
+            this.numericUpDownResourceCount.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDownResourceCount.Name = "numericUpDownResourceCount";
+            this.numericUpDownResourceCount.Size = new System.Drawing.Size(68, 20);
+            this.numericUpDownResourceCount.TabIndex = 26;
+            this.numericUpDownResourceCount.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownResourceCount.ValueChanged += new System.EventHandler(this.numericUpDownResourceCount_ValueChanged);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(16, 76);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(42, 13);
+            this.label21.TabIndex = 43;
+            this.label21.Text = "# tasks";
+            // 
+            // numericUpDown8
+            // 
+            this.numericUpDown8.DecimalPlaces = 2;
+            this.numericUpDown8.Location = new System.Drawing.Point(114, 219);
+            this.numericUpDown8.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown8.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDown8.Name = "numericUpDown8";
+            this.numericUpDown8.Size = new System.Drawing.Size(68, 20);
+            this.numericUpDown8.TabIndex = 42;
+            this.numericUpDown8.Value = new decimal(new int[] {
+            40,
+            0,
+            0,
+            0});
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(14, 223);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(94, 13);
+            this.label20.TabIndex = 41;
+            this.label20.Text = "Avg Cost per Hour";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Enabled = false;
+            this.label15.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.label15.Location = new System.Drawing.Point(41, 255);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(208, 13);
+            this.label15.TabIndex = 40;
+            this.label15.Text = "Future: Availability, Cost per Hour Variance";
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.DecimalPlaces = 2;
+            this.numericUpDown7.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numericUpDown7.Location = new System.Drawing.Point(114, 193);
+            this.numericUpDown7.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDown7.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(68, 20);
+            this.numericUpDown7.TabIndex = 39;
+            this.numericUpDown7.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            131072});
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(14, 195);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(90, 13);
+            this.label17.TabIndex = 37;
+            this.label17.Text = "Avg Cost per Mile";
+            // 
+            // radioButtonMonth
+            // 
+            this.radioButtonMonth.AutoSize = true;
+            this.radioButtonMonth.Location = new System.Drawing.Point(167, 135);
+            this.radioButtonMonth.Name = "radioButtonMonth";
+            this.radioButtonMonth.Size = new System.Drawing.Size(55, 17);
+            this.radioButtonMonth.TabIndex = 54;
+            this.radioButtonMonth.TabStop = true;
+            this.radioButtonMonth.Text = "Month";
+            this.radioButtonMonth.UseVisualStyleBackColor = true;
+            this.radioButtonMonth.CheckedChanged += new System.EventHandler(this.radioButtonMonth_CheckedChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(14, 238);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(69, 13);
+            this.label10.TabIndex = 51;
+            this.label10.Text = "Target Dates";
+            // 
+            // radioButtonTargetNone
+            // 
+            this.radioButtonTargetNone.AutoSize = true;
+            this.radioButtonTargetNone.Location = new System.Drawing.Point(82, 236);
+            this.radioButtonTargetNone.Name = "radioButtonTargetNone";
+            this.radioButtonTargetNone.Size = new System.Drawing.Size(51, 17);
+            this.radioButtonTargetNone.TabIndex = 52;
+            this.radioButtonTargetNone.TabStop = true;
+            this.radioButtonTargetNone.Text = "None";
+            this.radioButtonTargetNone.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonTargetSome
+            // 
+            this.radioButtonTargetSome.AutoSize = true;
+            this.radioButtonTargetSome.Checked = true;
+            this.radioButtonTargetSome.Location = new System.Drawing.Point(131, 236);
+            this.radioButtonTargetSome.Name = "radioButtonTargetSome";
+            this.radioButtonTargetSome.Size = new System.Drawing.Size(52, 17);
+            this.radioButtonTargetSome.TabIndex = 53;
+            this.radioButtonTargetSome.TabStop = true;
+            this.radioButtonTargetSome.Text = "Some";
+            this.radioButtonTargetSome.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonTargetAll
+            // 
+            this.radioButtonTargetAll.AutoSize = true;
+            this.radioButtonTargetAll.Location = new System.Drawing.Point(190, 236);
+            this.radioButtonTargetAll.Name = "radioButtonTargetAll";
+            this.radioButtonTargetAll.Size = new System.Drawing.Size(36, 17);
+            this.radioButtonTargetAll.TabIndex = 54;
+            this.radioButtonTargetAll.TabStop = true;
+            this.radioButtonTargetAll.Text = "All";
+            this.radioButtonTargetAll.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 608);
+            this.ClientSize = new System.Drawing.Size(1071, 779);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -596,8 +1049,22 @@
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarTaskAvgPrice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTaskAvgPrice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarTaskAvgTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTaskAvgTime)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarTasksPerResourc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarResourceCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -633,12 +1100,45 @@
         private System.Windows.Forms.Label lblPhase;
         private System.Windows.Forms.Button buttonKMeansCluster;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.NumericUpDown numericUpDown11;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.NumericUpDown numericUpDown12;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label labelTaskCount;
         private System.Windows.Forms.Button buttonOptimizationRequest;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TrackBar trackBarTaskAvgTime;
+        private System.Windows.Forms.NumericUpDown numericUpDownTaskAvgTime;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TrackBar trackBarTaskAvgPrice;
+        private System.Windows.Forms.NumericUpDown numericUpDownTaskAvgPrice;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown numericUpDown7;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.NumericUpDown numericUpDown8;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TrackBar trackBarResourceCount;
+        private System.Windows.Forms.NumericUpDown numericUpDownResourceCount;
+        private System.Windows.Forms.TrackBar trackBarTasksPerResourc;
+        private System.Windows.Forms.RadioButton radioButtonDay;
+        private System.Windows.Forms.RadioButton radioButtonYear;
+        private System.Windows.Forms.RadioButton radioButtonWeek;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label labelTasksPerResourceDay;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.RadioButton radioButtonMonth;
+        private System.Windows.Forms.RadioButton radioButtonTargetAll;
+        private System.Windows.Forms.RadioButton radioButtonTargetSome;
+        private System.Windows.Forms.RadioButton radioButtonTargetNone;
+        private System.Windows.Forms.Label label10;
     }
 }
 

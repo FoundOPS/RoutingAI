@@ -31,7 +31,7 @@ namespace RoutingAI.Slave
 
             if (cfg.SlaveIndex.First == 0)
             {
-                PAMClusteringAlgorithm<Task> clusteringAlg = new PAMClusteringAlgorithm<Task>(data.Tasks, data.Workers.Length, new GeoStraightDistanceAlgorithm());
+                PAMClusteringAlgorithm<Task> clusteringAlg = new PAMClusteringAlgorithm<Task>(data.Tasks, data.Resources.Length, new GeoStraightDistanceAlgorithm());
                 clusteringAlg.Run();
 
                 _solution = new ClusteringSolution();

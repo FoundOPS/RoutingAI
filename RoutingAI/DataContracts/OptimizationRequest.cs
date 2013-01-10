@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RoutingAI.DataContracts
 {
@@ -23,22 +19,16 @@ namespace RoutingAI.DataContracts
         public Guid ClientId { get; set; }
 
         /// <summary>
-        /// The dates & times a job can be done
-        /// </summary>
-        [DataMember(Name = "window")]
-        public Window Window { get; set; }
-
-        /// <summary>
         /// The tasks to be completed
         /// </summary>
         [DataMember(Name = "tasks")]
         public Task[] Tasks { get; set; }
 
         /// <summary>
-        /// The workers to assign to routes
+        /// The resources to assign to routes
         /// </summary>
-        [DataMember(Name = "workers")]
-        public Resource[] Workers { get; set; }
+        [DataMember(Name = "resources")]
+        public Resource[] Resources { get; set; }
 
         /// <summary>
         /// Region code specifying which routing servers/cache servers to use

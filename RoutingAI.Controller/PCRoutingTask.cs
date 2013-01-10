@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using RoutingAI.DataContracts;
 using RoutingAI.ServiceContracts;
-using System.Net; 
+using System.Net;
 using libWyvernzora;
 using System.Threading;
-using libWyvernzora.Logging;  
+using libWyvernzora.Logging;
 
 namespace RoutingAI.Controller
 {
@@ -22,7 +22,7 @@ namespace RoutingAI.Controller
 
         private Random _rand = new Random();
         private Solution _result;
-        private List<Pair<Guid, IRoutingAiSlaveService>> _threads = new List<Pair<Guid,IRoutingAiSlaveService>>();    // 1 entry per thread
+        private List<Pair<Guid, IRoutingAiSlaveService>> _threads = new List<Pair<Guid, IRoutingAiSlaveService>>();    // 1 entry per thread
         private List<SlaveConfig> _threadConfig = new List<SlaveConfig>();    // 1 entry per thread
 
         public Solution Result
@@ -35,7 +35,7 @@ namespace RoutingAI.Controller
         {
             // Convert arguments and calculate info
             OptimizationRequest request = (OptimizationRequest)args[0];
-            Int64 problemComplexity = request.Workers.Length * request.Tasks.Length;
+            Int64 problemComplexity = request.Resources.Length * request.Tasks.Length;
             Int32 serverCount = 2 * (Int32)Math.Ceiling(Math.Log10(problemComplexity)) + 1;
 
             // Allocate appropriate servers
@@ -61,25 +61,26 @@ namespace RoutingAI.Controller
                     _threads.Add(new Pair<Guid, IRoutingAiSlaveService>(id, proxy));
                 }
             }
-            
+
             // Create configuration for each of them
             for (int i = 0; i < _threads.Count; i++)
-                _threadConfig.Add(new SlaveConfig(){
-                     LibrarianServer = librIP,
-                     OSRMServers = osrmIPs,
-                     RedisServers = redisIPs,
-                     SlaveIndex = new Pair<int,int>(i, _threads.Count),
-                     RandomSeed = _rand.Next()
-                    });
+                _threadConfig.Add(new SlaveConfig()
+                {
+                    LibrarianServer = librIP,
+                    OSRMServers = osrmIPs,
+                    RedisServers = redisIPs,
+                    SlaveIndex = new Pair<int, int>(i, _threads.Count),
+                    RandomSeed = _rand.Next()
+                });
 
 
             // Do clustering
-                // start computing
+            // start computing
             for (int i = 0; i < _threads.Count; i++)
                 _threads[i].Second.ComputeClusteringSolution(_threads[i].First, _threadConfig[i], request);
-                // wait for thread 0 to complete
+            // wait for thread 0 to complete
             while (_threads[0].Second.GetComputationThreadInfo(_threads[0].First).State == ComputationThreadState.Working) Thread.Sleep(1000);
-                // here computation is either finished or there was an error
+            // here computation is either finished or there was an error
             ComputationThreadInfo info = _threads[0].Second.GetComputationThreadInfo(_threads[0].First);
             if (info.State == ComputationThreadState.Exception)
             {
@@ -96,13 +97,14 @@ namespace RoutingAI.Controller
             // Finish up
 
             _result = new Solution();
-            _result.TaskSequences = new TaskSequence[request.Workers.Length];
-            for (int i = 0; i < _result.TaskSequences.Length; i++ )
+            _result.Routes = new Route[request.Resources.Length];
+
+            for (int i = 0; i < _result.Routes.Length; i++)
             {
-                _result.TaskSequences[i] = new TaskSequence()
+                _result.Routes[i] = new Route
                 {
-                   OrderedTasks = clusteringSolution.Clusters[i].ToArray(),
-                   Resources = new Resource[] { request.Workers[i] }
+                    Destinations = clusteringSolution.Clusters[i].Select(t => new Destination { Task = t }).ToArray(),
+                    Resource = request.Resources[i]
                 };
             }
         }

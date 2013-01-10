@@ -78,12 +78,13 @@ namespace RoutingAI.Sandbox
                 bw.ReportProgress(0, "Clustering");
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                IClusteringAlgorithm<Coordinate> processor = 
+                IClusteringAlgorithm<Coordinate> processor =
                     new EPAMClusteringAlgorithm<Coordinate>(data, clusterCount, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
                 processor.Run();
                 sw.Stop();
 
-                this.BeginInvoke(new Action(()=>{
+                this.BeginInvoke(new Action(() =>
+                {
                     lblTime.Text = String.Format("Elapsed Time: {0}ms", sw.ElapsedMilliseconds);
                 }));
 
@@ -162,7 +163,7 @@ namespace RoutingAI.Sandbox
                 sw.Start();
                 IClusteringAlgorithm<Coordinate> processor =
                     new CLARAClusteringAlgorithm<Coordinate>(data, clusterCount, samplingRUns, new RoutingAI.Algorithms.StraightDistanceAlgorithm());
-                    processor.Run();
+                processor.Run();
                 sw.Stop();
 
                 this.BeginInvoke(new Action(() =>
@@ -305,6 +306,79 @@ namespace RoutingAI.Sandbox
 
         #region Controller Demo
 
+        #region UI
+
+        private void UpdateTaskCount()
+        {
+            var numberResources = numericUpDownResourceCount.Value;
+            var tasksPer = trackBarTasksPerResourc.Value;
+            var tasksCount = numberResources * tasksPer;
+            if (radioButtonWeek.Checked)
+                tasksCount *= 5;
+            else if (radioButtonMonth.Checked)
+                tasksCount *= 22;
+            else if (radioButtonYear.Checked)
+                tasksCount *= 220;
+
+            labelTaskCount.Text = "Count: " + tasksCount;
+            labelTaskCount.Tag = tasksCount;
+        }
+
+        //Resource Elements
+        private void numericUpDownResourceCount_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateTaskCount();
+        }
+        private void trackBarTasksPerResource_Scroll(object sender, EventArgs e)
+        {
+            labelTasksPerResourceDay.Text = trackBarTasksPerResourc.Value.ToString();
+            UpdateTaskCount();
+        }
+        private void radioButtonDay_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTaskCount();
+
+            //when optimizing for a day likely none are recurring
+            radioButtonTargetNone.Checked = true;
+        }
+        private void radioButtonWeek_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTaskCount();
+
+            //when optimizing for a week likely some are recurring
+            radioButtonTargetSome.Checked = true;
+        }
+        private void radioButtonMonth_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTaskCount();
+
+            //when optimizing for a month most likely some are recurring
+            radioButtonTargetSome.Checked = true;
+        }
+        private void radioButtonYear_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTaskCount();
+
+            //when optimizing for a year most likely some are recurring
+            radioButtonTargetSome.Checked = true;
+        }
+
+        //Task Elements
+        private void trackBarTaskAvgTime_Scroll(object sender, EventArgs e)
+        {
+            numericUpDownTaskAvgTime.Value = (int)(trackBarTaskAvgTime.Value / 20.0 * 300.0); //high end: 5 hours
+        }
+        private void trackBarTaskAvgPrice_Scroll(object sender, EventArgs e)
+        {
+            numericUpDownTaskAvgPrice.Value = (int)(trackBarTaskAvgPrice.Value / 100.0 * 500.0); //high end: $500
+        }
+        private void trackBarResourceCount_Scroll(object sender, EventArgs e)
+        {
+            numericUpDownResourceCount.Value = (int)(trackBarResourceCount.Value / 10.0 * 20.0); //high end: 1,000 tasks
+        }
+
+        #endregion
+
         private void buttonOptimizationRequest_Click(object sender, EventArgs e)
         {
             EndpointAddress endpoint = new EndpointAddress("http://localhost:8000/RoutingAi/Controller");
@@ -315,9 +389,8 @@ namespace RoutingAI.Sandbox
                 Id = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 RegionCode = "dummy",
-                Workers = new Resource[] { new Resource() { Availability = null, CostPerHour = 0, CostPerHourOvertime = 0, CostPerMile = 0, Skills = new UInt32[0] } },
-                Tasks = new DataContracts.Task[] { new Task(0, new Decimal(40.345f), new Decimal(-86.903f)) },
-                Window = null
+                Resources = new Resource[] { new Resource() { Availability = null, CostPerHour = 0, CostPerMile = 0, Skills = new UInt32[0] } },
+                Tasks = new DataContracts.Task[] { new Task(0, new Decimal(40.345f), new Decimal(-86.903f)) }
             };
 
             proxy.Post(or);

@@ -158,7 +158,7 @@ namespace RoutingAI.Controller
                 Id = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 Tasks = new RoutingAI.DataContracts.Task[] { },
-                Workers = new Resource[] { }
+                Resources = new Resource[] { }
             };
             SlaveConfig config = new SlaveConfig()
             {

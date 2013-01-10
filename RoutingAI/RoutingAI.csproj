@@ -62,14 +62,12 @@
     <Compile Include="DataContracts\ClusteringSolution.cs" />
     <Compile Include="DataContracts\ComputationThreadState.cs" />
     <Compile Include="DataContracts\Cost.cs" />
-    <Compile Include="DataContracts\DateWindow.cs" />
     <Compile Include="DataContracts\OptimizationRequest.cs" />
     <Compile Include="DataContracts\OptimizationResponse.cs" />
     <Compile Include="DataContracts\Resource.cs" />
     <Compile Include="DataContracts\SlaveConfig.cs" />
     <Compile Include="DataContracts\Solution.cs" />
     <Compile Include="DataContracts\TimeWindow.cs" />
-    <Compile Include="DataContracts\Window.cs" />
     <Compile Include="libWyvernzora\ConsoleUtil\CommandLineArgs.cs" />
     <Compile Include="libWyvernzora\Logging\ConsoleLogger.cs" />
     <Compile Include="libWyvernzora\Logging\GlobalLogger.cs" />
@@ -87,6 +85,7 @@
     <Compile Include="Threading\ComputationThread.cs" />
     <Compile Include="Threading\ComputationThreadDispatcher.cs" />
     <Compile Include="Threading\ComputationThreadState.cs" />
+    <Compile Include="Utilities\ArrayCloner.cs" />
     <Compile Include="Utilities\ArraySampler.cs" />
     <Compile Include="Utilities\GeoTools.cs" />
   </ItemGroup>
