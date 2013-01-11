@@ -23,7 +23,7 @@ namespace RoutingAI.Algorithms.Clustering
 
         // Parameters
         private Int32 _sampleSize;
-
+        private Object mutex = new Object();   // mutex lock
 
         // Current best
         private volatile Int32 _bestDistance = Int32.MaxValue;
@@ -101,7 +101,7 @@ namespace RoutingAI.Algorithms.Clustering
 
         private void SubmitSamplingResults(Int32 distance, Double dissimilarity, T[] centroids)
         {
-            lock (this)
+            lock (mutex)
             {
                 if (distance <= _bestDistance)
                 {

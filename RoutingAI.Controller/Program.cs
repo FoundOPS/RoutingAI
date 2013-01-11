@@ -40,9 +40,6 @@ namespace RoutingAI.Controller
             GlobalLogger.AttachLogger(console);
             GlobalLogger.AttachLogger(logfile);
 
-            console.Run();
-            logfile.Run();
-
             #endregion
 
             #region Process Command Line Arguments
@@ -137,8 +134,6 @@ namespace RoutingAI.Controller
             }
             finally
             {
-                console.Stop();
-                logfile.Stop();
             }
 
             #endregion

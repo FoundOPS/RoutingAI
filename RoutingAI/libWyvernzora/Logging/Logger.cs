@@ -15,7 +15,6 @@ namespace libWyvernzora.Logging
     {
         // Thread-safe queue for buffering 
         protected ConcurrentQueue<LoggerEventArgs> _messages = new ConcurrentQueue<LoggerEventArgs>();
-        protected Thread _flushThread = null;  // Thread that takes care of monitoring message queue and submitting them to the log db
         protected Int32 _submissionBatch = 100;  // Specifies batch size (number of messages that trigger a submissin operation)
 
         // Indicates whether logger thread has been requested to stop
@@ -38,10 +37,7 @@ namespace libWyvernzora.Logging
             get { return _submissionBatch; }
             set
             {
-                if (_flushThread.ThreadState == ThreadState.Unstarted)
-                    _submissionBatch = value;
-                else
-                    throw new InvalidOperationException("Logger.set_SubmissionBatchSize(): Cannot set submission batch size once the logger thread starts");
+               _submissionBatch = value;
             }
         }
 
@@ -62,46 +58,31 @@ namespace libWyvernzora.Logging
         /// </summary>
         protected Logger()
         {
-            ThreadStart flushStart = new ThreadStart(IterateLogger);
-            _flushThread = new Thread(flushStart);
         }
 
         // Logger thread method, must remain private!
-        private void IterateLogger()
+        private void CheckSubmissionQueue()
         {
-                while (true)
+            // Do nothing if there is no need to flush messages
+            if (_messages.Count < _submissionBatch)
+                return;
+            else
+            {
+                // Submit messages if needed
+
+                /* A faster way of doing this might be to copy entire _messages into an array via ToArray() and clearing the queue,
+                 * but considering that there can be new messages arriving between these two instructions, copying one by one
+                 * seems more reliable. More investigation needed.
+                 */
+
+                LoggerEventArgs[] messages = new LoggerEventArgs[_submissionBatch];
+                for (int i = 0; i < _submissionBatch; i++)
                 {
-                    if (!_terminateRequest)
-                    {
-                        // Do nothing if there is no need to flush messages
-                        if (_messages.Count < _submissionBatch)
-                            continue;
-                        else
-                        {
-                            // Submit messages if needed
-
-                            /* A faster way of doing this might be to copy entire _messages into an array via ToArray() and clearing the queue,
-                             * but considering that there can be new messages arriving between these two instructions, copying one by one
-                             * seems more reliable. More investigation needed.
-                             */
-
-                            LoggerEventArgs[] messages = new LoggerEventArgs[_submissionBatch];
-                            for (int i = 0; i < _submissionBatch; i++)
-                            {
-                                if (!_messages.TryDequeue(out messages[i]))
-                                    throw new Exception("Logger.RunLogger(): Failed to dequeue the next log message!");
-                            }
-                            SubmitMessageQueue(messages);
-                        }
-                    }
-                    else
-                    {
-                        // If termination is requested, submit remaining messages and quit the thread
-                        SubmitMessageQueue(_messages.ToArray());
-                        ReleaseResources();
-                        break;
-                    }
+                    if (!_messages.TryDequeue(out messages[i]))
+                        throw new Exception("Logger.RunLogger(): Failed to dequeue the next log message!");
                 }
+                SubmitMessageQueue(messages);
+            }
         }
 
         /// <summary>
@@ -123,26 +104,8 @@ namespace libWyvernzora.Logging
             if ((arg.Flags & _rejectFlags) != 0) return;
             if ((arg.Flags & _acceptFlags) == 0 && _acceptFlags != MessageFlags.All) return;
             _messages.Enqueue(arg);
+            CheckSubmissionQueue();
         }
-
-        /// <summary>
-        /// Starts the logger thread
-        /// </summary>
-        public void Run()
-        {
-            _flushThread.Start();
-        }
-
-        /// <summary>
-        /// Requests the logger thread to stop.
-        /// </summary>
-        /// <param name="wait">Indicates whether to block caller thread until logger thread terminates</param>
-        public void Stop(Boolean wait = true)
-        {
-            _terminateRequest = true;  // Set termination flag
-            if (wait) _flushThread.Join();  // Wait for logger to quit
-        }
-
 
         /// <summary>
         /// When implemented, writes a collection of log messages to underlying physical storage

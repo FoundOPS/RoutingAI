@@ -8,14 +8,31 @@ using System.Threading;
 
 namespace RoutingAI.Threading
 {
+    /// <summary>
+    /// Dispatcher class for ComputationThread objects.
+    /// This class is a singleton that manages threads, exposes necessary
+    /// methods for accessing them and removes threads that have been idle
+    /// for too long.
+    /// </summary>
     public class ComputationThreadDispatcher : IDisposable
     {
         // Constants
-        public const String TAG = "Dispatcher";
+        private const String TAG = "Dispatcher";
+        /// <summary>
+        /// Specifies the optimal number of threads per processor core
+        /// </summary>
         public const Int32 THREADS_PER_PROCESSOR = 2;
+        /// <summary>
+        /// Specifies the default number of milliseconds a thread must be
+        /// idle to be considered time-out
+        /// </summary>
         public const Int64 IDLE_THREAD_TIMEOUT = 60 * 1000; // 1 minute
+        /// <summary>
+        /// The minimum interval between two RemoveIdleThreads() calls
+        /// </summary>
+        public const Int64 IDLE_REMOVAL_INTERVAL = 10 * 1000; // 10 seconds
 
-
+        #region Singleton
         // Singleton Pattern
         private static ComputationThreadDispatcher _instance = null;
 
@@ -31,11 +48,12 @@ namespace RoutingAI.Threading
             }
         }
 
+        #endregion
 
         // Fields
         private Int32 _capacity;
         private Int64 _idleTimeout;
-        private Thread _maintain;
+        private Int64 _lastUpdate = 0;
         private Dictionary<Guid, ComputationThread> _threads;
 
 
@@ -44,13 +62,25 @@ namespace RoutingAI.Threading
         /// Gets the maximum number of threads allowed by the dispatcher
         /// </summary>
         public Int32 Capacity
-        { get { return _capacity; } }
+        {
+            get
+            {
+                RemoveIdleThreads();
+                return _capacity;
+            }
+        }
 
         /// <summary>
         /// Returns the number of threads managed by this dispatcher
         /// </summary>
         public Int32 ThreadCount
-        { get { return _threads.Count; } }
+        {
+            get
+            {
+                RemoveIdleThreads();
+                return _threads.Count;
+            }
+        }
 
         /// <summary>
         /// Gets or sets number of milliseconds before an idle thread is considered
@@ -84,8 +114,6 @@ namespace RoutingAI.Threading
             _threads = new Dictionary<Guid, ComputationThread>(capacity);
 
             IdleThreadTimeout = IDLE_THREAD_TIMEOUT;
-            _maintain = new Thread(new ThreadStart(MaintainThreadsAsync));
-            _maintain.Start();
         }
 
 
@@ -96,11 +124,13 @@ namespace RoutingAI.Threading
         /// <returns>Unique id representing the created thread</returns>
         public Guid NewThread()
         {
+            RemoveIdleThreads(); // Check for idle threads first
+
             if (ThreadCount + 1 > _capacity)
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Warning | MessageFlags.Expected, "NewThread: Dispatcher is overburdened! New thread will still be crated but check logs ASAP!");
 
             ComputationThread thread = new ComputationThread();
-            lock (this) _threads.Add(thread.ID, thread);
+            lock (_threads) _threads.Add(thread.ID, thread);
 
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "NewThread: {{{0}}}", thread.ID);
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "Dispatcher capacity: {0} alive/{1} total", _threads.Count, _capacity);
@@ -113,6 +143,8 @@ namespace RoutingAI.Threading
         /// </summary>
         public void NewThread(Guid id)
         {
+            RemoveIdleThreads(); // Check for idle threads first
+
             if (_threads.ContainsKey(id))
                 throw new InvalidOperationException();
 
@@ -127,6 +159,8 @@ namespace RoutingAI.Threading
         /// <returns>Unique id representing the thread</returns>
         public ComputationThreadInfo GetThreadInfo(Guid threadId)
         {
+            RemoveIdleThreads(); // Check for idle threads first
+
             if (_threads.ContainsKey(threadId))
             {
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "GetThreadIndo: {{{0}}}", threadId);
@@ -154,6 +188,8 @@ namespace RoutingAI.Threading
         /// <returns>CallResponse indicating whether the action succeeded</returns>
         public CallResponse AbortThreadAction(Guid threadId)
         {
+            RemoveIdleThreads(); // Check for idle threads first
+
             if (_threads.ContainsKey(threadId))
             {
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "AbortThreadAction: {{{0}}}", threadId);
@@ -175,11 +211,13 @@ namespace RoutingAI.Threading
         /// <returns>CallResponse indicating whether the action succeeded</returns>
         public CallResponse DisposeThread(Guid threadId)
         {
+            RemoveIdleThreads(); // Check for idle threads first
+
             if (_threads.ContainsKey(threadId))
             {
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "DisposeThread: {{{0}}}", threadId);
                 _threads[threadId].AbortCurrentAction();
-                lock (this) _threads.Remove(threadId);
+                lock (_threads) _threads.Remove(threadId);
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Trivial, "DisposeThread: Success: {{{0}}}", threadId);
                 return new CallResponse() { Success = true, Details = String.Empty };
             }
@@ -215,6 +253,9 @@ namespace RoutingAI.Threading
 
             // everything looks good, start working on the task
             _threads[threadId].RunComputation(task, args);
+
+            RemoveIdleThreads(); // Check for idle threads
+
             return new CallResponse() { Success = true, Details = String.Empty };
         }
 
@@ -225,6 +266,8 @@ namespace RoutingAI.Threading
         /// <returns></returns>
         public object GetComputationResult(Guid threadId)
         {
+            RemoveIdleThreads(); // Check for idle threads first
+
             if (_threads.ContainsKey(threadId))
             {
                 GlobalLogger.SendLogMessage(TAG, MessageFlags.Verbose, "GetComputationResult: {{{0}}}", threadId);
@@ -240,51 +283,56 @@ namespace RoutingAI.Threading
 
         // Private Async Methods
         /// <summary>
-        /// Inner async method that maintains threads and removes threads that
-        /// have been idle for too long
+        /// Removes all threads that have been idle for long enough
+        /// to time out.
+        /// In case if this method is called too often, it only executes
+        /// once every IDLE_REMOVAL_INTERVAL milliseconds.
         /// </summary>
-        private void MaintainThreadsAsync()
+        public void RemoveIdleThreads()
         {
-            try
-            {
-                while (true)
-                {
-                    Int64 now = DateTime.Now.Ticks;
-                    Guid[] keys = _threads.Keys.ToArray();
-                    foreach (Guid key in keys)
-                    {
-                        lock (this)
-                        {
-                            if (_threads[key].ThreadInfo.State != ComputationThreadState.Working &&
-                                now - _threads[key].IdleSince > _idleTimeout)
-                            {
-                                GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "MaintainThreadsAsync: Thread idle for too long, removing it: {{{0}}}", key);
-                                _threads.Remove(key);
-                            }
-                        }
-                    }
+            Int64 now = DateTime.Now.Ticks;
 
-                    Thread.Sleep(1000);
+            // Enforce minimum intervals
+            Int64 tDiff = now - _lastUpdate;     // Get time elapsed from last executed call
+            if (tDiff > IDLE_REMOVAL_INTERVAL * 10000)          // if elapsed time is greater than threshold...
+                _lastUpdate = now;               // ...update the last call time
+            else return;                                        // ..otherwise, abort the method
+
+            // Remove threads
+            Guid[] keys = _threads.Keys.ToArray();  // Copy keys, since we can't modify a collection while iterating through it
+            foreach (Guid key in keys)
+            {
+                lock (_threads) // make sure no other thread is doing anything
+                {
+                    if (_threads[key].ThreadInfo.State != ComputationThreadState.Working &&
+                        now - _threads[key].IdleSince > _idleTimeout)
+                    {
+                        GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "RemoveIdleThreads: Thread idle for too long, removing it: {{{0}}}", key);
+                        _threads.Remove(key);
+                    }
                 }
             }
-            catch (ThreadAbortException)
-            { /* Do Nothing */ }
+
+            
         }
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Performs application-defined tasks associated with 
+        /// freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
-            _maintain.Abort();
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~ComputationThreadDispatcher()
         {
-            _maintain.Abort();
         }
 
         #endregion
-
-
     }
 }

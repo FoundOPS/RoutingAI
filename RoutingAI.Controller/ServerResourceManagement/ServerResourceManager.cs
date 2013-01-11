@@ -25,93 +25,6 @@ namespace RoutingAI.Controller
     /// </remarks>
     public class ServerResourceManager
     {
-        /// <summary>
-        /// Represents a server managed by ServerResourceManager
-        /// </summary>
-        private class ServerInfo
-        {           
-            // Properties
-            public IPEndPoint Endpoint { get; set; }
-            public Boolean IsResponsive { get; set; }
-            public Int32 PingDelay { get; set; }
-            public String Tag { get; set; }
-
-            // Constructor
-            /// <summary>
-            /// Constructor
-            /// Creates a ServerInfo object
-            /// </summary>
-            /// <param name="ep"></param>
-            public ServerInfo(IPEndPoint ep)
-            {
-                Endpoint = ep;
-                Update();
-            }
-
-            // Methods
-            /// <summary>
-            /// Updates server ping delay.
-            /// </summary>
-            public virtual void Update()
-            {
-                // Update Ping Time
-                PingReply reply = (new Ping()).Send(Endpoint.Address, ServerResourceManager._pingTimeout);
-                if (reply.Status != IPStatus.Success)
-                {
-                    GlobalLogger.SendLogMessage(TAG, MessageFlags.Critical | MessageFlags.Expected, "ServerInfo.Update: Ping Failed (Status = {0}): {1}", reply.Status.ToString(), Endpoint);
-                    PingDelay = Int32.MaxValue;
-                    IsResponsive = false;
-                }
-                else
-                {
-                    PingDelay = (int)reply.RoundtripTime;
-                    IsResponsive = true;
-                }
-            }
-        }
-        /// <summary>
-        /// Represents a RoutingAI.Slave server managed by ServerResourceManager
-        /// </summary>
-        private class SlaveServerInfo : ServerInfo
-        {
-            // Fields
-            private IRoutingAiSlaveService proxy = null;
-
-            // Properties
-            public Int32 RemainingCapacity { get; set; }
-
-            // COnstructor
-            public SlaveServerInfo(IPEndPoint ep)
-                : base(ep)
-            { }
-
-            public override void Update()
-            {
-                base.Update();
-
-                // if the server is not responding, no need to check further
-                if (!IsResponsive) return;
-
-                // if proxy is not initialized, initialize it
-                if (proxy == null)
-                    proxy = ServiceProxyHelper.GetSlaveProxy(Endpoint);
-
-                // Try get server load status
-                try
-                {
-                    Pair<Int32, Int32> loadInfo = proxy.GetServerCapacityInfo();
-                    RemainingCapacity = loadInfo.Second - loadInfo.First;
-                }
-                catch (EndpointNotFoundException ex)
-                {
-                    GlobalLogger.SendLogMessage(TAG, MessageFlags.Critical | MessageFlags.Expected,
-                        "SlaveServerInfo.Update: RoutingAI.Slave service not found: {0}", Endpoint);
-                    IsResponsive = false;
-                }
-
-            }
-        }
-
         private const String TAG = "SrvMgr";
 
         #region Singleton
@@ -147,19 +60,18 @@ namespace RoutingAI.Controller
             _instance = new ServerResourceManager(xdoc);
         }
 
-        
         #endregion
 
         private static Int32 _pingTimeout = 5000;  // ping timeout
         private readonly Random _rand = new Random();   // Random Number Generator
 
         // Servers sorted by ping values
-        private List<SlaveServerInfo> _slaveServers;
-        private List<ServerInfo> _librarianServers;
+        private List<SlaveServerInfo> _slaveServers;    // list of slave servers
+        private List<ServerInfo> _librarianServers;     // list of librarian servers
 
         // Servers sorted by region
-        private List<ServerInfo> _osrmServers;
-        private List<ServerInfo> _redisServers;
+        private List<ServerInfo> _osrmServers;      // list of OSRM servers
+        private List<ServerInfo> _redisServers;     // list of Redis servers
             
 
         /// <summary>
@@ -174,7 +86,7 @@ namespace RoutingAI.Controller
             _osrmServers = new List<ServerInfo>();
             _redisServers = new List<ServerInfo>();
         }
-
+          
         /// <summary>
         /// Constructor.
         /// Creates an instance and populates it with servers from
@@ -220,7 +132,6 @@ namespace RoutingAI.Controller
         }
 
         #region Add/Remove Servers
-
 
         /// <summary>
         /// Adds a slave server to the manager.
@@ -273,7 +184,6 @@ namespace RoutingAI.Controller
             }
         }
 
-        // Librarian servers are not implemented at the moment
         /// <summary>
         /// Adds a Librarian server to the manager.
         /// Note: depending on network status, you may expect this method to block executing thread
@@ -446,28 +356,68 @@ namespace RoutingAI.Controller
 
         #region Maintain Server Resources
 
-        private void CheckServerResponsiveness()
+        /// <summary>
+        /// Updates ping delay and capacity information
+        /// of all slave servers, then sorts them
+        /// </summary>
+        public void UpdateSlaveServers()
         {
-            // Update Slave Servers
             lock (_slaveServers)
             {
                 foreach (SlaveServerInfo slave in _slaveServers)
-                    slave.Update();
+                    slave.Update(_pingTimeout);
+                _slaveServers.Sort();
             }
+        }
 
-            // Update OSRM Servers
+        /// <summary>
+        /// Updates ping delay of all OSRM servers, then sorts them
+        /// </summary>
+        public void UpdateOsrmServers()
+        {
             lock (_osrmServers)
             {
                 foreach (ServerInfo srv in _osrmServers)
-                    srv.Update();
+                    srv.Update(_pingTimeout);
+                _osrmServers.Sort();
             }
+        }
 
-            // Update Redis Servers
+        /// <summary>
+        /// Updates ping delay of all Redis servers, then sorts them
+        /// </summary>
+        public void UpdateRedisServers()
+        {
             lock (_redisServers)
             {
                 foreach (ServerInfo srv in _redisServers)
-                    srv.Update();
+                    srv.Update(_pingTimeout);
+                _redisServers.Sort();
             }
+        }
+
+        /// <summary>
+        /// Updates ping delay of all Librarian servers, then sorts them
+        /// </summary>
+        public void UpdateLibrarianServers()
+        {
+            lock (_librarianServers)
+            {
+                foreach (ServerInfo libr in _librarianServers)
+                    libr.Update(_pingTimeout);
+                _librarianServers.Sort();
+            }
+        }
+
+        /// <summary>
+        /// Updates ping delay of all servers, then sorts them
+        /// </summary>
+        public void UpdateAllServers()
+        {
+            UpdateSlaveServers();
+            UpdateLibrarianServers();
+            UpdateOsrmServers();
+            UpdateRedisServers();
         }
 
         #endregion
@@ -482,6 +432,7 @@ namespace RoutingAI.Controller
         /// <returns>Array of IP endpoints</returns>
         public IPEndPoint[] GetSlaveServers(Int32 count)
         {
+            UpdateSlaveServers();
             IEnumerable<IPEndPoint> servers = (from srv in _slaveServers
                                               where srv.IsResponsive
                                               orderby srv.RemainingCapacity
@@ -500,6 +451,7 @@ namespace RoutingAI.Controller
         /// <returns>IP Endpoint representing the Librarian Server; null if no librarian found</returns>
         public IPEndPoint GetLibrarianServer()
         {
+            UpdateLibrarianServers();
             IPEndPoint[] eps = (from srv in _librarianServers
                                 where srv.IsResponsive
                                 select srv.Endpoint).ToArray();
@@ -514,6 +466,7 @@ namespace RoutingAI.Controller
         /// <returns>Array of IP Endpoints representing servers</returns>
         public IPEndPoint[] GetOsrmServers(String region)
         {
+            UpdateOsrmServers();
             return (from srv in _osrmServers where srv.IsResponsive && region.Equals(srv.Tag) select srv.Endpoint).ToArray();
         }
 
@@ -524,6 +477,7 @@ namespace RoutingAI.Controller
         /// <returns>Array of IP Endpoints representing servers</returns>
         public IPEndPoint[] GetRedisServers(String region)
         {
+            UpdateRedisServers();
             return (from srv in _redisServers where srv.IsResponsive && region.Equals(srv.Tag) select srv.Endpoint).ToArray();
         }
 

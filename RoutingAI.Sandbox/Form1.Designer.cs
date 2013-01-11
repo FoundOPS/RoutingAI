@@ -59,6 +59,10 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.radioButtonTargetAll = new System.Windows.Forms.RadioButton();
+            this.radioButtonTargetSome = new System.Windows.Forms.RadioButton();
+            this.radioButtonTargetNone = new System.Windows.Forms.RadioButton();
+            this.label10 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.trackBarTaskAvgPrice = new System.Windows.Forms.TrackBar();
@@ -73,6 +77,7 @@
             this.buttonOptimizationRequest = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.radioButtonMonth = new System.Windows.Forms.RadioButton();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.labelTasksPerResourceDay = new System.Windows.Forms.Label();
@@ -91,11 +96,6 @@
             this.label15 = new System.Windows.Forms.Label();
             this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
-            this.radioButtonMonth = new System.Windows.Forms.RadioButton();
-            this.label10 = new System.Windows.Forms.Label();
-            this.radioButtonTargetNone = new System.Windows.Forms.RadioButton();
-            this.radioButtonTargetSome = new System.Windows.Forms.RadioButton();
-            this.radioButtonTargetAll = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -171,9 +171,9 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.numericUpDown1);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(734, 6);
+            this.groupBox2.Location = new System.Drawing.Point(769, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(264, 519);
+            this.groupBox2.Size = new System.Drawing.Size(264, 717);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
@@ -181,7 +181,7 @@
             // buttonKMeansCluster
             // 
             this.buttonKMeansCluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonKMeansCluster.Location = new System.Drawing.Point(147, 468);
+            this.buttonKMeansCluster.Location = new System.Drawing.Point(147, 666);
             this.buttonKMeansCluster.Name = "buttonKMeansCluster";
             this.buttonKMeansCluster.Size = new System.Drawing.Size(111, 35);
             this.buttonKMeansCluster.TabIndex = 20;
@@ -229,7 +229,7 @@
             // 
             this.lblTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(6, 500);
+            this.lblTime.Location = new System.Drawing.Point(6, 698);
             this.lblTime.Name = "lblTime";
             this.lblTime.Size = new System.Drawing.Size(96, 13);
             this.lblTime.TabIndex = 17;
@@ -238,7 +238,7 @@
             // buttonCLARACluster
             // 
             this.buttonCLARACluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCLARACluster.Location = new System.Drawing.Point(147, 427);
+            this.buttonCLARACluster.Location = new System.Drawing.Point(147, 625);
             this.buttonCLARACluster.Name = "buttonCLARACluster";
             this.buttonCLARACluster.Size = new System.Drawing.Size(111, 35);
             this.buttonCLARACluster.TabIndex = 16;
@@ -370,7 +370,7 @@
             // buttonEPAMCluster
             // 
             this.buttonEPAMCluster.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEPAMCluster.Location = new System.Drawing.Point(147, 386);
+            this.buttonEPAMCluster.Location = new System.Drawing.Point(147, 584);
             this.buttonEPAMCluster.Name = "buttonEPAMCluster";
             this.buttonEPAMCluster.Size = new System.Drawing.Size(111, 35);
             this.buttonEPAMCluster.TabIndex = 6;
@@ -449,7 +449,7 @@
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(722, 519);
+            this.groupBox1.Size = new System.Drawing.Size(757, 717);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Visualization";
@@ -463,7 +463,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(6, 19);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(710, 494);
+            this.panel1.Size = new System.Drawing.Size(745, 692);
             this.panel1.TabIndex = 0;
             // 
             // panel2
@@ -472,7 +472,7 @@
             this.panel2.Controls.Add(this.lblProgress);
             this.panel2.Controls.Add(this.progressBar1);
             this.panel2.Controls.Add(this.lblPhase);
-            this.panel2.Location = new System.Drawing.Point(127, 210);
+            this.panel2.Location = new System.Drawing.Point(144, 309);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(468, 100);
             this.panel2.TabIndex = 1;
@@ -566,6 +566,49 @@
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Tasks";
+            // 
+            // radioButtonTargetAll
+            // 
+            this.radioButtonTargetAll.AutoSize = true;
+            this.radioButtonTargetAll.Location = new System.Drawing.Point(190, 236);
+            this.radioButtonTargetAll.Name = "radioButtonTargetAll";
+            this.radioButtonTargetAll.Size = new System.Drawing.Size(36, 17);
+            this.radioButtonTargetAll.TabIndex = 54;
+            this.radioButtonTargetAll.TabStop = true;
+            this.radioButtonTargetAll.Text = "All";
+            this.radioButtonTargetAll.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonTargetSome
+            // 
+            this.radioButtonTargetSome.AutoSize = true;
+            this.radioButtonTargetSome.Checked = true;
+            this.radioButtonTargetSome.Location = new System.Drawing.Point(131, 236);
+            this.radioButtonTargetSome.Name = "radioButtonTargetSome";
+            this.radioButtonTargetSome.Size = new System.Drawing.Size(52, 17);
+            this.radioButtonTargetSome.TabIndex = 53;
+            this.radioButtonTargetSome.TabStop = true;
+            this.radioButtonTargetSome.Text = "Some";
+            this.radioButtonTargetSome.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonTargetNone
+            // 
+            this.radioButtonTargetNone.AutoSize = true;
+            this.radioButtonTargetNone.Location = new System.Drawing.Point(82, 236);
+            this.radioButtonTargetNone.Name = "radioButtonTargetNone";
+            this.radioButtonTargetNone.Size = new System.Drawing.Size(51, 17);
+            this.radioButtonTargetNone.TabIndex = 52;
+            this.radioButtonTargetNone.TabStop = true;
+            this.radioButtonTargetNone.Text = "None";
+            this.radioButtonTargetNone.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(14, 238);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(69, 13);
+            this.label10.TabIndex = 51;
+            this.label10.Text = "Target Dates";
             // 
             // label13
             // 
@@ -749,6 +792,18 @@
             this.groupBox6.TabIndex = 45;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Main Details";
+            // 
+            // radioButtonMonth
+            // 
+            this.radioButtonMonth.AutoSize = true;
+            this.radioButtonMonth.Location = new System.Drawing.Point(167, 135);
+            this.radioButtonMonth.Name = "radioButtonMonth";
+            this.radioButtonMonth.Size = new System.Drawing.Size(55, 17);
+            this.radioButtonMonth.TabIndex = 54;
+            this.radioButtonMonth.TabStop = true;
+            this.radioButtonMonth.Text = "Month";
+            this.radioButtonMonth.UseVisualStyleBackColor = true;
+            this.radioButtonMonth.CheckedChanged += new System.EventHandler(this.radioButtonMonth_CheckedChanged);
             // 
             // label19
             // 
@@ -970,61 +1025,6 @@
             this.label17.Size = new System.Drawing.Size(90, 13);
             this.label17.TabIndex = 37;
             this.label17.Text = "Avg Cost per Mile";
-            // 
-            // radioButtonMonth
-            // 
-            this.radioButtonMonth.AutoSize = true;
-            this.radioButtonMonth.Location = new System.Drawing.Point(167, 135);
-            this.radioButtonMonth.Name = "radioButtonMonth";
-            this.radioButtonMonth.Size = new System.Drawing.Size(55, 17);
-            this.radioButtonMonth.TabIndex = 54;
-            this.radioButtonMonth.TabStop = true;
-            this.radioButtonMonth.Text = "Month";
-            this.radioButtonMonth.UseVisualStyleBackColor = true;
-            this.radioButtonMonth.CheckedChanged += new System.EventHandler(this.radioButtonMonth_CheckedChanged);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(14, 238);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(69, 13);
-            this.label10.TabIndex = 51;
-            this.label10.Text = "Target Dates";
-            // 
-            // radioButtonTargetNone
-            // 
-            this.radioButtonTargetNone.AutoSize = true;
-            this.radioButtonTargetNone.Location = new System.Drawing.Point(82, 236);
-            this.radioButtonTargetNone.Name = "radioButtonTargetNone";
-            this.radioButtonTargetNone.Size = new System.Drawing.Size(51, 17);
-            this.radioButtonTargetNone.TabIndex = 52;
-            this.radioButtonTargetNone.TabStop = true;
-            this.radioButtonTargetNone.Text = "None";
-            this.radioButtonTargetNone.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonTargetSome
-            // 
-            this.radioButtonTargetSome.AutoSize = true;
-            this.radioButtonTargetSome.Checked = true;
-            this.radioButtonTargetSome.Location = new System.Drawing.Point(131, 236);
-            this.radioButtonTargetSome.Name = "radioButtonTargetSome";
-            this.radioButtonTargetSome.Size = new System.Drawing.Size(52, 17);
-            this.radioButtonTargetSome.TabIndex = 53;
-            this.radioButtonTargetSome.TabStop = true;
-            this.radioButtonTargetSome.Text = "Some";
-            this.radioButtonTargetSome.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonTargetAll
-            // 
-            this.radioButtonTargetAll.AutoSize = true;
-            this.radioButtonTargetAll.Location = new System.Drawing.Point(190, 236);
-            this.radioButtonTargetAll.Name = "radioButtonTargetAll";
-            this.radioButtonTargetAll.Size = new System.Drawing.Size(36, 17);
-            this.radioButtonTargetAll.TabIndex = 54;
-            this.radioButtonTargetAll.TabStop = true;
-            this.radioButtonTargetAll.Text = "All";
-            this.radioButtonTargetAll.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

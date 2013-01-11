@@ -107,6 +107,9 @@ namespace RoutingAI.Controller
                     Resource = request.Resources[i]
                 };
             }
+
+            // Clean up
+            Dispose();
         }
 
 
