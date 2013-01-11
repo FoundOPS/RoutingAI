@@ -68,11 +68,9 @@
             this.trackBarTaskAvgPrice = new System.Windows.Forms.TrackBar();
             this.numericUpDownTaskAvgPrice = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.trackBarCompleteAllTasksLikelihood = new System.Windows.Forms.TrackBar();
             this.label12 = new System.Windows.Forms.Label();
-            this.trackBarTaskAvgTime = new System.Windows.Forms.TrackBar();
-            this.numericUpDownTaskAvgTime = new System.Windows.Forms.NumericUpDown();
-            this.label11 = new System.Windows.Forms.Label();
+            this.labelTaskAverageTimeMins = new System.Windows.Forms.Label();
             this.labelTaskCount = new System.Windows.Forms.Label();
             this.buttonOptimizationRequest = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -85,16 +83,16 @@
             this.radioButtonYear = new System.Windows.Forms.RadioButton();
             this.radioButtonWeek = new System.Windows.Forms.RadioButton();
             this.radioButtonDay = new System.Windows.Forms.RadioButton();
-            this.trackBarTasksPerResourc = new System.Windows.Forms.TrackBar();
+            this.trackBarTasksPerResource = new System.Windows.Forms.TrackBar();
             this.label24 = new System.Windows.Forms.Label();
             this.trackBarResourceCount = new System.Windows.Forms.TrackBar();
             this.label23 = new System.Windows.Forms.Label();
             this.numericUpDownResourceCount = new System.Windows.Forms.NumericUpDown();
             this.label21 = new System.Windows.Forms.Label();
-            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownResourceCostHour = new System.Windows.Forms.NumericUpDown();
             this.label20 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownResourceCostMile = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -112,16 +110,14 @@
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarTaskAvgPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTaskAvgPrice)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarTaskAvgTime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTaskAvgTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarCompleteAllTasksLikelihood)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarTasksPerResourc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarTasksPerResource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarResourceCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCostHour)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCostMile)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -554,15 +550,13 @@
             this.groupBox4.Controls.Add(this.trackBarTaskAvgPrice);
             this.groupBox4.Controls.Add(this.numericUpDownTaskAvgPrice);
             this.groupBox4.Controls.Add(this.label8);
-            this.groupBox4.Controls.Add(this.trackBar1);
+            this.groupBox4.Controls.Add(this.trackBarCompleteAllTasksLikelihood);
             this.groupBox4.Controls.Add(this.label12);
-            this.groupBox4.Controls.Add(this.trackBarTaskAvgTime);
-            this.groupBox4.Controls.Add(this.numericUpDownTaskAvgTime);
-            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.labelTaskAverageTimeMins);
             this.groupBox4.Controls.Add(this.labelTaskCount);
             this.groupBox4.Location = new System.Drawing.Point(10, 303);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(285, 278);
+            this.groupBox4.Size = new System.Drawing.Size(285, 255);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Tasks";
@@ -570,41 +564,40 @@
             // radioButtonTargetAll
             // 
             this.radioButtonTargetAll.AutoSize = true;
-            this.radioButtonTargetAll.Location = new System.Drawing.Point(190, 236);
+            this.radioButtonTargetAll.Enabled = false;
+            this.radioButtonTargetAll.Location = new System.Drawing.Point(192, 212);
             this.radioButtonTargetAll.Name = "radioButtonTargetAll";
             this.radioButtonTargetAll.Size = new System.Drawing.Size(36, 17);
             this.radioButtonTargetAll.TabIndex = 54;
-            this.radioButtonTargetAll.TabStop = true;
             this.radioButtonTargetAll.Text = "All";
             this.radioButtonTargetAll.UseVisualStyleBackColor = true;
             // 
             // radioButtonTargetSome
             // 
             this.radioButtonTargetSome.AutoSize = true;
-            this.radioButtonTargetSome.Checked = true;
-            this.radioButtonTargetSome.Location = new System.Drawing.Point(131, 236);
+            this.radioButtonTargetSome.Enabled = false;
+            this.radioButtonTargetSome.Location = new System.Drawing.Point(133, 212);
             this.radioButtonTargetSome.Name = "radioButtonTargetSome";
             this.radioButtonTargetSome.Size = new System.Drawing.Size(52, 17);
             this.radioButtonTargetSome.TabIndex = 53;
-            this.radioButtonTargetSome.TabStop = true;
             this.radioButtonTargetSome.Text = "Some";
             this.radioButtonTargetSome.UseVisualStyleBackColor = true;
             // 
             // radioButtonTargetNone
             // 
             this.radioButtonTargetNone.AutoSize = true;
-            this.radioButtonTargetNone.Location = new System.Drawing.Point(82, 236);
+            this.radioButtonTargetNone.Location = new System.Drawing.Point(84, 212);
             this.radioButtonTargetNone.Name = "radioButtonTargetNone";
             this.radioButtonTargetNone.Size = new System.Drawing.Size(51, 17);
             this.radioButtonTargetNone.TabIndex = 52;
-            this.radioButtonTargetNone.TabStop = true;
             this.radioButtonTargetNone.Text = "None";
             this.radioButtonTargetNone.UseVisualStyleBackColor = true;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(14, 238);
+            this.label10.Enabled = false;
+            this.label10.Location = new System.Drawing.Point(16, 214);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(69, 13);
             this.label10.TabIndex = 51;
@@ -615,16 +608,16 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(93, 102);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(107, 13);
+            this.label13.Size = new System.Drawing.Size(99, 13);
             this.label13.TabIndex = 41;
-            this.label13.Text = "small        ->       large";
+            this.label13.Text = "some        ->        all";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Enabled = false;
             this.label14.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label14.Location = new System.Drawing.Point(73, 261);
+            this.label14.Location = new System.Drawing.Point(75, 237);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(140, 13);
             this.label14.TabIndex = 40;
@@ -632,7 +625,7 @@
             // 
             // trackBarTaskAvgPrice
             // 
-            this.trackBarTaskAvgPrice.Location = new System.Drawing.Point(94, 178);
+            this.trackBarTaskAvgPrice.Location = new System.Drawing.Point(96, 154);
             this.trackBarTaskAvgPrice.Maximum = 100;
             this.trackBarTaskAvgPrice.Minimum = 1;
             this.trackBarTaskAvgPrice.Name = "trackBarTaskAvgPrice";
@@ -644,7 +637,7 @@
             // 
             // numericUpDownTaskAvgPrice
             // 
-            this.numericUpDownTaskAvgPrice.Location = new System.Drawing.Point(204, 194);
+            this.numericUpDownTaskAvgPrice.Location = new System.Drawing.Point(206, 170);
             this.numericUpDownTaskAvgPrice.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -667,78 +660,46 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(24, 196);
+            this.label8.Location = new System.Drawing.Point(26, 172);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(53, 13);
             this.label8.TabIndex = 37;
             this.label8.Text = "Avg Price";
             // 
-            // trackBar1
+            // trackBarCompleteAllTasksLikelihood
             // 
-            this.trackBar1.Location = new System.Drawing.Point(94, 54);
-            this.trackBar1.Minimum = 1;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(104, 45);
-            this.trackBar1.TabIndex = 36;
-            this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar1.Value = 5;
+            this.trackBarCompleteAllTasksLikelihood.Location = new System.Drawing.Point(94, 54);
+            this.trackBarCompleteAllTasksLikelihood.Maximum = 100;
+            this.trackBarCompleteAllTasksLikelihood.Minimum = 1;
+            this.trackBarCompleteAllTasksLikelihood.Name = "trackBarCompleteAllTasksLikelihood";
+            this.trackBarCompleteAllTasksLikelihood.Size = new System.Drawing.Size(104, 45);
+            this.trackBarCompleteAllTasksLikelihood.TabIndex = 36;
+            this.trackBarCompleteAllTasksLikelihood.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBarCompleteAllTasksLikelihood.Value = 25;
+            this.trackBarCompleteAllTasksLikelihood.Scroll += new System.EventHandler(this.trackBarCompleteAllTasksLikelihood_Scroll);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(11, 68);
+            this.label12.Location = new System.Drawing.Point(5, 67);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(77, 13);
+            this.label12.Size = new System.Drawing.Size(89, 13);
             this.label12.TabIndex = 34;
-            this.label12.Text = "Time Windows";
+            this.label12.Text = "Tasks Completed";
             // 
-            // trackBarTaskAvgTime
+            // labelTaskAverageTimeMins
             // 
-            this.trackBarTaskAvgTime.Location = new System.Drawing.Point(94, 127);
-            this.trackBarTaskAvgTime.Maximum = 20;
-            this.trackBarTaskAvgTime.Minimum = 1;
-            this.trackBarTaskAvgTime.Name = "trackBarTaskAvgTime";
-            this.trackBarTaskAvgTime.Size = new System.Drawing.Size(104, 45);
-            this.trackBarTaskAvgTime.TabIndex = 29;
-            this.trackBarTaskAvgTime.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBarTaskAvgTime.Value = 2;
-            this.trackBarTaskAvgTime.Scroll += new System.EventHandler(this.trackBarTaskAvgTime_Scroll);
-            // 
-            // numericUpDownTaskAvgTime
-            // 
-            this.numericUpDownTaskAvgTime.Location = new System.Drawing.Point(206, 136);
-            this.numericUpDownTaskAvgTime.Maximum = new decimal(new int[] {
-            720,
-            0,
-            0,
-            0});
-            this.numericUpDownTaskAvgTime.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownTaskAvgTime.Name = "numericUpDownTaskAvgTime";
-            this.numericUpDownTaskAvgTime.Size = new System.Drawing.Size(68, 20);
-            this.numericUpDownTaskAvgTime.TabIndex = 30;
-            this.numericUpDownTaskAvgTime.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(8, 143);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(82, 13);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "Avg Time (mins)";
+            this.labelTaskAverageTimeMins.AutoSize = true;
+            this.labelTaskAverageTimeMins.Location = new System.Drawing.Point(9, 127);
+            this.labelTaskAverageTimeMins.Name = "labelTaskAverageTimeMins";
+            this.labelTaskAverageTimeMins.Size = new System.Drawing.Size(85, 13);
+            this.labelTaskAverageTimeMins.TabIndex = 28;
+            this.labelTaskAverageTimeMins.Text = "Avg Time (mins):";
             // 
             // labelTaskCount
             // 
             this.labelTaskCount.AutoSize = true;
-            this.labelTaskCount.Location = new System.Drawing.Point(26, 33);
+            this.labelTaskCount.Location = new System.Drawing.Point(56, 30);
             this.labelTaskCount.Name = "labelTaskCount";
             this.labelTaskCount.Size = new System.Drawing.Size(38, 13);
             this.labelTaskCount.TabIndex = 0;
@@ -758,10 +719,10 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.groupBox6);
-            this.groupBox5.Controls.Add(this.numericUpDown8);
+            this.groupBox5.Controls.Add(this.numericUpDownResourceCostHour);
             this.groupBox5.Controls.Add(this.label20);
             this.groupBox5.Controls.Add(this.label15);
-            this.groupBox5.Controls.Add(this.numericUpDown7);
+            this.groupBox5.Controls.Add(this.numericUpDownResourceCostMile);
             this.groupBox5.Controls.Add(this.label17);
             this.groupBox5.Location = new System.Drawing.Point(10, 19);
             this.groupBox5.Name = "groupBox5";
@@ -780,7 +741,7 @@
             this.groupBox6.Controls.Add(this.radioButtonYear);
             this.groupBox6.Controls.Add(this.radioButtonWeek);
             this.groupBox6.Controls.Add(this.radioButtonDay);
-            this.groupBox6.Controls.Add(this.trackBarTasksPerResourc);
+            this.groupBox6.Controls.Add(this.trackBarTasksPerResource);
             this.groupBox6.Controls.Add(this.label24);
             this.groupBox6.Controls.Add(this.trackBarResourceCount);
             this.groupBox6.Controls.Add(this.label23);
@@ -878,17 +839,17 @@
             this.radioButtonDay.UseVisualStyleBackColor = true;
             this.radioButtonDay.CheckedChanged += new System.EventHandler(this.radioButtonDay_CheckedChanged);
             // 
-            // trackBarTasksPerResourc
+            // trackBarTasksPerResource
             // 
-            this.trackBarTasksPerResourc.Location = new System.Drawing.Point(78, 67);
-            this.trackBarTasksPerResourc.Maximum = 100;
-            this.trackBarTasksPerResourc.Minimum = 1;
-            this.trackBarTasksPerResourc.Name = "trackBarTasksPerResourc";
-            this.trackBarTasksPerResourc.Size = new System.Drawing.Size(104, 45);
-            this.trackBarTasksPerResourc.TabIndex = 46;
-            this.trackBarTasksPerResourc.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBarTasksPerResourc.Value = 5;
-            this.trackBarTasksPerResourc.Scroll += new System.EventHandler(this.trackBarTasksPerResource_Scroll);
+            this.trackBarTasksPerResource.Location = new System.Drawing.Point(78, 67);
+            this.trackBarTasksPerResource.Maximum = 100;
+            this.trackBarTasksPerResource.Minimum = 1;
+            this.trackBarTasksPerResource.Name = "trackBarTasksPerResource";
+            this.trackBarTasksPerResource.Size = new System.Drawing.Size(104, 45);
+            this.trackBarTasksPerResource.TabIndex = 46;
+            this.trackBarTasksPerResource.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBarTasksPerResource.Value = 5;
+            this.trackBarTasksPerResource.Scroll += new System.EventHandler(this.trackBarTasksPerResource_Scroll);
             // 
             // label24
             // 
@@ -946,24 +907,24 @@
             this.label21.TabIndex = 43;
             this.label21.Text = "# tasks";
             // 
-            // numericUpDown8
+            // numericUpDownResourceCostHour
             // 
-            this.numericUpDown8.DecimalPlaces = 2;
-            this.numericUpDown8.Location = new System.Drawing.Point(114, 219);
-            this.numericUpDown8.Maximum = new decimal(new int[] {
+            this.numericUpDownResourceCostHour.DecimalPlaces = 2;
+            this.numericUpDownResourceCostHour.Location = new System.Drawing.Point(114, 219);
+            this.numericUpDownResourceCostHour.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            this.numericUpDown8.Minimum = new decimal(new int[] {
+            this.numericUpDownResourceCostHour.Minimum = new decimal(new int[] {
             2,
             0,
             0,
             0});
-            this.numericUpDown8.Name = "numericUpDown8";
-            this.numericUpDown8.Size = new System.Drawing.Size(68, 20);
-            this.numericUpDown8.TabIndex = 42;
-            this.numericUpDown8.Value = new decimal(new int[] {
+            this.numericUpDownResourceCostHour.Name = "numericUpDownResourceCostHour";
+            this.numericUpDownResourceCostHour.Size = new System.Drawing.Size(68, 20);
+            this.numericUpDownResourceCostHour.TabIndex = 42;
+            this.numericUpDownResourceCostHour.Value = new decimal(new int[] {
             40,
             0,
             0,
@@ -989,29 +950,29 @@
             this.label15.TabIndex = 40;
             this.label15.Text = "Future: Availability, Cost per Hour Variance";
             // 
-            // numericUpDown7
+            // numericUpDownResourceCostMile
             // 
-            this.numericUpDown7.DecimalPlaces = 2;
-            this.numericUpDown7.Increment = new decimal(new int[] {
+            this.numericUpDownResourceCostMile.DecimalPlaces = 2;
+            this.numericUpDownResourceCostMile.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.numericUpDown7.Location = new System.Drawing.Point(114, 193);
-            this.numericUpDown7.Maximum = new decimal(new int[] {
+            this.numericUpDownResourceCostMile.Location = new System.Drawing.Point(114, 193);
+            this.numericUpDownResourceCostMile.Maximum = new decimal(new int[] {
             4,
             0,
             0,
             0});
-            this.numericUpDown7.Minimum = new decimal(new int[] {
+            this.numericUpDownResourceCostMile.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(68, 20);
-            this.numericUpDown7.TabIndex = 39;
-            this.numericUpDown7.Value = new decimal(new int[] {
+            this.numericUpDownResourceCostMile.Name = "numericUpDownResourceCostMile";
+            this.numericUpDownResourceCostMile.Size = new System.Drawing.Size(68, 20);
+            this.numericUpDownResourceCostMile.TabIndex = 39;
+            this.numericUpDownResourceCostMile.Value = new decimal(new int[] {
             60,
             0,
             0,
@@ -1053,18 +1014,16 @@
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarTaskAvgPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTaskAvgPrice)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarTaskAvgTime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTaskAvgTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarCompleteAllTasksLikelihood)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarTasksPerResourc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarTasksPerResource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarResourceCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCostHour)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCostMile)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1104,21 +1063,19 @@
         private System.Windows.Forms.Button buttonOptimizationRequest;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TrackBar trackBarTaskAvgTime;
-        private System.Windows.Forms.NumericUpDown numericUpDownTaskAvgTime;
+        private System.Windows.Forms.Label labelTaskAverageTimeMins;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TrackBar trackBarTaskAvgPrice;
         private System.Windows.Forms.NumericUpDown numericUpDownTaskAvgPrice;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar trackBarCompleteAllTasksLikelihood;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.NumericUpDown numericUpDown7;
+        private System.Windows.Forms.NumericUpDown numericUpDownResourceCostMile;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.NumericUpDown numericUpDown8;
+        private System.Windows.Forms.NumericUpDown numericUpDownResourceCostHour;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label23;
@@ -1126,7 +1083,7 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.TrackBar trackBarResourceCount;
         private System.Windows.Forms.NumericUpDown numericUpDownResourceCount;
-        private System.Windows.Forms.TrackBar trackBarTasksPerResourc;
+        private System.Windows.Forms.TrackBar trackBarTasksPerResource;
         private System.Windows.Forms.RadioButton radioButtonDay;
         private System.Windows.Forms.RadioButton radioButtonYear;
         private System.Windows.Forms.RadioButton radioButtonWeek;

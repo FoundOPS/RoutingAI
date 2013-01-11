@@ -56,15 +56,15 @@ namespace RoutingAI.DataContracts
         public UInt32[] Skills { get; set; }
 
         /// <summary>
-        /// Costs involved in moving this resource for 1 mile
+        /// Costs involved in moving this resource for 1 mile in cents
         /// </summary>
         [DataMember(Name = "cost_per_mile")]
-        public Int32 CostPerMile { get; set; }
+        public UInt32 CostPerMile { get; set; }
 
         /// <summary>
-        /// Costs involved in using this resource for 1 hour
+        /// Costs involved in using this resource for 1 hour in cents
         /// </summary>
         [DataMember(Name = "cost_per_hour")]
-        public Int32 CostPerHour { get; set; }
+        public UInt32 CostPerHour { get; set; }
     }
 }

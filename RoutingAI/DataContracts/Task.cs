@@ -37,13 +37,13 @@ namespace RoutingAI.DataContracts
         public Decimal Longitude { get; set; }
 
         /// <summary>
-        /// Time required to complete the task in seconds
+        /// Time required to complete the task in minutes
         /// </summary>
         [DataMember(Name = "time")]
         public UInt32 Time { get; set; }
 
         /// <summary>
-        /// The monetary (currently dollar) value of completing a task
+        /// The monetary value of completing a task in cents
         /// </summary>
         [DataMember(Name = "value")]
         public UInt32 Value { get; set; }

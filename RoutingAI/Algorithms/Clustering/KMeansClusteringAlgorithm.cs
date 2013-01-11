@@ -78,7 +78,7 @@ namespace RoutingAI.Algorithms.Clustering
         /// <summary>
         /// Returns sum of distances from each item to their respective centroids
         /// </summary>
-        public int TotalDistance
+        public Int32 TotalDistance
         {
             get { return _totalDistance; }
         }
@@ -88,7 +88,7 @@ namespace RoutingAI.Algorithms.Clustering
         /// </summary>
         /// <param name="centroid">The centroid</param>
         /// <returns>Total distance for each point to the centroid</returns>
-        private int[] SquaredDistances(T centroid)
+        private Int32[] SquaredDistances(T centroid)
         {
             return _data.Select(t => (int)Math.Pow(_dist.GetDistance(t, centroid), 2)).ToArray();
         }
@@ -107,6 +107,14 @@ namespace RoutingAI.Algorithms.Clustering
             }
         }
 
+        private Int32 Sum(Int32[] array)
+        {
+            Int32 sum = 0;
+            for (int i = 0; i < array.Length; i++)
+                sum += array[i];
+            return sum;
+        }
+
         /// <summary>
         /// Run the K++ initialiazation
         /// </summary>
@@ -116,10 +124,10 @@ namespace RoutingAI.Algorithms.Clustering
             Centroids[0] = this._data[_rand.Next(this._data.Length)];
 
             //2) calculate the distances to the initial point
-            var distances = SquaredDistances(Centroids[0]);
+            Int32[] distances = SquaredDistances(Centroids[0]);
 
             //the distances from every point to the initial point
-            var distancesSum = distances.Sum();
+            Int32 distancesSum = Sum(distances);
 
             //3) choose a new data point at random as a new center, using a
             //weighted probability distribution where a point x is chosen with
@@ -165,7 +173,7 @@ namespace RoutingAI.Algorithms.Clustering
                     //update the best centroid if
                     //a) one hasn't been set yet
                     //b) the sample distances sum is < initial centroid point
-                    var sampleDistancesSum = sampleDistances.Sum();
+                    var sampleDistancesSum = Sum(sampleDistances);
                     if (smallestDistanceSum < 0 || sampleDistancesSum < smallestDistanceSum)
                     {
                         smallestDistanceSum = sampleDistancesSum;
@@ -187,7 +195,7 @@ namespace RoutingAI.Algorithms.Clustering
                 }
             }
 
-            _totalDistance = distances.Sum();
+            _totalDistance = Sum(distances);
         }
 
         //Iterate to converge to a local minimum
@@ -235,7 +243,7 @@ namespace RoutingAI.Algorithms.Clustering
                 distances[closestCentroidIndex] += shortestCentroidDistance;
             }
 
-            _totalDistance = distances.Sum();
+            _totalDistance = Sum(distances);
         }
 
         /// <summary>
@@ -252,6 +260,5 @@ namespace RoutingAI.Algorithms.Clustering
         }
 
         #endregion
-
     }
 }

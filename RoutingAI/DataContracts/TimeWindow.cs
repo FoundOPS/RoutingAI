@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace RoutingAI.DataContracts
 {
     /// <summary>
-    /// A limiting date & time window
+    /// A limiting date & time window. Start and End are inclusive
     /// </summary>
     [DataContract(Name = "window", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class Window : ICloneable

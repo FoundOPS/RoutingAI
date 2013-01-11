@@ -13,9 +13,12 @@ namespace RoutingAI.Sandbox
 {
     public partial class Form1 : Form
     {
+        private readonly OptimizationRequestGenerator _optimizationRequestGenerator = new OptimizationRequestGenerator();
+
         public Form1()
         {
             InitializeComponent();
+            UpdateTaskCountTime();
         }
 
         #region Clustering Demo
@@ -308,66 +311,84 @@ namespace RoutingAI.Sandbox
 
         #region UI
 
-        private void UpdateTaskCount()
+        private GenerationConfig GenerationConfig
         {
-            var numberResources = numericUpDownResourceCount.Value;
-            var tasksPer = trackBarTasksPerResourc.Value;
-            var tasksCount = numberResources * tasksPer;
-            if (radioButtonWeek.Checked)
-                tasksCount *= 5;
-            else if (radioButtonMonth.Checked)
-                tasksCount *= 22;
-            else if (radioButtonYear.Checked)
-                tasksCount *= 220;
+            get
+            {
+                int numberResources = (int)numericUpDownResourceCount.Value;
+                int tasksPer = trackBarTasksPerResource.Value;
 
+                OptimizationPeriod period = OptimizationPeriod.Day;
+                if (radioButtonWeek.Checked)
+                    period = OptimizationPeriod.Week;
+                else if (radioButtonMonth.Checked)
+                    period = OptimizationPeriod.Month;
+                else if (radioButtonYear.Checked)
+                    period = OptimizationPeriod.Year;
+
+                return new GenerationConfig
+                {
+                    NumberResources = numberResources,
+                    TasksPerResourceDay = tasksPer,
+                    Period = period,
+                    ResourceCostPerHour = (uint)(numericUpDownResourceCostHour.Value * 100),
+                    ResourceCostPerMile = (uint)(numericUpDownResourceCostMile.Value * 100),
+                    LikelihoodCompleteAllTasks = trackBarCompleteAllTasksLikelihood.Value,
+                    TaskAveragePrice = (uint)(numericUpDownTaskAvgPrice.Value * 100)
+                };
+            }
+        }
+
+        private void UpdateTaskCountTime()
+        {
+            var tasksCount = OptimizationRequestGenerator.TaskCount(GenerationConfig);
             labelTaskCount.Text = "Count: " + tasksCount;
-            labelTaskCount.Tag = tasksCount;
+
+            var averageTaskTime = OptimizationRequestGenerator.AverageTaskTime(GenerationConfig);
+            labelTaskAverageTimeMins.Text = "Average Time (mins): " + averageTaskTime;
         }
 
         //Resource Elements
         private void numericUpDownResourceCount_ValueChanged(object sender, EventArgs e)
         {
-            UpdateTaskCount();
+            UpdateTaskCountTime();
         }
         private void trackBarTasksPerResource_Scroll(object sender, EventArgs e)
         {
-            labelTasksPerResourceDay.Text = trackBarTasksPerResourc.Value.ToString();
-            UpdateTaskCount();
+            labelTasksPerResourceDay.Text = GenerationConfig.TasksPerResourceDay.ToString();
+            UpdateTaskCountTime();
         }
+
         private void radioButtonDay_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateTaskCount();
+            UpdateTaskCountTime();
 
             //when optimizing for a day likely none are recurring
             radioButtonTargetNone.Checked = true;
         }
         private void radioButtonWeek_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateTaskCount();
+            UpdateTaskCountTime();
 
             //when optimizing for a week likely some are recurring
             radioButtonTargetSome.Checked = true;
         }
         private void radioButtonMonth_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateTaskCount();
+            UpdateTaskCountTime();
 
             //when optimizing for a month most likely some are recurring
             radioButtonTargetSome.Checked = true;
         }
         private void radioButtonYear_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateTaskCount();
+            UpdateTaskCountTime();
 
             //when optimizing for a year most likely some are recurring
             radioButtonTargetSome.Checked = true;
         }
 
         //Task Elements
-        private void trackBarTaskAvgTime_Scroll(object sender, EventArgs e)
-        {
-            numericUpDownTaskAvgTime.Value = (int)(trackBarTaskAvgTime.Value / 20.0 * 300.0); //high end: 5 hours
-        }
         private void trackBarTaskAvgPrice_Scroll(object sender, EventArgs e)
         {
             numericUpDownTaskAvgPrice.Value = (int)(trackBarTaskAvgPrice.Value / 100.0 * 500.0); //high end: $500
@@ -375,6 +396,10 @@ namespace RoutingAI.Sandbox
         private void trackBarResourceCount_Scroll(object sender, EventArgs e)
         {
             numericUpDownResourceCount.Value = (int)(trackBarResourceCount.Value / 10.0 * 20.0); //high end: 1,000 tasks
+        }
+        private void trackBarCompleteAllTasksLikelihood_Scroll(object sender, EventArgs e)
+        {
+            UpdateTaskCountTime();
         }
 
         #endregion
@@ -384,15 +409,7 @@ namespace RoutingAI.Sandbox
             EndpointAddress endpoint = new EndpointAddress("http://localhost:8000/RoutingAi/Controller");
             IRoutingAiService proxy = ChannelFactory<IRoutingAiService>.CreateChannel(new BasicHttpBinding(), endpoint);
 
-            OptimizationRequest or = new OptimizationRequest()
-            {
-                Id = Guid.NewGuid(),
-                ClientId = Guid.NewGuid(),
-                RegionCode = "dummy",
-                Resources = new Resource[] { new Resource() { Availability = null, CostPerHour = 0, CostPerMile = 0, Skills = new UInt32[0] } },
-                Tasks = new DataContracts.Task[] { new Task(0, new Decimal(40.345f), new Decimal(-86.903f)) }
-            };
-
+            OptimizationRequest or = _optimizationRequestGenerator.Generate(GenerationConfig);
             proxy.Post(or);
         }
 
