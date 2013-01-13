@@ -99,7 +99,7 @@ namespace RoutingAI.Controller
             // Allocate slave servers and threads
             List<Pair<Guid, IRoutingAiSlaveService>> threads    // temporary list for storing allocation results
                 = new List<Pair<Guid, IRoutingAiSlaveService>>();
-            Int32 threadCount = (int)(Math.Log10(_request.Tasks.Length * _request.Resources.Length) * 8) + 1;
+            Int32 threadCount = (int)(Math.Log10(_request.Tasks.Length * _request.Resources.Length) * 3) + 1;
             for (int i = 0; i < threadCount; i++)
             {
                 SlaveServerInfo slave = resMan.GetSlaveServer();

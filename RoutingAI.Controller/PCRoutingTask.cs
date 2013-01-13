@@ -42,7 +42,7 @@ namespace RoutingAI.Controller
                 do
                 {
                     threadInfo = proxy.GetComputationThreadInfo(threadId);
-                    Thread.Sleep(100);
+                    Thread.Sleep(500);
                 } while (threadInfo.State == ComputationThreadState.Working);
             });
             
