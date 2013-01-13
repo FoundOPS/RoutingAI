@@ -124,7 +124,7 @@ namespace RoutingAI.Sandbox
             {
                 Id = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
-                RegionCode = "dummy",
+                RegionCode = "debug",
                 Resources = resources.ToArray(),
                 Tasks = tasks.ToArray()
             };

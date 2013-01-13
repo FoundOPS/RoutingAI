@@ -108,8 +108,13 @@ namespace RoutingAI.Controller
                 GlobalLogger.SendLogMessage("RoutingAI.Ctrller", MessageFlags.Routine, "Starting WCF Service...");
                 using (ServiceHost svcHost = new ServiceHost(typeof(RoutingAi), new Uri("http://localhost:8000/RoutingAi")))
                 {
+                    BasicHttpBinding binding = new BasicHttpBinding();
+                    binding.MaxBufferSize = 10 * 1024 * 1024;
+                    binding.MaxReceivedMessageSize = 10 * 1024 * 1024;    // NOTE: This is a security flaw that enables DoS,
+                    // either change value or make sure no one from outer network can call this API
+
                     svcHost.AddServiceEndpoint(typeof(RoutingAI.ServiceContracts.IRoutingAiService),
-                        new BasicHttpBinding(), "Controller");
+                        binding, "Controller");
 
                     svcHost.Open();
 

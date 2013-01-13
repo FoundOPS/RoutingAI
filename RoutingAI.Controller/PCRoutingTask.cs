@@ -15,125 +15,38 @@ namespace RoutingAI.Controller
     /// <summary>
     /// Planet Colonizer Routing Task
     /// </summary>
-    public sealed class PCRoutingTask : IComputationTask<Solution>
+    public sealed class PCRoutingTask : RoutingTaskBase
     {
-        const int DEFAULT_THREADS_PER_SLAVE = 4;
-        const string TAG = "PCRoutingTask";
+        public PCRoutingTask(OptimizationRequest request)
+            : base(request)
+        {  }
 
-        private Random _rand = new Random();
-        private Solution _result;
-        private List<Pair<Guid, IRoutingAiSlaveService>> _threads = new List<Pair<Guid, IRoutingAiSlaveService>>();    // 1 entry per thread
-        private List<SlaveConfig> _threadConfig = new List<SlaveConfig>();    // 1 entry per thread
-
-        public Solution Result
+        public override void Compute(params object[] args)
         {
-            get { return _result; }
-        }
-
-
-        public void Compute(params object[] args)
-        {
-            // Convert arguments and calculate info
-            OptimizationRequest request = (OptimizationRequest)args[0];
-            Int64 problemComplexity = request.Resources.Length * request.Tasks.Length;
-            Int32 serverCount = 2 * (Int32)Math.Ceiling(Math.Log10(problemComplexity)) + 1;
-
-            // Allocate appropriate servers
-            ServerResourceManager srvMgr = ServerResourceManager.Instance;
-            IPEndPoint[] slaveIPs = srvMgr.GetSlaveServers(serverCount);
-            IPEndPoint[] osrmIPs = srvMgr.GetOsrmServers(request.RegionCode);
-            IPEndPoint[] redisIPs = srvMgr.GetRedisServers(request.RegionCode);
-            IPEndPoint librIP = srvMgr.GetLibrarianServer();
-
-            // Initialize slave threads
-            for (int i = 0; i < slaveIPs.Length; i++)
+            // Allocate server resources for this task
+            if (!AllocateServerResources())
             {
-                IRoutingAiSlaveService proxy = ServiceProxyHelper.GetSlaveProxy(slaveIPs[i]);
-                Pair<Int32, Int32> srvLoad = proxy.GetServerCapacityInfo();
-                Int32 tCount = DEFAULT_THREADS_PER_SLAVE;
-                if (tCount < srvLoad.Second - srvLoad.First)
-                    tCount = srvLoad.Second - srvLoad.First;
+                // Allocation failed... can't run the task
+                GlobalLogger.SendLogMessage(TAG, MessageFlags.Critical | MessageFlags.Expected, "Compute: Could not allocate server resources: {{{0}}}", _request.Id);
+                throw new Exception("Failed to allocate server resources. See logs for more details."); // Put thread into exception state
+            }
 
-                // Spawn threads on server
-                for (int k = 0; k < tCount; k++)
+            // Run clustering
+            RunForAllThreads((Int32 index, Guid threadId, IRoutingAiSlaveService proxy) =>
+            { proxy.ComputeClusteringSolution(threadId, GenerateConfiguration(index), _request); });
+
+            // Wait for all threads to finish
+            RunForAllThreads((Int32 index, Guid threadId, IRoutingAiSlaveService proxy) =>
+            {
+                ComputationThreadInfo threadInfo = null;
+                do
                 {
-                    Guid id = proxy.CreateComputationThread();
-                    _threads.Add(new Pair<Guid, IRoutingAiSlaveService>(id, proxy));
-                }
-            }
+                    threadInfo = proxy.GetComputationThreadInfo(threadId);
+                    Thread.Sleep(100);
+                } while (threadInfo.State == ComputationThreadState.Working);
+            });
+            
 
-            // Create configuration for each of them
-            for (int i = 0; i < _threads.Count; i++)
-                _threadConfig.Add(new SlaveConfig()
-                {
-                    LibrarianServer = librIP,
-                    OSRMServers = osrmIPs,
-                    RedisServers = redisIPs,
-                    SlaveIndex = new Pair<int, int>(i, _threads.Count),
-                    RandomSeed = _rand.Next()
-                });
-
-
-            // Do clustering
-            // start computing
-            for (int i = 0; i < _threads.Count; i++)
-                _threads[i].Second.ComputeClusteringSolution(_threads[i].First, _threadConfig[i], request);
-            // wait for thread 0 to complete
-            while (_threads[0].Second.GetComputationThreadInfo(_threads[0].First).State == ComputationThreadState.Working) Thread.Sleep(1000);
-            // here computation is either finished or there was an error
-            ComputationThreadInfo info = _threads[0].Second.GetComputationThreadInfo(_threads[0].First);
-            if (info.State == ComputationThreadState.Exception)
-            {
-                // there was an error, log it
-                GlobalLogger.SendLogMessage(TAG, MessageFlags.Critical | MessageFlags.Expected, "Slave encountered an error while computing: {0}: JobID = {{{1}}}", info.AdditionalInfo, request.Id);
-                return; // abort job, add more graceful handling later
-            }
-
-            ClusteringSolution clusteringSolution = _threads[0].Second.GetClusteringSolution(_threads[0].First);
-
-            // Do optimization
-
-
-            // Finish up
-
-            _result = new Solution();
-            _result.Routes = new Route[request.Resources.Length];
-
-            for (int i = 0; i < _result.Routes.Length; i++)
-            {
-                _result.Routes[i] = new Route
-                {
-                    Destinations = clusteringSolution.Clusters[i].Select(t => new Destination { Task = t }).ToArray(),
-                    Resource = request.Resources[i]
-                };
-            }
-
-            // Clean up
-            Dispose();
-        }
-
-
-        public void HandleAbort()
-        {
-            foreach (Pair<Guid, IRoutingAiSlaveService> thread in _threads)
-            {
-                thread.Second.DisposeComputationThread(thread.First);
-            }
-        }
-
-
-        public object GetResult()
-        {
-            return _result;
-        }
-
-
-        public void Dispose()
-        {
-            foreach (Pair<Guid, IRoutingAiSlaveService> thread in _threads)
-            {
-                thread.Second.DisposeComputationThread(thread.First);
-            }
         }
     }
 }

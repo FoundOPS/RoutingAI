@@ -122,6 +122,11 @@ namespace RoutingAI.Controller
         /// on the slave server
         /// </summary>
         public Int32 TotalCapacity { get; private set; }
+        /// <summary>
+        /// Gets WCF Service Proxy associated with this server
+        /// </summary>
+        public IRoutingAiSlaveService Proxy
+        { get { return proxy; } }
 
         // COnstructor
         /// <summary>

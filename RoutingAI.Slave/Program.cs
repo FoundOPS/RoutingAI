@@ -91,8 +91,12 @@ namespace RoutingAI.Slave
                 GlobalLogger.SendLogMessage("RoutingAI.Slave", MessageFlags.Routine, "Starting WCF Service...");
                 using (ServiceHost svcHost = new ServiceHost(typeof(RoutingAiSlave), new Uri("http://localhost:9000/RoutingAi")))
                 {
+                    BasicHttpBinding binding = new BasicHttpBinding();
+                    binding.MaxBufferSize = 10 * 1024 * 1024;
+                    binding.MaxReceivedMessageSize = 10 * 1024 * 1024;    // NOTE: This is a security flaw that enables DoS,
+                                                                        // either change value or make sure no one from outer network can call this API
                     svcHost.AddServiceEndpoint(typeof(RoutingAI.ServiceContracts.IRoutingAiSlaveService),
-                        new BasicHttpBinding(), "Slave");
+                        binding, "Slave");
 
                     svcHost.Open();
 

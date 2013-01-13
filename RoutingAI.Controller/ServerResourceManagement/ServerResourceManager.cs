@@ -22,6 +22,9 @@ namespace RoutingAI.Controller
     /// <remarks>
     /// Since this class detects problems in the entire server infrastructure,
     /// its log entries are most likely marked with Routine, Critical or Fatal.
+    /// This class is designed to manage a relatively small number of slave servers.
+    /// In case if the number of slave servers is larger than, say, 1000, this class
+    /// needs to be replaced with a more capable one.
     /// </remarks>
     public class ServerResourceManager
     {
@@ -425,24 +428,19 @@ namespace RoutingAI.Controller
         #region Getting Servers
 
         /// <summary>
-        /// Gets the specified number of endpoints representing slave servers.
-        /// Slave servers with more remaining capacity are selected first.
+        /// Gets the responding slave server with the most remaining
+        /// capacity.
         /// </summary>
-        /// <param name="count">Number of servers to get</param>
-        /// <returns>Array of IP endpoints</returns>
-        public IPEndPoint[] GetSlaveServers(Int32 count)
+        /// <returns>SlaveServerInfo object with corresponding proxy</returns>
+        public SlaveServerInfo GetSlaveServer()
         {
+            // update ping delays and capacity info
             UpdateSlaveServers();
-            IEnumerable<IPEndPoint> servers = (from srv in _slaveServers
-                                              where srv.IsResponsive
-                                              orderby srv.RemainingCapacity
-                                              select srv.Endpoint);
-            IPEndPoint[] eps = servers.ToArray();
-
-            if (eps.Length > count)
-                return eps.Take(count).ToArray();
-            else
-                return eps;
+            // return null if there are no servers to get
+            if (_slaveServers.Count == 0)
+                return null;
+            else // return server info of the best server otherwise
+                return _slaveServers[0];
         }
 
         /// <summary>
@@ -455,6 +453,7 @@ namespace RoutingAI.Controller
             IPEndPoint[] eps = (from srv in _librarianServers
                                 where srv.IsResponsive
                                 select srv.Endpoint).ToArray();
+            if (eps.Length == 0) return null;
             Int32 index = _rand.Next(0, eps.Length);
             return eps[index];
         }
