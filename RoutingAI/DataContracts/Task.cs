@@ -37,10 +37,17 @@ namespace RoutingAI.DataContracts
         public Decimal Longitude { get; set; }
 
         /// <summary>
-        /// Time required to complete the task in minutes
+        /// The estimated time required to complete the task in minutes
         /// </summary>
-        [DataMember(Name = "time")]
-        public UInt32 Time { get; set; }
+        [DataMember(Name = "est_time")]
+        public UInt32 EstimatedTime { get; set; }
+
+        /// <summary>
+        /// How accurate the estimated time is. Should affect the buffer between tasks
+        /// Scale of 1-100
+        /// </summary>
+        [DataMember(Name = "time_confidence")]
+        public UInt32 TimeConfidence { get; set; }
 
         /// <summary>
         /// The monetary value of completing a task in cents
@@ -72,7 +79,7 @@ namespace RoutingAI.DataContracts
         /// If null there is no required skill
         /// </summary>
         [DataMember(Name = "req_skill")]
-        public UInt32 RequiredSkill { get; set; }
+        public UInt32 RequiredSkillType { get; set; }
 
         #endregion
 
@@ -145,10 +152,10 @@ namespace RoutingAI.DataContracts
             t.Id = this.Id;
             t.Latitude = this.Latitude;
             t.Longitude = this.Longitude;
-            t.Time = this.Time;
+            t.EstimatedTime = this.EstimatedTime;
             t.Value = this.Value;
             t.Windows = this.Windows.Clone<Window>();
-            t.RequiredSkill = this.RequiredSkill;
+            t.RequiredSkillType = this.RequiredSkillType;
 
             return t;
         }

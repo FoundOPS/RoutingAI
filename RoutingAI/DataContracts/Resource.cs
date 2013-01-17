@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using RoutingAI.API.OSRM;
 
 namespace RoutingAI.DataContracts
 {
@@ -17,29 +18,17 @@ namespace RoutingAI.DataContracts
         public UInt32 Id { get; set; }
 
         /// <summary>
-        /// That Latitude where the resource starts
+        /// That Origin where the resource starts
         /// </summary>
-        [DataMember(Name = "origin_lat")]
-        public Decimal OriginLatitude { get; set; }
+        [DataMember(Name = "origin")]
+        public Coordinate Origin { get; set; }
 
         /// <summary>
-        /// That Longitude where the resource starts
+        /// If provided, defines the end-destination for this Resource.
+        /// If null, the route calculated for this Resource terminates with the last visited Task.
         /// </summary>
-        [DataMember(Name = "origin_lon")]
-        public Decimal OriginLongitude { get; set; }
-
-        /// <summary>
-        /// If provided, defines the latitude of the end-destination for this Resource.
-        /// If not specified, the route calculated for this Resource terminates with the last visited Task.
-        /// </summary>
-        [DataMember(Name = "dest_lat")]
-        public Decimal? DestinationLatitude { get; set; }
-
-        /// <summary>
-        /// If provided, defines the destination longitude.
-        /// </summary>
-        [DataMember(Name = "dest_lon")]
-        public Decimal? DestinationLongitude { get; set; }
+        [DataMember(Name = "dest")]
+        public Coordinate Destination { get; set; }
 
         /// <summary>
         /// When the resource is available
@@ -53,7 +42,7 @@ namespace RoutingAI.DataContracts
         /// Skills a resource has to complete a job
         /// </summary>
         [DataMember(Name = "skills")]
-        public UInt32[] Skills { get; set; }
+        public Skill[] Skills { get; set; }
 
         /// <summary>
         /// Costs involved in moving this resource for 1 mile in cents

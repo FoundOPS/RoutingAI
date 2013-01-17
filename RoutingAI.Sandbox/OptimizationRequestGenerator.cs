@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using RoutingAI.API.OSRM;
 using RoutingAI.DataContracts;
 using System;
 using System.Collections.Generic;
@@ -86,11 +87,10 @@ namespace RoutingAI.Sandbox
                     Id = (uint)r,
                     CostPerHour = config.ResourceCostPerHour,
                     CostPerMile = config.ResourceCostPerMile,
-                    OriginLatitude = _sampleCoordinates[0][0],
-                    OriginLongitude = _sampleCoordinates[0][1],
+                    Origin = new Coordinate((double) _sampleCoordinates[0][0], (double) _sampleCoordinates[0][1]),
                     //TODO make these more dynamic
                     Availability = window,
-                    Skills = new uint[] { 1 }
+                    Skills = new []{new Skill{Type = 1, Efficiency = 5}}
                 });
             }
 
@@ -103,18 +103,18 @@ namespace RoutingAI.Sandbox
             for (var t = 0; t < taskCount; t++)
             {
                 coordinateIndex++;
-                if (coordinateIndex > _sampleCoordinates.Count)
+                if (coordinateIndex >= _sampleCoordinates.Count)
                     coordinateIndex = 1;
 
                 var task = new Task((uint)t, 0, 0)
                     {
-                        Time = (uint)averageTime,
+                        EstimatedTime = (uint)averageTime,
                         Value = config.TaskAveragePrice,
                         Latitude = _sampleCoordinates[coordinateIndex][0],
                         Longitude = _sampleCoordinates[coordinateIndex][1],
                         //TODO make these more dynamic
                         Windows = new[] { window },
-                        RequiredSkill = 1
+                        RequiredSkillType = 1
                     };
 
                 tasks.Add(task);

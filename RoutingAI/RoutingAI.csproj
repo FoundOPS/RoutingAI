@@ -67,6 +67,7 @@
     <Compile Include="DataContracts\OptimizationRequest.cs" />
     <Compile Include="DataContracts\OptimizationResponse.cs" />
     <Compile Include="DataContracts\Resource.cs" />
+    <Compile Include="DataContracts\Skill.cs" />
     <Compile Include="DataContracts\SlaveConfig.cs" />
     <Compile Include="DataContracts\Solution.cs" />
     <Compile Include="DataContracts\Window.cs" />

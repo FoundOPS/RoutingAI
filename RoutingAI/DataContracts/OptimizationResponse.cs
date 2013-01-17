@@ -33,6 +33,12 @@ namespace RoutingAI.DataContracts
         public Stage Stage { get; set; }
 
         /// <summary>
+        /// Details on processing the calculation
+        /// </summary>
+        [DataMember(Name = "details")]
+        public String Details { get; set; }
+
+        /// <summary>
         /// The solution.
         /// Null unless the stage is completed
         /// </summary>

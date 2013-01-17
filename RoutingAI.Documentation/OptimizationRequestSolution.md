@@ -35,8 +35,10 @@ Properties
 
 - Location
 	- lat / lng
-- Time - time to complete the task
+- Estimated Time - estimated time to complete the task
 	- 30 minutes
+- Time Confidence - affects buffer between tasks
+	- 1-100%
 - Value - the monetary reward for completing a task
 	- $200
 - (optional) Target Date & Range - ensures jobs happen on a user defined recurrence (every week/year/etc)
@@ -46,8 +48,15 @@ Properties
 - Window Constraints - restricted date and times the task can be completed
 	- 1/1/2012 3pm - 1/1/2012 5pm
 	- 1/1/2012 11 pm - 1/2/2012 1 am
-- Required Skill (Type of Job) - optional
+- Required Skill Type - optional
 	- leaf collection
+
+**Skill**
+
+- Type
+	- leaf collection
+- Efficiency - affects estimated task time
+	- 0-10, 0: Cannot complete. 10 = most efficient
 
 **Route** a resource assigned to tasks in a specific order of time
 
@@ -61,7 +70,6 @@ These are future concepts that need revising.
 
 **Resource**
 
-- Skill Efficiency, certain resources are better than others for tasks 1-10. Is this in time? Cost?
 - Capacities (if any filled must return to location before continuing skill)
 	- volume, 3000 (gallons), 12414 English Garden Court, 47906 or .....
 	- weight, 1000 (lbs)
