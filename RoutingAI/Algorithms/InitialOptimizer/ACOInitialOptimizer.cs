@@ -26,8 +26,10 @@ namespace RoutingAI.Algorithms.InitialOptimizer
         private Int32[,] pheromon;  // Buffer for pheromon values between two vertecies
         private IDistanceAlgorithm<Task> dist;  // Distance algorithm (distance buffering is up to distance algorithm)
         private Random rand = new Random(); // Random number generator
+
         private Task[] tasks;   // Tasks to optimize
-        
+        private Window window;  // Window of optimization. Start is very important!
+        private Resource resource;  // Resource we are optimizing for
 
         // Constructors
         /// <summary>
@@ -50,8 +52,12 @@ namespace RoutingAI.Algorithms.InitialOptimizer
         {
             // Agent data
             Int32 distance = 0; // total distance
+            Window optimized    // a window representing already routed part
+                = new Window() { Start = window.Start, End = window.Start };
             SortedList<Int32, Task> unvisited    // List of unvisited nodes
                 = new SortedList<int, Task>();
+            List<Task> path     // Records the path of the agent
+                = new List<Task>();
 
             // Copy all tasks to unvisited list
             foreach (Task t in tasks)
@@ -62,6 +68,21 @@ namespace RoutingAI.Algorithms.InitialOptimizer
                 start = unvisited.Values[rand.Next(unvisited.Count)];
             unvisited.Remove(start.Index);
 
+            // Agent tours the graph
+            while (true)    // Stopping condition will be determined at runtime (no more nodes to visit)
+            {
+                // Filter all unvisited nodes and get a list of pairs (pheromon, node)
+                    // all tasks that cannot be visited should be dropped at this step
+                    // CONSIDERATION: Use a constraint interface instead of hard code?? We may need to expand algorithm to process truck capacity as well...
+
+
+                // If no nodes can be visited, break the loop
+
+                // Generate a weighted random decision
+
+                
+
+            }
         }
 
 
