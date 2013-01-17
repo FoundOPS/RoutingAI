@@ -22,6 +22,10 @@ namespace RoutingAI.Controller
         /// </summary>
         protected const String TAG = "SrvInfo";
 
+        // Fields
+        private Boolean _isResponsive = true;
+        private Int64 _unresponsiveSince = -1;
+
         // Properties
         /// <summary>
         /// Gets the ddress of the server represented by 
@@ -32,7 +36,21 @@ namespace RoutingAI.Controller
         /// Gets a value indicating whether the server
         /// responded during last update
         /// </summary>
-        public Boolean IsResponsive { get; protected set; }
+        public Boolean IsResponsive {
+            get { return _isResponsive; }
+            protected set
+            {
+                _isResponsive = value;
+                if (!value)
+                    _unresponsiveSince = DateTime.Now.Ticks;
+            }
+        }
+        /// <summary>
+        /// Returns a time value when this server was last marked
+        /// as unresponsive.
+        /// </summary>
+        internal Int64 UnresponsiveSince
+        { get { return _unresponsiveSince; } }
         /// <summary>
         /// Gets the ping delay of the server
         /// </summary>

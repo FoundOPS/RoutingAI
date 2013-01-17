@@ -59,8 +59,8 @@ namespace RoutingAI.Algorithms.InitialOptimizer
 
             // Pick a random start unless start parameter is specified
             if (start == null) 
-                start = unvisited[rand.Next(unvisited.Count)];
-
+                start = unvisited.Values[rand.Next(unvisited.Count)];
+            unvisited.Remove(start.Index);
 
         }
 

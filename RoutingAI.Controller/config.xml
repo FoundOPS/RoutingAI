@@ -15,6 +15,12 @@
   <!--< Slave Servers >-->
   <SlaveServers>
     <Endpoint>127.0.0.1:9000</Endpoint>
+    <Endpoint>192.168.2.99:9000</Endpoint>
+    <Endpoint>192.168.2.99:9000</Endpoint>
+    <Endpoint>192.168.2.99:9000</Endpoint>
+    <Endpoint>192.168.2.99:9000</Endpoint>
+    <Endpoint>192.168.2.99:9000</Endpoint>
+    <Endpoint>192.168.2.99:9000</Endpoint>
   </SlaveServers>
 
   <!--< Librarian Servers >-->

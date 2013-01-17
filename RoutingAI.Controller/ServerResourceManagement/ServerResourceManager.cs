@@ -29,6 +29,8 @@ namespace RoutingAI.Controller
     public class ServerResourceManager
     {
         private const String TAG = "SrvMgr";
+        private const Int64 UNRESPONSIVE_WAIT = 20 * 1000 * 10000;  // Number of ticks an unresponsive server cannot
+                                                                    // be updated after timing out
 
         #region Singleton
 
@@ -368,7 +370,10 @@ namespace RoutingAI.Controller
             lock (_slaveServers)
             {
                 foreach (SlaveServerInfo slave in _slaveServers)
-                    slave.Update(_pingTimeout);
+                {
+                    if (slave.IsResponsive || (DateTime.Now.Ticks - slave.UnresponsiveSince) > UNRESPONSIVE_WAIT)
+                        slave.Update(_pingTimeout);
+                }
                 _slaveServers.Sort();
             }
         }
