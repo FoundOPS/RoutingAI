@@ -19,10 +19,11 @@ namespace RoutingAI.Controller
         {
             try
             {
-                PCRoutingTask task = new PCRoutingTask(request);
-                _dispatcher.NewThread(request.Id);
-                _dispatcher.RunComputation(request.Id, task);
-
+                using (PCRoutingTask task = new PCRoutingTask(request))
+                {
+                    _dispatcher.NewThread(request.Id);
+                    _dispatcher.RunComputation(request.Id, task);
+                }
                 return new CallResponse() { Success = true, Details = "" };
             }
             catch (Exception ex)

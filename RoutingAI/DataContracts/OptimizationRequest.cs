@@ -35,5 +35,14 @@ namespace RoutingAI.DataContracts
         /// </summary>
         [DataMember(Name = "region")]
         public String RegionCode { get; set; }
+
+        /// <summary>
+        /// Removes Task data from the OptimizationRequest object.
+        /// Use it after gathering clustering solution.
+        /// </summary>
+        public void StripData()
+        {
+            Tasks = new Task[0];
+        }
     }
 }

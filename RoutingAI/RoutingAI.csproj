@@ -47,6 +47,8 @@
     <Compile Include="Algorithms\Clustering\CLARAClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\IClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\PAMClusteringAlgorithm.cs" />
+    <Compile Include="Algorithms\InitialOptimizer\ACOInitialOptimizer.cs" />
+    <Compile Include="Algorithms\InitialOptimizer\IInitialOptimizer.cs" />
     <Compile Include="Algorithms\Interfaces\ICostFunction.cs" />
     <Compile Include="Algorithms\Interfaces\IDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\PlanetColonizer\Interfaces\Individual.cs" />
@@ -67,7 +69,7 @@
     <Compile Include="DataContracts\Resource.cs" />
     <Compile Include="DataContracts\SlaveConfig.cs" />
     <Compile Include="DataContracts\Solution.cs" />
-    <Compile Include="DataContracts\TimeWindow.cs" />
+    <Compile Include="DataContracts\Window.cs" />
     <Compile Include="libWyvernzora\ConsoleUtil\CommandLineArgs.cs" />
     <Compile Include="libWyvernzora\Logging\ConsoleLogger.cs" />
     <Compile Include="libWyvernzora\Logging\GlobalLogger.cs" />
@@ -88,7 +90,9 @@
     <Compile Include="Utilities\ArrayCloner.cs" />
     <Compile Include="Utilities\ArraySampler.cs" />
     <Compile Include="Utilities\GeoTools.cs" />
+    <Compile Include="Utilities\TimeUtils.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

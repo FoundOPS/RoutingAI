@@ -42,11 +42,12 @@ namespace RoutingAI.Controller
                 do
                 {
                     threadInfo = proxy.GetComputationThreadInfo(threadId);
-                    Thread.Sleep(500);
+                    if (threadInfo.State == ComputationThreadState.Working) Thread.Sleep(500); // Wait if thread not finished
                 } while (threadInfo.State == ComputationThreadState.Working);
             });
             
-
+            // Dispose all threads
+            HandleAbort();
         }
     }
 }

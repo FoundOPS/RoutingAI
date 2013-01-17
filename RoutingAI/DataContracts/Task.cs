@@ -88,6 +88,13 @@ namespace RoutingAI.DataContracts
             get { return new Coordinate((double)Latitude, (double)Longitude); }
         }
 
+        /// <summary>
+        /// Index of the task, used internally for clustering/optimizing
+        /// </summary>
+        [IgnoreDataMember]
+        public Int32 Index
+        { get; set; }
+
         #endregion
 
         /// <summary>
