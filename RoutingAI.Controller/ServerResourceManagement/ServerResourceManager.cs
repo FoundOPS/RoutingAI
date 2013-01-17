@@ -29,7 +29,7 @@ namespace RoutingAI.Controller
     public class ServerResourceManager
     {
         private const String TAG = "SrvMgr";
-        private const Int64 UNRESPONSIVE_WAIT = 20 * 1000 * 10000;  // Number of ticks an unresponsive server cannot
+        private const Int64 UNRESPONSIVE_WAIT = 60 * 1000 * 10000;  // Number of ticks an unresponsive server cannot
                                                                     // be updated after timing out
 
         #region Singleton
@@ -108,6 +108,7 @@ namespace RoutingAI.Controller
                 IPEndPoint ep = ParseIPEndPoint(node.InnerText);
                 AddSlaveServer(ep);
             }
+            UpdateSlaveServers();
 
             // Add OSRM Servers
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "Adding OSRM Servers from Configuration File...");
@@ -117,6 +118,7 @@ namespace RoutingAI.Controller
                 IPEndPoint ep = ParseIPEndPoint(node.InnerText);
                 AddOsrmServer(region, ep);
             }
+            UpdateOsrmServers();
 
             // Add Redis Servers
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "Adding Redis Servers from Configuration File...");
@@ -126,6 +128,7 @@ namespace RoutingAI.Controller
                 IPEndPoint ep = ParseIPEndPoint(node.InnerText);
                 AddRedisServer(region, ep);
             }
+            UpdateRedisServers();
 
             // Librarian servers not implemented
             GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "Adding Librarian Servers from Configuration File...");
@@ -134,6 +137,7 @@ namespace RoutingAI.Controller
                 IPEndPoint ep = ParseIPEndPoint(node.InnerText);
                 AddLibrarianServer(ep);
             }
+            UpdateLibrarianServers();
         }
 
         #region Add/Remove Servers
