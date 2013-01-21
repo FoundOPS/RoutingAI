@@ -1,4 +1,5 @@
-﻿using libWyvernzora.Logging;
+﻿using libWyvernzora.ConsoleUtil;
+using libWyvernzora.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,6 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Principal;
-using libWyvernzora.ConsoleUtil;    
 
 namespace RoutingAI.Slave
 {

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RoutingAI.DataContracts;
+using RoutingAI.Algorithms.Interfaces;
+using RoutingAI.Utilities;
 
-namespace RoutingAI.Algorithms.InitialOptimizer
+namespace RoutingAI.Algorithms.AntColonyOptimizer
 {
     /// <summary>
     /// Initial Optimizer utilizing Ant Colony Optimization algorithm.
@@ -74,17 +76,29 @@ namespace RoutingAI.Algorithms.InitialOptimizer
                 // Filter all unvisited nodes and get a list of pairs (pheromon, node)
                     // all tasks that cannot be visited should be dropped at this step
                     // CONSIDERATION: Use a constraint interface instead of hard code?? We may need to expand algorithm to process truck capacity as well...
-
+                ConstraintFilterBase filter = new DummyConstraintFilter(resource, optimized, unvisited.Values, path);
+                List<Task> candidates = filter.ToList();    // Force-fetch all values and avoid multiple Linq queries
 
                 // If no nodes can be visited, break the loop
+                if (candidates.Count == 0)
+                    break;      // Iteration stops here when there are no more nodes to be considered
 
                 // Generate a weighted random decision
+                Task current = path[path.Count - 1];
+                Task next = candidates.PickWeighted((Task t) => pheromon[current.Index, t.Index]);
 
-                
+                // Update agent data
+                Int32 d = dist.GetDistance(current, next);
+                distance += d;
+                // TODO Increase Optimized Window to include next task
+                unvisited.Remove(next.Index);
+                path.Add(next);
 
+                // Deposit pheromon
+                // TODO figure out an algorithm to get the amount of pheromon to deposit
+                    // Pheromon deposit should be within [-65535, +65535] based on distance
             }
         }
-
 
         #endregion
 

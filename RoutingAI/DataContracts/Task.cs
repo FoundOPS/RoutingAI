@@ -27,7 +27,7 @@ namespace RoutingAI.DataContracts
         /// <summary>
         /// Latitude component of the task location
         /// </summary>
-        [DataMember(Name = "lat")]
+        [DataMember(Name = "lat")] 
         public Decimal Latitude { get; set; }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace RoutingAI.DataContracts
 
         /// <summary>
         /// Required skill to complete a job
-        /// If null there is no required skill
+        /// If 0 there is no required skill
         /// </summary>
         [DataMember(Name = "req_skill")]
-        public UInt32 RequiredSkillType { get; set; }
+        public UInt64 RequiredSkillType { get; set; }
 
         #endregion
 

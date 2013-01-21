@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace libWyvernzora.Logging
 {
@@ -11,7 +8,7 @@ namespace libWyvernzora.Logging
     public class ConsoleLogger : Logger
     {
         // Maxumum number of characters on the same line
-        private readonly Int32 _splitPoint = Console.BufferWidth - 35;
+        private readonly Int32 splitPoint = Console.BufferWidth - 35;
 
         /// <summary>
         /// Constructor
@@ -20,9 +17,13 @@ namespace libWyvernzora.Logging
         {
             // Sincenwriting stuff to console doesn't really take any resources
                 // set submission batch to 1
-            _submissionBatch = 1;
+            submissionBatch = 1;
         }
 
+        /// <summary>
+        /// Submits currently queued messages for processing
+        /// </summary>
+        /// <param name="messages">Array of currently queued messages</param>
         protected override void SubmitMessageQueue(LoggerEventArgs[] messages)
         {
             // Just in case if there are many mesages...
@@ -57,7 +58,7 @@ namespace libWyvernzora.Logging
 
 
                 // If message fits in one line then print it as it is
-                if (message.Length < _splitPoint)
+                if (message.Length < splitPoint)
                     WriteMessageLine(e.TimeStamp, e.Tag, e.Message);
                 else
                 {
@@ -65,8 +66,8 @@ namespace libWyvernzora.Logging
                     Boolean firstLine = true;
                     while (message.Length != 0)
                     {
-                        Int32 split = message.Substring(0, message.Length > _splitPoint ? _splitPoint : message.Length).LastIndexOf(' ');
-                        if (split < 0) split = message.Length > _splitPoint ? _splitPoint : message.Length;
+                        Int32 split = message.Substring(0, message.Length > splitPoint ? splitPoint : message.Length).LastIndexOf(' ');
+                        if (split < 0) split = message.Length > splitPoint ? splitPoint : message.Length;
                         String msgLine = message.Substring(0, split);
                         message = message.Substring(message.Length > split + 1 ? split + 1 : message.Length);
                         if (firstLine)
@@ -85,10 +86,17 @@ namespace libWyvernzora.Logging
             }
         }
 
+        /// <summary>
+        /// Releases all resources taken by this Logger
+        /// </summary>
         protected override void ReleaseResources()
         {
         }
 
+        /// <summary>
+        /// Disposes the Logger and releases all reasources
+        /// associated with it
+        /// </summary>
         public override void Dispose()
         {
         }

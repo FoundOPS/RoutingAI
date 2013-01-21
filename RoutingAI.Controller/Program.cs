@@ -7,8 +7,8 @@ using System.ServiceModel;
 using RoutingAI.ServiceContracts;
 using RoutingAI.DataContracts;
 using System.Net;
-using libWyvernzora.Logging;
 using libWyvernzora.ConsoleUtil;
+using libWyvernzora.Logging;
 
 
 namespace RoutingAI.Controller

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoutingAI.Algorithms.InitialOptimizer
+namespace RoutingAI.Algorithms.Interfaces
 {
     /// <summary>
     /// Interface representing Initial Solution Generator

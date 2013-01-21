@@ -42,13 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\AntColonyOptimizer\DummyConstraintFilter.cs" />
     <Compile Include="Algorithms\Clustering\KMeansClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\EPAMClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\CLARAClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\IClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\PAMClusteringAlgorithm.cs" />
-    <Compile Include="Algorithms\InitialOptimizer\ACOInitialOptimizer.cs" />
-    <Compile Include="Algorithms\InitialOptimizer\IInitialOptimizer.cs" />
+    <Compile Include="Algorithms\AntColonyOptimizer\ACOInitialOptimizer.cs" />
+    <Compile Include="Algorithms\Interfaces\IConstraintFilter.cs" />
+    <Compile Include="Algorithms\Interfaces\IInitialOptimizer.cs" />
     <Compile Include="Algorithms\Interfaces\ICostFunction.cs" />
     <Compile Include="Algorithms\Interfaces\IDistanceAlgorithm.cs" />
     <Compile Include="Algorithms\PlanetColonizer\Interfaces\Individual.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="DataContracts\Solution.cs" />
     <Compile Include="DataContracts\Window.cs" />
     <Compile Include="libWyvernzora\ConsoleUtil\CommandLineArgs.cs" />
+    <Compile Include="libWyvernzora\ConsoleUtil\CommandLineArgument.cs" />
     <Compile Include="libWyvernzora\Logging\ConsoleLogger.cs" />
     <Compile Include="libWyvernzora\Logging\GlobalLogger.cs" />
     <Compile Include="libWyvernzora\Logging\Logger.cs" />
@@ -88,8 +91,7 @@
     <Compile Include="Threading\ComputationThread.cs" />
     <Compile Include="Threading\ComputationThreadDispatcher.cs" />
     <Compile Include="Threading\ComputationThreadState.cs" />
-    <Compile Include="Utilities\ArrayCloner.cs" />
-    <Compile Include="Utilities\ArraySampler.cs" />
+    <Compile Include="Utilities\EnumerableEx.cs" />
     <Compile Include="Utilities\GeoTools.cs" />
     <Compile Include="Utilities\TimeUtils.cs" />
   </ItemGroup>

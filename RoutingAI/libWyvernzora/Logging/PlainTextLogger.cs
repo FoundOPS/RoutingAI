@@ -12,33 +12,48 @@ namespace libWyvernzora.Logging
     /// </summary>
     public class PlainTextLogger : Logger
     {
-        StreamWriter _writer;
+        private readonly StreamWriter writer;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="filePath">Path of the log file</param>
+        /// <param name="overwrite">If true, contents of the log file will be erased when the logger is created</param>
         public PlainTextLogger(String filePath, Boolean overwrite = true)
-            : base()
         {
-            _writer = new StreamWriter(filePath, !overwrite);
-            _submissionBatch = 1;
+            writer = new StreamWriter(filePath, !overwrite);
+            submissionBatch = 1;
         }
 
+        /// <summary>
+        /// Submits currently queued messages for processing
+        /// </summary>
+        /// <param name="messages">Array of currently queued messages</param>
         protected override void SubmitMessageQueue(LoggerEventArgs[] messages)
         {
             foreach (LoggerEventArgs e in messages)
             {
                 DateTime dt = new DateTime(e.TimeStamp * 10000);
                 String time = String.Format("{0}:{1}:{2}.{3}", dt.Hour, dt.Minute, dt.Second, dt.Millisecond);
-                _writer.WriteLine("{0,-20}{1,-20}{2}", time, e.Tag, e.Message);
+                writer.WriteLine("{0,-20}{1,-20}{2}", time, e.Tag, e.Message);
             }
-            _writer.Flush();
+            writer.Flush();
         }
 
+        /// <summary>
+        /// Disposes the Logger and releases all reasources
+        /// associated with it
+        /// </summary>
         public override void Dispose()
         {
         }
 
+        /// <summary>
+        /// Releases all resources taken by this Logger
+        /// </summary>
         protected override void ReleaseResources()
         {
-            _writer.Close();
+            writer.Close();
         }
     }
 }

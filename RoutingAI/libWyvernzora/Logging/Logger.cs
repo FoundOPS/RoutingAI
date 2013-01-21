@@ -13,14 +13,29 @@ namespace libWyvernzora.Logging
     /// </summary>
     public abstract class Logger : IDisposable
     {
-        // Thread-safe queue for buffering 
-        protected ConcurrentQueue<LoggerEventArgs> _messages = new ConcurrentQueue<LoggerEventArgs>();
-        protected Int32 _submissionBatch = 100;  // Specifies batch size (number of messages that trigger a submissin operation)
+        /// <summary>
+        /// Thread-safe queue for buffering 
+        /// </summary>
+        protected ConcurrentQueue<LoggerEventArgs> messages = new ConcurrentQueue<LoggerEventArgs>();
+        /// <summary>
+        /// Specifies batch size (number of messages that trigger a submissin operation)
+        /// </summary>
+        protected Int32 submissionBatch = 100;
 
-        // Indicates whether logger thread has been requested to stop
+        /// <summary>
+        /// Indicates whether logger thread has been requested to stop
+        /// </summary>
         protected Boolean _terminateRequest = false;
 
+        /// <summary>
+        /// Flags that this logger accepts.
+        /// If a message does not contains any of these flags, it will be skipped
+        /// </summary>
         protected MessageFlags _acceptFlags = MessageFlags.All;
+        /// <summary>
+        /// Flags that this logger does not accept.
+        /// If a message contains any of these flags, it will be skipped
+        /// </summary>
         protected MessageFlags _rejectFlags = MessageFlags.None;
 
         // Properties
@@ -34,39 +49,37 @@ namespace libWyvernzora.Logging
         /// </remarks>
         public Int32 SubmissionBatchSize
         {
-            get { return _submissionBatch; }
+            get { return submissionBatch; }
             set
             {
-               _submissionBatch = value;
+               submissionBatch = value;
             }
         }
-
+        /// <summary>
+        /// Gets or sets flags that this logger accepts.
+        /// If a message does not contains any of these flags, it will be skipped
+        /// </summary>
         public MessageFlags AcceptFlags
         {
             get { return _acceptFlags; }
             set { _acceptFlags = value; }
         }
-
+        /// <summary>
+        /// Gets or sets flags that this logger does not accept.
+        /// If a message contains any of these flags, it will be skipped
+        /// </summary>
         public MessageFlags RejectFlags
         {
             get { return _rejectFlags; }
             set { _rejectFlags = value; }
         }
 
-        /// <summary>
-        /// Constructor, initializes logger thread
-        /// </summary>
-        protected Logger()
-        {
-        }
 
         // Logger thread method, must remain private!
         private void CheckSubmissionQueue()
         {
             // Do nothing if there is no need to flush messages
-            if (_messages.Count < _submissionBatch)
-                return;
-            else
+            if (messages.Count >= submissionBatch)
             {
                 // Submit messages if needed
 
@@ -75,10 +88,10 @@ namespace libWyvernzora.Logging
                  * seems more reliable. More investigation needed.
                  */
 
-                LoggerEventArgs[] messages = new LoggerEventArgs[_submissionBatch];
-                for (int i = 0; i < _submissionBatch; i++)
+                LoggerEventArgs[] messages = new LoggerEventArgs[submissionBatch];
+                for (int i = 0; i < submissionBatch; i++)
                 {
-                    if (!_messages.TryDequeue(out messages[i]))
+                    if (!this.messages.TryDequeue(out messages[i]))
                         throw new Exception("Logger.RunLogger(): Failed to dequeue the next log message!");
                 }
                 SubmitMessageQueue(messages);
@@ -103,7 +116,7 @@ namespace libWyvernzora.Logging
         {
             if ((arg.Flags & _rejectFlags) != 0) return;
             if ((arg.Flags & _acceptFlags) == 0 && _acceptFlags != MessageFlags.All) return;
-            _messages.Enqueue(arg);
+            messages.Enqueue(arg);
             CheckSubmissionQueue();
         }
 

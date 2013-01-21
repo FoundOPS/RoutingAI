@@ -10,11 +10,14 @@ namespace libWyvernzora.Logging
     /// </summary>
     public static class GlobalLogger
     {
-        private static EventHandler<LoggerEventArgs> _onLogMessage;
+        private static EventHandler<LoggerEventArgs> onLogMessage;
+        /// <summary>
+        /// Occurs when a log message is being sent
+        /// </summary>
         public static event EventHandler<LoggerEventArgs> OnLogMessage
         {
-            add { _onLogMessage += value; }
-            remove { _onLogMessage -= value; }
+            add { onLogMessage += value; }
+            remove { onLogMessage -= value; }
         }
         /// <summary>
         /// Sends a log message to all attached loggers
@@ -24,10 +27,10 @@ namespace libWyvernzora.Logging
         /// <param name="args">Message format arguments</param>
         public static void SendLogMessage(String tag, MessageFlags flags, String format, params Object[] args)
         {
-            if (_onLogMessage != null)
+            if (onLogMessage != null)
             {
                 LoggerEventArgs e = new LoggerEventArgs(tag, flags, format, args);
-                _onLogMessage(null, e);
+                onLogMessage(null, e);
             }
         }
 

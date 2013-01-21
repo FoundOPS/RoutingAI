@@ -1,49 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace libWyvernzora.ConsoleUtil
 {
-    public sealed class CommandLineArgument
-    {
-        public enum ArgumentType
-        {
-            Argument,
-            Option
-        }
-
-        private String m_name;
-        private String[] m_args;
-        private ArgumentType m_type;
-
-        public CommandLineArgument(String name, String[] args, ArgumentType type)
-        {
-            m_name = name;
-            m_args = args;
-            m_type = type;
-        }
-
-        public String Name
-        { get { return m_name; } }
-        public String[] Arguments
-        { get { return m_args; } }
-        public ArgumentType Type
-        { get { return m_type; } }
-    }
-
+    /// <summary>
+    /// Represents a collection of command line arguments
+    /// </summary>
     public class CommandLineArguments
     {
         private CommandLineArgument[] m_args;
 
+        /// <summary>
+        /// Gets the number of command line arguments contained in this object
+        /// </summary>
         public Int32 Count
         { get { return m_args.Length; } }
+        /// <summary>
+        /// Gets the specified command line argument
+        /// </summary>
+        /// <param name="i">Index of the argument to retrieve</param>
+        /// <returns>CommandLineArgument object</returns>
         public CommandLineArgument this[int i]
         { get { return m_args[i]; } }
 
+        /// <summary>
+        /// Constructor.
+        /// Creates CommandLineArguments object from Environment.CommandLine
+        /// </summary>
         public CommandLineArguments()
             : this(System.Environment.CommandLine) { }
+        /// <summary>
+        /// Constructor.
+        /// Creates CommandLineArgument from a string
+        /// </summary>
+        /// <param name="cmdLine"></param>
         public CommandLineArguments(String cmdLine)
         {
             List<String> argv = new List<string>();
@@ -104,7 +96,7 @@ namespace libWyvernzora.ConsoleUtil
             m_args = args.ToArray();
         }
 
-        private String DescapeQuotes(String str)
+        private static String DescapeQuotes(String str)
         {
             if (str == "") return "";
             if (str.StartsWith("\"") && str.EndsWith("\""))
