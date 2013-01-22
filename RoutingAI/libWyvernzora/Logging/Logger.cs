@@ -25,18 +25,18 @@ namespace libWyvernzora.Logging
         /// <summary>
         /// Indicates whether logger thread has been requested to stop
         /// </summary>
-        protected Boolean _terminateRequest = false;
+        protected Boolean terminateRequest = false;
 
         /// <summary>
         /// Flags that this logger accepts.
         /// If a message does not contains any of these flags, it will be skipped
         /// </summary>
-        protected MessageFlags _acceptFlags = MessageFlags.All;
+        protected MessageFlags acceptFlags = MessageFlags.All;
         /// <summary>
         /// Flags that this logger does not accept.
         /// If a message contains any of these flags, it will be skipped
         /// </summary>
-        protected MessageFlags _rejectFlags = MessageFlags.None;
+        protected MessageFlags rejectFlags = MessageFlags.None;
 
         // Properties
         /// <summary>
@@ -61,8 +61,8 @@ namespace libWyvernzora.Logging
         /// </summary>
         public MessageFlags AcceptFlags
         {
-            get { return _acceptFlags; }
-            set { _acceptFlags = value; }
+            get { return acceptFlags; }
+            set { acceptFlags = value; }
         }
         /// <summary>
         /// Gets or sets flags that this logger does not accept.
@@ -70,8 +70,8 @@ namespace libWyvernzora.Logging
         /// </summary>
         public MessageFlags RejectFlags
         {
-            get { return _rejectFlags; }
-            set { _rejectFlags = value; }
+            get { return rejectFlags; }
+            set { rejectFlags = value; }
         }
 
 
@@ -88,13 +88,13 @@ namespace libWyvernzora.Logging
                  * seems more reliable. More investigation needed.
                  */
 
-                LoggerEventArgs[] messages = new LoggerEventArgs[submissionBatch];
+                LoggerEventArgs[] _messages = new LoggerEventArgs[submissionBatch];
                 for (int i = 0; i < submissionBatch; i++)
                 {
-                    if (!this.messages.TryDequeue(out messages[i]))
+                    if (!this.messages.TryDequeue(out _messages[i]))
                         throw new Exception("Logger.RunLogger(): Failed to dequeue the next log message!");
                 }
-                SubmitMessageQueue(messages);
+                SubmitMessageQueue(_messages);
             }
         }
 
@@ -114,8 +114,8 @@ namespace libWyvernzora.Logging
         /// <param name="arg"></param>
         public virtual void EnqueueMessage(LoggerEventArgs arg)
         {
-            if ((arg.Flags & _rejectFlags) != 0) return;
-            if ((arg.Flags & _acceptFlags) == 0 && _acceptFlags != MessageFlags.All) return;
+            if ((arg.Flags & rejectFlags) != 0) return;
+            if ((arg.Flags & acceptFlags) == 0 && acceptFlags != MessageFlags.All) return;
             messages.Enqueue(arg);
             CheckSubmissionQueue();
         }

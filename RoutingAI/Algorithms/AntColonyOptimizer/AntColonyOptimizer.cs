@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using RoutingAI.DataContracts;
 using RoutingAI.Algorithms.Interfaces;
 using RoutingAI.Utilities;
@@ -18,29 +17,43 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
     /// constraints cannot be satisfied. During further optimization,
     /// consider passing these "unvisited" tasks to another worker.
     /// </remarks>
-    public class ACOInitialOptimizer : IInitialOptimizer
+    public class AntColonyOptimizer : IInitialOptimizer
     {
-        // Constants
-        private const Int32 BASE_PHEROMON_DEPOSIT = 65535;  // Amount of pheromon to deposit that is later scaled according to edge length
-                                                            // Optimal value would be average length of all edges
 
         // Persistent Values
-        private Int32[,] pheromon;  // Buffer for pheromon values between two vertecies
-        private IDistanceAlgorithm<Task> dist;  // Distance algorithm (distance buffering is up to distance algorithm)
-        private Random rand = new Random(); // Random number generator
+        private readonly IDistanceAlgorithm<Task> dist;  // Distance algorithm (distance buffering is up to distance algorithm)
+        private readonly Random rand = new Random(); // Random number generator
+        private readonly Task[] tasks;   // Tasks to optimize
+        private readonly Window window;  // Window of optimization. Start is very important!
+        private readonly Resource resource;  // Resource we are optimizing for
 
-        private Task[] tasks;   // Tasks to optimize
-        private Window window;  // Window of optimization. Start is very important!
-        private Resource resource;  // Resource we are optimizing for
+        private Double[,] pheromon;  // Buffer for pheromon values between two vertecies
+        private Int32 minDistance;  // Known minimum distance between nodes
+
+        private Int32 bestCost = Int32.MaxValue;    // Cost of the best solution
+        private Task[] bestSolution = null;     // Best Solution
+
 
         // Constructors
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="dist">Distance algorithm</param>
-        public ACOInitialOptimizer(IDistanceAlgorithm<Task> dist)
+        /// <param name="res">Resource that will own the tasks</param>
+        /// <param name="wind">Window that optimization is running for</param>
+        /// <param name="tasks">Array of Task objects that are going to be optimized</param>
+        public AntColonyOptimizer(Resource res, Window wind, Task[] tasks, IDistanceAlgorithm<Task> dist)
         {
+            resource = res;
+            window = wind;
+            this.tasks = tasks;
             this.dist = dist;
+
+            pheromon = new double[tasks.Length, tasks.Length];
+
+            // Initialize Internal Index
+            for (int i = 0; i < tasks.Length; i++)
+                this.tasks[i].Index = i;
         }
 
 
@@ -75,7 +88,6 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
             {
                 // Filter all unvisited nodes and get a list of pairs (pheromon, node)
                     // all tasks that cannot be visited should be dropped at this step
-                    // CONSIDERATION: Use a constraint interface instead of hard code?? We may need to expand algorithm to process truck capacity as well...
                 ConstraintFilterBase filter = new DummyConstraintFilter(resource, optimized, unvisited.Values, path);
                 List<Task> candidates = filter.ToList();    // Force-fetch all values and avoid multiple Linq queries
 
@@ -90,13 +102,23 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
                 // Update agent data
                 Int32 d = dist.GetDistance(current, next);
                 distance += d;
+                if (d < minDistance) minDistance = d;
                 // TODO Increase Optimized Window to include next task
                 unvisited.Remove(next.Index);
                 path.Add(next);
 
                 // Deposit pheromon
-                // TODO figure out an algorithm to get the amount of pheromon to deposit
-                    // Pheromon deposit should be within [-65535, +65535] based on distance
+                    // TODO consider time in pheromon deposit as well (?)
+                pheromon[current.Index, next.Index] += (double) minDistance / (double) d;
+            }
+
+            // At this point path is complete, update current values
+                // TODO convert from distance to cost
+                // for now just using  distance
+            if (distance < bestCost)
+            {
+                bestCost = distance;
+                bestSolution = path.ToArray();
             }
         }
 
@@ -105,6 +127,13 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
 
         public Solution GenerateSolution(ClusteringSolution solution, int clusterIndex)
         {
+            // TODO this implementation is only for debugging! make it better
+                // Note: this implementation should work (in theory), but it can be improved
+            for (int i = 0; i < 10000; i++)
+            {
+                Iterate();
+            }
+
             throw new NotImplementedException();
         }
 

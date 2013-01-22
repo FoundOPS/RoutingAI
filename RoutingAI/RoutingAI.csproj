@@ -48,7 +48,7 @@
     <Compile Include="Algorithms\Clustering\CLARAClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\IClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\PAMClusteringAlgorithm.cs" />
-    <Compile Include="Algorithms\AntColonyOptimizer\ACOInitialOptimizer.cs" />
+    <Compile Include="Algorithms\AntColonyOptimizer\AntColonyOptimizer.cs" />
     <Compile Include="Algorithms\Interfaces\IConstraintFilter.cs" />
     <Compile Include="Algorithms\Interfaces\IInitialOptimizer.cs" />
     <Compile Include="Algorithms\Interfaces\ICostFunction.cs" />
