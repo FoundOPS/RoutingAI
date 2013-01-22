@@ -37,6 +37,14 @@ namespace RoutingAI.DataContracts
         public Decimal Longitude { get; set; }
 
         /// <summary>
+        /// Confidence value (0-100).
+        /// During optimization, estimated task time will be adjusted before calculation
+        /// Tasks with higher confidence values will be adjusted less
+        /// </summary>
+        [DataMember(Name = "confidence")]
+        public Byte Confidence { get; set; }
+
+        /// <summary>
         /// The estimated time required to complete the task in minutes
         /// </summary>
         [DataMember(Name = "est_time")]
@@ -101,6 +109,19 @@ namespace RoutingAI.DataContracts
         [IgnoreDataMember]
         public Int32 Index
         { get; set; }
+
+        /// <summary>
+        /// Gets confidence-adjusted task time
+        /// </summary>
+        [IgnoreDataMember]
+        public Int32 AdjustedTime
+        {
+            get
+            {
+                Double coefficient = (100 - Confidence) / 100.0;
+                return (Int32) (EstimatedTime * coefficient);
+            }
+        }
 
         #endregion
 

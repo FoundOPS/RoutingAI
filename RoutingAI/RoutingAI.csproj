@@ -58,7 +58,6 @@
     <Compile Include="Algorithms\PlanetColonizer\PlanetColonizerRoutingAlgorithm.cs" />
     <Compile Include="Algorithms\PlanetColonizer\TaskDistribution.cs" />
     <Compile Include="Algorithms\GeoStraightDistanceAlgorithm.cs" />
-    <Compile Include="Algorithms\StraightDistanceAlgorithm.cs" />
     <Compile Include="API\NetworkUtilities.cs" />
     <Compile Include="API\OSRM\OsrmApi.cs" />
     <Compile Include="API\OSRM\OsrmContract.cs" />

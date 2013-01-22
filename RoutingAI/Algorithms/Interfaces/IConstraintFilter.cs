@@ -82,6 +82,5 @@ namespace RoutingAI.Algorithms.Interfaces
         }
 
         #endregion
-
     }
 }

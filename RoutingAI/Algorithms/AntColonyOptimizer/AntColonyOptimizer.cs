@@ -4,6 +4,7 @@ using System.Linq;
 using RoutingAI.DataContracts;
 using RoutingAI.Algorithms.Interfaces;
 using RoutingAI.Utilities;
+using libWyvernzora;
 
 namespace RoutingAI.Algorithms.AntColonyOptimizer
 {
@@ -31,7 +32,7 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
         private Int32 minDistance;  // Known minimum distance between nodes
 
         private Int32 bestCost = Int32.MaxValue;    // Cost of the best solution
-        private Task[] bestSolution = null;     // Best Solution
+        private Destination[] bestSolution = null;     // Best Solution
 
 
         // Constructors
@@ -71,8 +72,8 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
                 = new Window() { Start = window.Start, End = window.Start };
             SortedList<Int32, Task> unvisited    // List of unvisited nodes
                 = new SortedList<int, Task>();
-            List<Task> path     // Records the path of the agent
-                = new List<Task>();
+            List<Destination> path     // Records the path of the agent
+                = new List<Destination>();
 
             // Copy all tasks to unvisited list
             foreach (Task t in tasks)
@@ -96,16 +97,23 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
                     break;      // Iteration stops here when there are no more nodes to be considered
 
                 // Generate a weighted random decision
-                Task current = path[path.Count - 1];
+                Task current = path[path.Count - 1].Task;
                 Task next = candidates.PickWeighted((Task t) => pheromon[current.Index, t.Index]);
 
-                // Update agent data
-                Int32 d = dist.GetDistance(current, next);
-                distance += d;
-                if (d < minDistance) minDistance = d;
-                // TODO Increase Optimized Window to include next task
+                // Update agent data and create destination
+                Destination destination = new Destination();
+                
+                Pair<Int32, Int32> dt = dist.GetDistanceTime(current, next);
+                distance += dt.First;
+                if (dt.First < minDistance) minDistance = dt.First;
+
+                destination.Task = next;
+                destination.EstimatedArrival = optimized.End + TimeSpan.FromSeconds(dt.Second);
+                destination.EstimatedDeparture = destination.EstimatedArrival + TimeSpan.FromSeconds(next.AdjustedTime);
+                optimized.End += TimeSpan.FromSeconds(dt.Second + next.AdjustedTime);
+                
                 unvisited.Remove(next.Index);
-                path.Add(next);
+                path.Add(destination);
 
                 // Deposit pheromon
                     // TODO consider time in pheromon deposit as well (?)
@@ -118,7 +126,7 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
             if (distance < bestCost)
             {
                 bestCost = distance;
-                bestSolution = path.ToArray();
+                //bestSolution = path.ToArray();
             }
         }
 
