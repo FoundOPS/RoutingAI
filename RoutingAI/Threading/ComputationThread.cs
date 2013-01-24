@@ -99,7 +99,7 @@ namespace RoutingAI.Threading
 
             // Initialize worker thread
             ParameterizedThreadStart threadStart = new ParameterizedThreadStart((Object o)=>RunComputationAsync((Object[])o));
-            _thread = new Thread(threadStart);
+            _thread = new Thread(threadStart) {Name = String.Format("CmpThread{{{0}}}: {1}", ID, task.GetType().Name)};
 
             // Change thread info
             _info.AcceptsCommands = false;

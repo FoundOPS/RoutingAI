@@ -64,7 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClusteringTasks\PAMClusteringTask.cs" />
+    <Compile Include="Tasks\AcoOptimizationTask.cs" />
+    <Compile Include="Tasks\PAMClusteringTask.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutingAiSlave.cs" />

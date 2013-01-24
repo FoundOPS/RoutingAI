@@ -120,9 +120,10 @@ namespace RoutingAI.Slave
 
         #region Optimization
 
-        public CallResponse ComputeOptimizedSolution(Guid threadId, SlaveConfig config, OptimizationRequest data, ClusteringSolution clusters)
+        public CallResponse ComputeOptimizedSolution(Guid threadId, SlaveConfig config, OptimizationRequest data, Resource resource, DataContracts.Task[] tasks)
         {
-            throw new NotImplementedException();
+            AcoOptimizationTask task = new AcoOptimizationTask(data, resource, tasks);
+            return _dispatcher.RunComputation(threadId, task);
         }
 
         public OptimizationResponse GetOptimizedSolution(Guid threadId)
@@ -131,6 +132,11 @@ namespace RoutingAI.Slave
         }
 
         #endregion
+
+
+
+
+
 
     }
 }

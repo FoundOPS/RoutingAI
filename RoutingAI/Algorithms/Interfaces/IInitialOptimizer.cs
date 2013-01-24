@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RoutingAI.Algorithms.Interfaces
 {
@@ -15,8 +14,8 @@ namespace RoutingAI.Algorithms.Interfaces
         /// <summary>
         /// Generates an Initial Solution from a Clustering Solution
         /// </summary>
-        /// <param name="solution">Solution produced by the clustering algorithm</param>
+        /// <param name="tasks">Tasks to be optimized</param>
         /// <returns>Unoptimized Solution</returns>
-        Solution GenerateSolution(ClusteringSolution solution, Int32 clusterIndex);
+        Solution GenerateSolution(Task[] tasks);
     }
 }

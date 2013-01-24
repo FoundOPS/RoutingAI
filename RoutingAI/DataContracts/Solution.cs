@@ -58,5 +58,12 @@ namespace RoutingAI.DataContracts
         /// </summary>
         [DataMember(Name = "routes")]
         public Route[] Routes { get; set; }
+
+        /// <summary>
+        /// Incomplete tasks are the ones optimized decided to leave out of
+        /// schedule for such reasons as task falling outside of availability window
+        /// </summary>
+        [DataMember(Name = "incomplete")]
+        public Task[] Incomplete { get; set; }
     }
 }

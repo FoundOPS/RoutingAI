@@ -49,7 +49,7 @@
     <Compile Include="Algorithms\Clustering\IClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\Clustering\PAMClusteringAlgorithm.cs" />
     <Compile Include="Algorithms\AntColonyOptimizer\AntColonyOptimizer.cs" />
-    <Compile Include="Algorithms\Interfaces\IConstraintFilter.cs" />
+    <Compile Include="Algorithms\Interfaces\ConstraintFilterBase.cs" />
     <Compile Include="Algorithms\Interfaces\IInitialOptimizer.cs" />
     <Compile Include="Algorithms\Interfaces\ICostFunction.cs" />
     <Compile Include="Algorithms\Interfaces\IDistanceAlgorithm.cs" />
@@ -58,6 +58,7 @@
     <Compile Include="Algorithms\PlanetColonizer\PlanetColonizerRoutingAlgorithm.cs" />
     <Compile Include="Algorithms\PlanetColonizer\TaskDistribution.cs" />
     <Compile Include="Algorithms\GeoStraightDistanceAlgorithm.cs" />
+    <Compile Include="Algorithms\StraightDistanceAlgorithm.cs" />
     <Compile Include="API\NetworkUtilities.cs" />
     <Compile Include="API\OSRM\OsrmApi.cs" />
     <Compile Include="API\OSRM\OsrmContract.cs" />

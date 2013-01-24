@@ -118,7 +118,7 @@ namespace RoutingAI.DataContracts
         {
             get
             {
-                Double coefficient = (100 - Confidence) / 100.0;
+                Double coefficient = 1 + (100 - Confidence) / 100.0;
                 return (Int32) (EstimatedTime * coefficient);
             }
         }

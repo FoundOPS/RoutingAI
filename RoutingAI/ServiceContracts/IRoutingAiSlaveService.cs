@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
-using System.Threading.Tasks;
 using libWyvernzora;
 using RoutingAI.DataContracts;
 
@@ -62,7 +61,7 @@ namespace RoutingAI.ServiceContracts
         #region Optimization
 
         [OperationContract]
-        CallResponse ComputeOptimizedSolution(Guid threadId, SlaveConfig config, OptimizationRequest data, ClusteringSolution clusters);
+        CallResponse ComputeOptimizedSolution(Guid threadId, SlaveConfig config, OptimizationRequest data, Resource resource, Task[] tasks);
 
         [OperationContract]
         OptimizationResponse GetOptimizedSolution(Guid threadId);

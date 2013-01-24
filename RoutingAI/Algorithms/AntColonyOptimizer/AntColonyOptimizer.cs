@@ -24,7 +24,7 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
         // Persistent Values
         private readonly IDistanceAlgorithm<Task> dist;  // Distance algorithm (distance buffering is up to distance algorithm)
         private readonly Random rand = new Random(); // Random number generator
-        private readonly Task[] tasks;   // Tasks to optimize
+        private Task[] tasks;   // Tasks to optimize
         private readonly Window window;  // Window of optimization. Start is very important!
         private readonly Resource resource;  // Resource we are optimizing for
 
@@ -42,19 +42,11 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
         /// <param name="dist">Distance algorithm</param>
         /// <param name="res">Resource that will own the tasks</param>
         /// <param name="wind">Window that optimization is running for</param>
-        /// <param name="tasks">Array of Task objects that are going to be optimized</param>
-        public AntColonyOptimizer(Resource res, Window wind, Task[] tasks, IDistanceAlgorithm<Task> dist)
+        public AntColonyOptimizer(Resource res, Window wind, IDistanceAlgorithm<Task> dist)
         {
             resource = res;
             window = wind;
-            this.tasks = tasks;
             this.dist = dist;
-
-            pheromon = new double[tasks.Length, tasks.Length];
-
-            // Initialize Internal Index
-            for (int i = 0; i < tasks.Length; i++)
-                this.tasks[i].Index = i;
         }
 
 
@@ -84,6 +76,15 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
                 start = unvisited.Values[rand.Next(unvisited.Count)];
             unvisited.Remove(start.Index);
 
+            // Create first destination and update opt
+            Destination startDestination = new Destination();
+            startDestination.EstimatedArrival = optimized.Start;
+            startDestination.EstimatedDeparture = startDestination.EstimatedArrival +
+                                                  TimeSpan.FromMinutes(start.AdjustedTime);
+            startDestination.Task = start;
+            path.Add(startDestination);
+            optimized.End += TimeSpan.FromMinutes(start.AdjustedTime);
+
             // Agent tours the graph
             while (true)    // Stopping condition will be determined at runtime (no more nodes to visit)
             {
@@ -100,24 +101,25 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
                 Task current = path[path.Count - 1].Task;
                 Task next = candidates.PickWeighted((Task t) => pheromon[current.Index, t.Index]);
 
-                // Update agent data and create destination
+                // Create destination object for next task
                 Destination destination = new Destination();
                 
+                // Update distance and time
                 Pair<Int32, Int32> dt = dist.GetDistanceTime(current, next);
                 distance += dt.First;
                 if (dt.First < minDistance) minDistance = dt.First;
 
                 destination.Task = next;
                 destination.EstimatedArrival = optimized.End + TimeSpan.FromSeconds(dt.Second);
-                destination.EstimatedDeparture = destination.EstimatedArrival + TimeSpan.FromSeconds(next.AdjustedTime);
-                optimized.End += TimeSpan.FromSeconds(dt.Second + next.AdjustedTime);
+                destination.EstimatedDeparture = destination.EstimatedArrival + TimeSpan.FromMinutes(next.AdjustedTime);
+                optimized.End += TimeSpan.FromSeconds(dt.Second) + TimeSpan.FromMinutes(next.AdjustedTime);
                 
                 unvisited.Remove(next.Index);
                 path.Add(destination);
 
                 // Deposit pheromon
                     // TODO consider time in pheromon deposit as well (?)
-                pheromon[current.Index, next.Index] += (double) minDistance / (double) d;
+                pheromon[current.Index, next.Index] += (double) minDistance / (double) dt.First;
             }
 
             // At this point path is complete, update current values
@@ -126,15 +128,23 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
             if (distance < bestCost)
             {
                 bestCost = distance;
-                //bestSolution = path.ToArray();
+                bestSolution = path.ToArray();
             }
         }
 
         #endregion
 
 
-        public Solution GenerateSolution(ClusteringSolution solution, int clusterIndex)
+        public Solution GenerateSolution(Task[] cluster)
         {
+            // Initialize
+            tasks = cluster;
+            pheromon = new double[tasks.Length, tasks.Length];
+
+            // Initialize Internal Index
+            for (int i = 0; i < tasks.Length; i++)
+                this.tasks[i].Index = i;
+
             // TODO this implementation is only for debugging! make it better
                 // Note: this implementation should work (in theory), but it can be improved
             for (int i = 0; i < 10000; i++)

@@ -37,6 +37,14 @@ namespace RoutingAI.DataContracts
         public String RegionCode { get; set; }
 
         /// <summary>
+        /// Overall target optimization window
+        /// It may be a day, a week, a month or whatever you need
+        /// Tasks that fall out side this window will be considered "incomplete"
+        /// </summary>
+        [DataMember(Name = "window")]
+        public Window Window { get; set; }
+
+        /// <summary>
         /// Removes Task data from the OptimizationRequest object.
         /// Use it after gathering clustering solution.
         /// </summary>

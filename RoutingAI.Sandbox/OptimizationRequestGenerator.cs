@@ -126,7 +126,8 @@ namespace RoutingAI.Sandbox
                 ClientId = Guid.NewGuid(),
                 RegionCode = "debug",
                 Resources = resources.ToArray(),
-                Tasks = tasks.ToArray()
+                Tasks = tasks.ToArray(),
+                Window = window
             };
         }
 
