@@ -16,7 +16,10 @@ namespace RoutingAI.Controller
         public static IRoutingAiSlaveService GetSlaveProxy(IPEndPoint ep)
         {
             EndpointAddress endpoint = new EndpointAddress(String.Format("http://{0}/RoutingAi/Slave", ep.ToString()));
-            return ChannelFactory<IRoutingAiSlaveService>.CreateChannel(new BasicHttpBinding(), endpoint);
+            BasicHttpBinding binding = new BasicHttpBinding();
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
+            return ChannelFactory<IRoutingAiSlaveService>.CreateChannel(binding, endpoint);
         }
     }
 }

@@ -408,7 +408,11 @@ namespace RoutingAI.Sandbox
         private void buttonOptimizationRequest_Click(object sender, EventArgs e)
         {
             EndpointAddress endpoint = new EndpointAddress("http://localhost:8000/RoutingAi/Controller");
-            IRoutingAiService proxy = ChannelFactory<IRoutingAiService>.CreateChannel(new BasicHttpBinding(), endpoint);
+
+            BasicHttpBinding binding = new BasicHttpBinding();
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
+            IRoutingAiService proxy = ChannelFactory<IRoutingAiService>.CreateChannel(binding, endpoint);
 
             OptimizationRequest or = _optimizationRequestGenerator.Generate(GenerationConfig);
             proxy.Post(or);
