@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RoutingAI.Utilities;
 using libWyvernzora;
 
 namespace RoutingAI.Algorithms
@@ -27,8 +28,8 @@ namespace RoutingAI.Algorithms
 
         public Pair<int, int> GetDistanceTime(Task start, Task end)
         {
-            Int32 distance = Utilities.GeoTools.StraightDistance(start.Coordinates.latRad, start.Coordinates.lonRad, end.Coordinates.latRad, end.Coordinates.lonRad);
-            Int32 time = distance / 3; // default speed of 10km/h
+            Int32 distance = (Int32)GeoTools.OrthodomicDistance(start.Coordinates, end.Coordinates, GeoTools.FormulaType.VincentyFormula);
+            Int32 time = distance / 14; // default speed of 50km/h
             return new Pair<int, int>(distance, time);
         }
     }

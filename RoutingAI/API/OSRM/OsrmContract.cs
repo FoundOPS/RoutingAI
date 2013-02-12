@@ -63,10 +63,10 @@ namespace RoutingAI.API.OSRM
         public int Status { get; set; }
 
         [DataMember(Name = "mapped_coordinate")]
-        public double[] Mapped_Coordinate { get; set; }
+        public double[] MappedCoordinate { get; set; }
 
         [DataMember(Name = "tansactionId")]
-        public String Transaction_Id { get; set; }
+        public String TransactionId { get; set; }
     }
 
     [DataContract]
@@ -139,12 +139,13 @@ namespace RoutingAI.API.OSRM
         public Coordinate(double lat, double lon)
             : base(lat, lon)
         {
-            this.lat = lat;
-            this.lon = lon;
+            // Lat and lon are degrees
+            this.Latitude = lat;
+            this.Longitude = lon;
         }
 
-        [DataMember]
-        public double lat
+        [DataMember(Name="lat")]
+        public double Latitude
         {
             get { return First; }
             set
@@ -153,15 +154,20 @@ namespace RoutingAI.API.OSRM
             }
         }
 
-        [DataMember]
-        public double lon
+        [DataMember(Name = "lon")]
+        public double Longitude
         {
             get { return Second; }
             set { Second = value; }
         }
 
-        public double latRad { get { return GeoTools.DegreeToRadian(lat); } }
-        public double lonRad { get { return GeoTools.DegreeToRadian(lon); } }
+        [IgnoreDataMember]
+        public double LatitudeRad
+        { get { return GeoTools.DegreeToRadian(Latitude); } }
+
+        [IgnoreDataMember]
+        public double LongitudeRad
+        { get { return GeoTools.DegreeToRadian(Longitude); } }
 
         #region IComparable/IEquatable<Coordinate> Members
 
@@ -171,8 +177,8 @@ namespace RoutingAI.API.OSRM
             if (other == null)
                 throw new Exception("Not a coordinate!");
 
-            var latDifference = lat - other.lat;
-            var lonDifference = lon - other.lon;
+            var latDifference = Latitude - other.Latitude;
+            var lonDifference = Longitude - other.Longitude;
 
             if (Math.Abs(latDifference) > 0.0000001 || Math.Abs(lonDifference) > 0.0000001)
             {
@@ -199,7 +205,7 @@ namespace RoutingAI.API.OSRM
 
         public override String ToString()
         {
-            return lat + "," + lon;
+            return Latitude + "," + Longitude;
         }
     }
 

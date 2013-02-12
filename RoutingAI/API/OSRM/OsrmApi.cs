@@ -39,16 +39,16 @@ namespace RoutingAI.API.OSRM
         /// <returns></returns>
         public static Coordinate FindNearestNode(String osrmAddress, Coordinate c)
         {
-            String actionString = "nearest?loc=" + c.lat + "," + c.lon;
+            String actionString = "nearest?loc=" + c.Latitude + "," + c.Longitude;
             LocResponse response = NetworkUtilities.JsonRequest<LocResponse>(
                 new Uri(osrmAddress + actionString));
 
-            if (response.Mapped_Coordinate.Length < 2)
+            if (response.MappedCoordinate.Length < 2)
             {
                 GlobalLogger.SendLogMessage("OSRM_Error", MessageFlags.Warning, "Coordinate out of bounds ({0}, {1})", c.First, c.Second);
                 return new Coordinate(0, 0);
             }
-            return new Coordinate(response.Mapped_Coordinate[0], response.Mapped_Coordinate[1]);
+            return new Coordinate(response.MappedCoordinate[0], response.MappedCoordinate[1]);
 
         }
 
@@ -115,7 +115,7 @@ namespace RoutingAI.API.OSRM
         {
             StringBuilder actionString = new StringBuilder("viaroute?");
             foreach (Coordinate c in coords)
-                actionString.AppendFormat("loc={0},{1}&", c.lat, c.lon);
+                actionString.AppendFormat("loc={0},{1}&", c.Latitude, c.Longitude);
             actionString.Remove(actionString.Length - 1, 1);
             return actionString.ToString();
         }

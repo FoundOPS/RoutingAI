@@ -47,6 +47,8 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
             resource = res;
             window = wind;
             this.dist = dist;
+
+            minDistance = Int32.MaxValue;
         }
 
 
@@ -99,7 +101,7 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
 
                 // Generate a weighted random decision
                 Task current = path[path.Count - 1].Task;
-                Task next = candidates.PickWeighted((Task t) => pheromon[current.Index, t.Index]);
+                Task next = candidates.PickWeighted((Task t) => pheromon[current.Index, t.Index] + 1);
 
                 // Create destination object for next task
                 Destination destination = new Destination();

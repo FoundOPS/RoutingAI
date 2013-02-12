@@ -24,8 +24,8 @@ namespace RoutingAI.Algorithms
         public Pair<int, int> GetDistanceTime(Coordinate start, Coordinate end)
         {
             Int32 distance = (Int32)
-                       Math.Sqrt(Math.Pow(end.lat - start.lat, 2) +
-                                 Math.Pow(end.lon - start.lon, 2));
+                       Math.Sqrt(Math.Pow(end.Latitude - start.Latitude, 2) +
+                                 Math.Pow(end.Longitude - start.Longitude, 2));
             Int32 time = distance / 3; // default speed of around 10km/h
             return new Pair<int, int>(distance, time);
         }

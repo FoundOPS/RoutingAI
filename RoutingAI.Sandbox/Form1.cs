@@ -51,8 +51,8 @@ namespace RoutingAI.Sandbox
         private static Point C2P(Coordinate c, Int32 w, Int32 h)
         {
             // convert x
-            Int32 x = (Int32)(((c.lon + 100) / 200) * w);
-            Int32 y = (Int32)(((c.lat + 100) / 200) * h);
+            Int32 x = (Int32)(((c.Longitude + 100) / 200) * w);
+            Int32 y = (Int32)(((c.Latitude + 100) / 200) * h);
 
             return new Point(x, y);
         }
