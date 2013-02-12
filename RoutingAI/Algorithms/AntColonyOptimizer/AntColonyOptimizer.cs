@@ -22,7 +22,9 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
     {
 
         // Persistent Values
-        private readonly IDistanceAlgorithm<Task> dist;  // Distance algorithm (distance buffering is up to distance algorithm)
+        private readonly IDistanceAlgorithm<Task> distFunc;  // Distance algorithm (distance buffering is up to distance algorithm)
+        private readonly ICostFunction costFunc; // Cost function
+
         private readonly Random rand = new Random(); // Random number generator
         private Task[] tasks;   // Tasks to optimize
         private readonly Window window;  // Window of optimization. Start is very important!
@@ -31,8 +33,9 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
         private Double[,] pheromon;  // Buffer for pheromon values between two vertecies
         private Int32 minDistance;  // Known minimum distance between nodes
 
-        private Int32 bestCost = Int32.MaxValue;    // Cost of the best solution
-        private Destination[] bestSolution = null;     // Best Solution
+        private Cost bestCost = Cost.MaxValue;    // Cost of the best solution
+        private Destination[] bestSolution;     // Best Solution
+        private Task[] bestCaseUnvisited;
 
 
         // Constructors
@@ -40,17 +43,34 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
         /// Constructor
         /// </summary>
         /// <param name="dist">Distance algorithm</param>
+        /// <param name="cost">Cost function</param>
         /// <param name="res">Resource that will own the tasks</param>
         /// <param name="wind">Window that optimization is running for</param>
-        public AntColonyOptimizer(Resource res, Window wind, IDistanceAlgorithm<Task> dist)
+        public AntColonyOptimizer(Resource res, Window wind, IDistanceAlgorithm<Task> dist, ICostFunction cost)
         {
             resource = res;
             window = wind;
-            this.dist = dist;
+            distFunc = dist;
+            costFunc = cost;
 
             minDistance = Int32.MaxValue;
         }
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the distance algorithm used by the optimizer
+        /// </summary>
+        public IDistanceAlgorithm<Task> DistanceAlgorithm
+        { get { return distFunc; } }
+
+        /// <summary>
+        /// Gets the cost function used by the optimizer
+        /// </summary>
+        public ICostFunction CostFunction
+        { get { return costFunc; } }
+
+        #endregion
 
         #region ACO Specific Methods
 
@@ -61,7 +81,6 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
         private void Iterate(Task start = null)
         {
             // Agent data
-            Int32 distance = 0; // total distance
             Window optimized    // a window representing already routed part
                 = new Window() { Start = window.Start, End = window.Start };
             SortedList<Int32, Task> unvisited    // List of unvisited nodes
@@ -107,8 +126,7 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
                 Destination destination = new Destination();
                 
                 // Update distance and time
-                Pair<Int32, Int32> dt = dist.GetDistanceTime(current, next);
-                distance += dt.First;
+                Pair<Int32, Int32> dt = distFunc.GetDistanceTime(current, next);
                 if (dt.First < minDistance) minDistance = dt.First;
 
                 destination.Task = next;
@@ -127,17 +145,20 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
             // At this point path is complete, update current values
                 // TODO convert from distance to cost
                 // for now just using  distance
-            if (distance < bestCost)
+            Cost currentCost = costFunc.GetPathCost(resource, path);
+
+            if (currentCost < bestCost)
             {
-                bestCost = distance;
+                bestCost = currentCost;
                 bestSolution = path.ToArray();
+                bestCaseUnvisited = unvisited.Values.ToArray();
             }
         }
 
         #endregion
 
 
-        public Solution GenerateSolution(Task[] cluster)
+        public Route GenerateSolution(Task[] cluster)
         {
             // Initialize
             tasks = cluster;
@@ -154,12 +175,19 @@ namespace RoutingAI.Algorithms.AntColonyOptimizer
                 Iterate();
             }
 
-            throw new NotImplementedException();
+
+            // Convert into a route
+            Route route = new Route();
+            route.Destinations = bestSolution.ToArray();
+            route.Cost = bestCost;
+            route.Resource = resource;
+            route.Incomplete = bestCaseUnvisited;
+
+            return route;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
     }
 }

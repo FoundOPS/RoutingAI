@@ -16,6 +16,9 @@ namespace RoutingAI.DataContracts
         Error
     }
 
+    /// <summary>
+    /// Optimization Response entity without payload data
+    /// </summary>
     [DataContract(Name = "optimization_response", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public class OptimizationResponse
     {
@@ -38,11 +41,20 @@ namespace RoutingAI.DataContracts
         [DataMember(Name = "details")]
         public String Details { get; set; }
 
+    }
+
+    /// <summary>
+    /// Optimization Response entity with payload data
+    /// </summary>
+    /// <typeparam name="TData"></typeparam>
+    [DataContract(Name = "optimization_response", Namespace = "http://foundops.com/services/routing_ai/1.0")]
+    public class OptimizationResponse<TData> : OptimizationResponse
+    {
         /// <summary>
         /// The solution.
         /// Null unless the stage is completed
         /// </summary>
         [DataMember(Name = "solution")]
-        public Solution Solution { get; set; }
+        public TData Solution { get; set; }
     }
 }

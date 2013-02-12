@@ -6,9 +6,9 @@ using RoutingAI.Algorithms.AntColonyOptimizer;
 
 namespace RoutingAI.Slave
 {
-    class AcoOptimizationTask : IComputationTask<Solution>
+    class AcoOptimizationTask : IComputationTask<Route>
     {
-        private Solution result;
+        private Route result;
         private Resource resource;
         private Task[] tasks;
         private OptimizationRequest request;
@@ -20,7 +20,7 @@ namespace RoutingAI.Slave
             this.tasks = tasks;
         }
 
-        public Solution Result
+        public Route Result
         {
             get { return result; }
         }
@@ -29,7 +29,10 @@ namespace RoutingAI.Slave
         {
             Window window = request.Window;
 
-            AntColonyOptimizer aco = new AntColonyOptimizer(resource, window, new GeoStraightDistanceAlgorithm());
+            IDistanceAlgorithm<Task> distanceAlg = new GeoStraightDistanceAlgorithm();
+            ICostFunction costAlg = new FuelTimeCostFunction(distanceAlg);
+
+            AntColonyOptimizer aco = new AntColonyOptimizer(resource, window, distanceAlg, costAlg);
             result = aco.GenerateSolution(tasks);
         }
 

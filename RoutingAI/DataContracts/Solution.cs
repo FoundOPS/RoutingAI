@@ -45,6 +45,19 @@ namespace RoutingAI.DataContracts
         /// </summary>
         [DataMember(Name = "destinations")]
         public Destination[] Destinations { get; set; }
+
+        /// <summary>
+        /// Cost of the route
+        /// </summary>
+        [DataMember(Name = "cost")]
+        public Cost Cost { get; set; }
+
+        /// <summary>
+        /// Tasks that have been assigned to the cluster but were
+        /// not scheduled
+        /// </summary>
+        [DataMember(Name = "incomplete")]
+        public Task[] Incomplete { get; set; }
     }
 
     /// <summary>

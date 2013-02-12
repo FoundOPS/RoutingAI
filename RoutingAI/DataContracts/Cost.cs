@@ -8,6 +8,12 @@ using RoutingAI.Algorithms;
 
 namespace RoutingAI.DataContracts
 {
+    /// <summary>
+    /// Represents a multipart cost of a task sequence
+    /// Note: Distance, Time and Overtime are not used for calculations, they are
+    /// user friendly indications of dollar costs. Actual value that is used for comparing
+    /// cost objects is OverallCost property.
+    /// </summary>
     [DataContract(Name = "cost", Namespace = "http://foundops.com/services/routing_ai/1.0")]
     public struct Cost : IComparable<Cost>
     {
@@ -38,6 +44,8 @@ namespace RoutingAI.DataContracts
             return this.OverallCost.CompareTo(other.OverallCost);
         }
 
+        #region Operators
+
         public static Cost operator -(Cost lhs, Cost rhs) {
 
             Cost tmp = new Cost()
@@ -61,6 +69,50 @@ namespace RoutingAI.DataContracts
             };
 
             return tmp;
+        }
+        public static Boolean operator ==(Cost lhs, Cost rhs)
+        {
+            return lhs.CompareTo(rhs) == 0;
+        }
+        public static Boolean operator !=(Cost lhs, Cost rhs)
+        {
+            return lhs.CompareTo(rhs) != 0;
+        }
+        
+        public static Boolean operator <(Cost lhs, Cost rhs)
+        {
+            return lhs.CompareTo(rhs) < 0;
+        }
+        public static Boolean operator >(Cost lhs, Cost rhs)
+        {
+            return lhs.CompareTo(rhs) > 0;
+        }
+        public static Boolean operator <=(Cost lhs, Cost rhs)
+        {
+            return lhs.CompareTo(rhs) <= 0;
+        }
+        public static Boolean operator >=(Cost lhs, Cost rhs)
+        {
+            return lhs.CompareTo(rhs) >= 0;
+        }
+  
+        #endregion
+
+        /// <summary>
+        /// Gets a maximum possible value for a cost
+        /// </summary>
+        public static Cost MaxValue
+        {
+            get
+            {
+                return new Cost()
+                    {
+                        Distance = Int32.MaxValue,
+                        Time = Int32.MaxValue,
+                        Overtime = Int32.MaxValue,
+                        OverallCost = Int32.MaxValue
+                    };
+            }
         }
     }
 }

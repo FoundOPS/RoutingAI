@@ -32,22 +32,44 @@ namespace RoutingAI.Controller
             }
         }
 
-        public OptimizationResponse Get(Guid id)
+        public OptimizationResponse<Solution> Get(Guid id)
         {
             ComputationThreadInfo info = _dispatcher.GetThreadInfo(id);
-            if (info.State == ComputationThreadState.Dead)
+
+            switch (info.State)
             {
-                GlobalLogger.SendLogMessage(TAG, MessageFlags.Warning | MessageFlags.Expected, "Get: ID not found: {{{0}}}", id);
-                return new OptimizationResponse() { Progress = 0, Solution = null, Stage = Stage.Error };
+                case ComputationThreadState.Working:
+                    return new OptimizationResponse<Solution>()
+                        {
+                            Progress = 0,
+                            Solution = null,
+                            Stage = Stage.Processing
+                        };
+                case ComputationThreadState.Finished:
+                    return new OptimizationResponse<Solution>()
+                        {
+                            Progress = 100,
+                            Solution = (Solution) _dispatcher.GetComputationResult(id),
+                            Stage = Stage.Completed
+                        };
+                case ComputationThreadState.Exception:
+                    return new OptimizationResponse<Solution>()
+                        {
+                            Progress = 0,
+                            Solution = null,
+                            Stage = Stage.Error
+                        };
+                case ComputationThreadState.Dead:
+                    GlobalLogger.SendLogMessage(TAG, MessageFlags.Warning | MessageFlags.Expected, "Get: ID not found: {{{0}}}", id);
+                    return new OptimizationResponse<Solution>()
+                        {
+                            Progress = 0,
+                            Solution = null,
+                            Stage = Stage.Error
+                        };
+                default:
+                    return new OptimizationResponse<Solution>() {Progress = 0, Solution = null, Stage = Stage.Queued};
             }
-            else if (info.State == ComputationThreadState.Working)
-                return new OptimizationResponse() { Progress = 0, Solution = null, Stage = Stage.Processing };
-            else if (info.State == ComputationThreadState.Finished)
-                return new OptimizationResponse() { Progress = 100, Solution = (Solution)_dispatcher.GetComputationResult(id), Stage = Stage.Completed };
-            else if (info.State == ComputationThreadState.Exception)
-                return new OptimizationResponse() { Progress = 0, Solution = null, Stage = Stage.Error };
-            else
-                return new OptimizationResponse() { Progress = 0, Solution = null, Stage = Stage.Queued };
         }
 
         public CallResponse Delete(Guid id)

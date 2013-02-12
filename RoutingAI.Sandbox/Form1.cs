@@ -1,4 +1,5 @@
-﻿using RoutingAI.Algorithms.Clustering;
+﻿using System.Threading;
+using RoutingAI.Algorithms.Clustering;
 using RoutingAI.API.OSRM;
 using RoutingAI.DataContracts;
 using RoutingAI.ServiceContracts;
@@ -411,6 +412,48 @@ namespace RoutingAI.Sandbox
 
             OptimizationRequest or = _optimizationRequestGenerator.Generate(GenerationConfig);
             proxy.Post(or);
+
+            OptimizationResponse<Solution> response = null;
+            do
+            {
+                response = proxy.Get(or.Id);
+                if (response.Stage == Stage.Processing) Thread.Sleep(100);
+            } while (response.Stage == Stage.Processing);
+
+            if (response.Solution != null)
+                DisplayResult(response.Solution);
+            else
+            {
+                MessageBox.Show("RoutingAI encountered an error.\nPlease check log files for more information.");
+            }
+
+        }
+
+        private void DisplayResult(Solution s)
+        {
+            tvRoutes.BeginUpdate();
+            tvRoutes.Nodes.Clear();
+
+            foreach (Route r in s.Routes)
+            {
+                TreeNode routeNode = new TreeNode(String.Format("Route {{ WorkerID = {0}, Cost = {1}, Destinations = {2} }}", r.Resource.Id, r.Cost.OverallCost, r.Destinations.Length));
+
+                foreach (Destination d in r.Destinations)
+                {
+                    routeNode.Nodes.Add(
+                        new TreeNode(String.Format("{0}->{1} Task {{ ID = {2}, Coordinates = {3} }}", d.EstimatedArrival, d.EstimatedDeparture, d.Task.Id, d.Task.Coordinates)));
+                }
+
+                tvRoutes.Nodes.Add(routeNode);
+            }
+
+            TreeNode incNode = new TreeNode(String.Format("Incomplete {{ Count = {0} }}", s.Incomplete.Length));
+            foreach (Task t in s.Incomplete)
+                incNode.Nodes.Add(
+                    new TreeNode(String.Format("Task {{ ID = {0}, Coordinates = {1} }}", t.Id, t.Coordinates)));
+            tvRoutes.Nodes.Add(incNode);
+
+            tvRoutes.EndUpdate();
         }
 
         #endregion

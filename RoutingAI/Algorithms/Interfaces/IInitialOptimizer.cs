@@ -16,6 +16,6 @@ namespace RoutingAI.Algorithms.Interfaces
         /// </summary>
         /// <param name="tasks">Tasks to be optimized</param>
         /// <returns>Unoptimized Solution</returns>
-        Solution GenerateSolution(Task[] tasks);
+        Route GenerateSolution(Task[] tasks);
     }
 }

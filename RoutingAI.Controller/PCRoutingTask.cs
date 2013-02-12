@@ -1,4 +1,6 @@
-﻿using RoutingAI.Threading;
+﻿//#define DEBUG_SLAVE
+
+using RoutingAI.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,18 +54,18 @@ namespace RoutingAI.Controller
             ClusteringSolution clusters = solutions.First();
 
             // Strip redundant data from OptimizationRequest
-                //All tasks are already in CLusteringSolution so no need to pass them around
+                //All tasks are already in ClusteringSolution so no need to pass them around
             _request.StripData();
 
             // Send out clusters for optimization
             RunForAllThreads((Int32 index, Guid id, IRoutingAiSlaveService proxy) =>
                 {
-#if DEBUG
+#if DEBUG_SLAVE
                     if (index == 0)
                     {
 
-                        // Send compute command
-                        proxy.ComputeOptimizedSolution(id, GenerateConfiguration(index), _request,
+                        // Send compute command to only one thread
+                        proxy.ComputeOptimizedRoute(id, GenerateConfiguration(index), _request,
                                                            _request.Resources[0], clusters.Clusters[0]);
                     }
 
@@ -73,7 +75,7 @@ namespace RoutingAI.Controller
                     int clusterIndex = index < clusters.Clusters.Length ? index : _rand.Next(clusters.Clusters.Length);
 
                     // Send compute command
-                    proxy.ComputeOptimizedSolution(id, GenerateConfiguration(index), _request,
+                    proxy.ComputeOptimizedRoute(id, GenerateConfiguration(index), _request,
                                                        _request.Resources[clusterIndex], clusters.Clusters[clusterIndex]);
 #endif
                 });
@@ -89,8 +91,31 @@ namespace RoutingAI.Controller
                 } while (threadInfo.State == ComputationThreadState.Working);
             });
 
+            // Retrieve routes
+            Dictionary<UInt32, Route> routes = new Dictionary<uint, Route>(); // Each cluster is optimized into one route
+            RunForAllThreads((Int32 index, Guid id, IRoutingAiSlaveService proxy) =>
+                {
+                    Route route = proxy.GetOptimizedRoute(id);
+                    if (!routes.ContainsKey(route.Resource.Id))
+                        routes.Add(route.Resource.Id, route);
+                    else if (routes[route.Resource.Id].Cost > route.Cost)
+                            routes[route.Resource.Id] = route;
+                });
+
+
             // Dispose all threads
             HandleAbort();
+
+            // Assemble Solution
+            _solution = new Solution();
+            List<Task> incomplete = new List<Task>();
+            foreach (Route rt in routes.Values)
+                incomplete.AddRange(rt.Incomplete);
+
+            _solution.Routes = routes.Values.ToArray();
+            _solution.Incomplete = incomplete.ToArray();
+
+            // Done here!
         }
     }
 }

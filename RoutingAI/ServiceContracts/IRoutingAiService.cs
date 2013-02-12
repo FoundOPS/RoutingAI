@@ -26,7 +26,7 @@ namespace RoutingAI.ServiceContracts
         /// <param name="id">Id of the task</param>
         /// <returns></returns>
         [OperationContract]
-        OptimizationResponse Get(Guid id);
+        OptimizationResponse<Solution> Get(Guid id);
 
         /// <summary>
         /// Stop an optimization request

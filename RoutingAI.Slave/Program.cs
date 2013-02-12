@@ -92,8 +92,13 @@ namespace RoutingAI.Slave
                 using (ServiceHost svcHost = new ServiceHost(typeof(RoutingAiSlave), new Uri("http://localhost:9000/RoutingAi")))
                 {
                     BasicHttpBinding binding = new BasicHttpBinding();
-                    binding.MaxBufferSize = 10 * 1024 * 1024;
-                    binding.MaxReceivedMessageSize = 10 * 1024 * 1024;    // NOTE: This is a security flaw that enables DoS,
+                    binding.MaxBufferPoolSize = 2147483647;
+                    binding.MaxBufferSize = 2147483647;
+                    binding.MaxReceivedMessageSize = 2147483647;
+                    binding.ReaderQuotas.MaxStringContentLength = 2147483647;
+                    binding.ReaderQuotas.MaxArrayLength = 2147483647;
+                    binding.ReaderQuotas.MaxDepth = 2147483647;
+                    binding.ReaderQuotas.MaxBytesPerRead = 2147483647;    // NOTE: This is a security flaw that enables DoS,
                                                                         // either change value or make sure no one from outer network can call this API
                     svcHost.AddServiceEndpoint(typeof(RoutingAI.ServiceContracts.IRoutingAiSlaveService),
                         binding, "Slave");

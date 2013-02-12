@@ -94,6 +94,8 @@
             this.label15 = new System.Windows.Forms.Label();
             this.numericUpDownResourceCostMile = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tvRoutes = new System.Windows.Forms.TreeView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -118,6 +120,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCostHour)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCostMile)).BeginInit();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -504,6 +507,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.groupBox7);
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -523,7 +527,7 @@
             this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Location = new System.Drawing.Point(712, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(311, 677);
+            this.groupBox3.Size = new System.Drawing.Size(311, 717);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Options";
@@ -532,7 +536,7 @@
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(15, 621);
+            this.label9.Location = new System.Drawing.Point(15, 661);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(96, 13);
             this.label9.TabIndex = 17;
@@ -708,7 +712,7 @@
             // buttonOptimizationRequest
             // 
             this.buttonOptimizationRequest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOptimizationRequest.Location = new System.Drawing.Point(189, 610);
+            this.buttonOptimizationRequest.Location = new System.Drawing.Point(189, 650);
             this.buttonOptimizationRequest.Name = "buttonOptimizationRequest";
             this.buttonOptimizationRequest.Size = new System.Drawing.Size(111, 35);
             this.buttonOptimizationRequest.TabIndex = 20;
@@ -987,6 +991,27 @@
             this.label17.TabIndex = 37;
             this.label17.Text = "Avg Cost per Mile";
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox7.Controls.Add(this.tvRoutes);
+            this.groupBox7.Location = new System.Drawing.Point(6, 6);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(700, 717);
+            this.groupBox7.TabIndex = 3;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "groupBox7";
+            // 
+            // tvRoutes
+            // 
+            this.tvRoutes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvRoutes.Location = new System.Drawing.Point(3, 16);
+            this.tvRoutes.Name = "tvRoutes";
+            this.tvRoutes.Size = new System.Drawing.Size(694, 698);
+            this.tvRoutes.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1024,6 +1049,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCostHour)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResourceCostMile)).EndInit();
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1096,6 +1122,8 @@
         private System.Windows.Forms.RadioButton radioButtonTargetSome;
         private System.Windows.Forms.RadioButton radioButtonTargetNone;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.TreeView tvRoutes;
     }
 }
 

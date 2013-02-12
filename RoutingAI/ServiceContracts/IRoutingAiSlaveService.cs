@@ -58,13 +58,13 @@ namespace RoutingAI.ServiceContracts
 
         #endregion
 
-        #region Optimization
+        #region Route Computation
 
         [OperationContract]
-        CallResponse ComputeOptimizedSolution(Guid threadId, SlaveConfig config, OptimizationRequest data, Resource resource, Task[] tasks);
+        CallResponse ComputeOptimizedRoute(Guid threadId, SlaveConfig config, OptimizationRequest data, Resource resource, Task[] tasks);
 
         [OperationContract]
-        OptimizationResponse GetOptimizedSolution(Guid threadId);
+        Route GetOptimizedRoute(Guid threadId);
 
         #endregion
 
