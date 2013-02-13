@@ -304,7 +304,8 @@ namespace RoutingAI.Threading
             {
                 lock (_threads) // make sure no other thread is doing anything
                 {
-                    if (_threads[key].ThreadInfo.State != ComputationThreadState.Working &&
+                    if (_threads[key].ThreadInfo.State != ComputationThreadState.Working && 
+                        _threads[key].ThreadInfo.State != ComputationThreadState.Finished &&
                         now - _threads[key].IdleSince > _idleTimeout)
                     {
                         GlobalLogger.SendLogMessage(TAG, MessageFlags.Routine, "RemoveIdleThreads: Thread idle for too long, removing it: {{{0}}}", key);

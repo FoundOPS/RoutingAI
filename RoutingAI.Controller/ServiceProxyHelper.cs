@@ -13,6 +13,11 @@ namespace RoutingAI.Controller
     /// </summary>
     public static class ServiceProxyHelper
     {
+        /// <summary>
+        /// Gets a RoutingAI Slave Service proxy for the specified endpoint
+        /// </summary>
+        /// <param name="ep"></param>
+        /// <returns></returns>
         public static IRoutingAiSlaveService GetSlaveProxy(IPEndPoint ep)
         {
             EndpointAddress endpoint = new EndpointAddress(String.Format("http://{0}/RoutingAi/Slave", ep.ToString()));
